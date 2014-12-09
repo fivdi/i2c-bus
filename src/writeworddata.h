@@ -1,0 +1,6 @@
+#ifndef I2C_BUS_WRITEWORDDATA_H_
+#define I2C_BUS_WRITEWORDDATA_H_
+NAN_METHOD(WriteWordDataAsync);
+NAN_METHOD(WriteWordDataSync);
+#endif // I2C_BUS_WRITEWORDDATA_H_
+

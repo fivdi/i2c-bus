@@ -1,0 +1,6 @@
+#ifndef I2C_BUS_READBYTEDATA_H_
+#define I2C_BUS_READBYTEDATA_H_
+NAN_METHOD(ReadByteDataAsync);
+NAN_METHOD(ReadByteDataSync);
+#endif // I2C_BUS_READBYTEDATA_H_
+

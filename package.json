@@ -1,0 +1,34 @@
+{
+  "name": "i2c-bus",
+  "version": "0.1.0",
+  "description": "i2c serial computer bus",
+  "main": "i2c-bus.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Tests can only be run manually from the command line.\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fivdi/i2c-bus.git"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "bindings": "~1.2.1",
+    "nan": "~1.4.1"
+  },
+  "keywords": [
+    "i2c",
+    "smbus",
+    "linux"
+  ],
+  "author": "fivdi",
+  "license": "MIT",
+  "gypfile": true
+}
+

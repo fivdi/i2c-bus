@@ -1,0 +1,6 @@
+#ifndef I2C_BUS_READWORDDATA_H_
+#define I2C_BUS_READWORDDATA_H_
+NAN_METHOD(ReadWordDataAsync);
+NAN_METHOD(ReadWordDataSync);
+#endif // I2C_BUS_READWORDDATA_H_
+
