@@ -1,7 +1,7 @@
 'use strict';
 
 var i2cbus = require('../'),
-  i2c1 = i2cbus.open(1);
+  i2c1;
 
 var DS1621_ADDR = 0x48,
   ACCESS_CONFIG = 0xac,
@@ -44,11 +44,10 @@ function startConvert() {
   });
 }
 
-i2c1.once('ready', function () {
+i2c1 = i2cbus.open(1, function (err) {
+  if (err) {
+    throw err;
+  }
   startConvert();
-});
-
-i2c1.on('error', function (err) {
-  throw err;
 });
 

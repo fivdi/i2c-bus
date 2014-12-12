@@ -1,9 +1,7 @@
 'use strict';
 
-var events = require('events'),
-  fs = require('fs'),
-  i2c = require('bindings')('i2c.node'),
-  util = require('util');
+var fs = require('fs'),
+  i2c = require('bindings')('i2c.node');
 
 var DEVICE_PREFIX = '/dev/i2c-';
 
@@ -15,17 +13,15 @@ function Bus(busNumber) {
   this.fd = -1;
   this.currAddr = -1;
 }
-util.inherits(Bus, events.EventEmitter);
 
-module.exports.open = function (busNumber) {
+module.exports.open = function (busNumber, cb) {
   var bus = new Bus(busNumber);
   fs.open(DEVICE_PREFIX + busNumber, 'r+', function (err, fd) {
     if (err) {
-      return bus.emit('error', err);
+      return cb(err);
     }
-
     bus.fd = fd;
-    bus.emit('ready');
+    cb(null);
   });
   return bus;
 };

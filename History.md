@@ -1,5 +1,11 @@
-0.1.0 / 2014-06-11
-==================
+Unpublished
+===========
+
+  * corrected initial release date
+  * use callbacks rather than events for asychronous open method
+
+0.1.0 / Dec 09 2014
+===================
 
   * initial release
 
