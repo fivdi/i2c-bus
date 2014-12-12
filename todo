@@ -1,3 +1,4 @@
+- open should have a callback, events should be removed
 - error handling
   - chack arg count and arg types in addon methods
 - in addon methods, return integer instead of number where possible?
