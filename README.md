@@ -43,10 +43,8 @@ function convertToTemp(rawTemp) {
   // Wait while non volatile memory busy
   config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
   while (config & 0x10) {
-    console.log('non volatile memory busy... config: 0x' + config.toString(16));
     config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
   }
-  console.log('non volatile memory ready... config: 0x' + config.toString(16));
 
   // Start conversion
   i2c1.writeByteSync(DS1621_ADDR, CMD_START_CONVERT);
@@ -56,7 +54,6 @@ function convertToTemp(rawTemp) {
   while ((config & 0x80) === 0) {
     config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
   }
-  console.log('conversion complete... config: 0x' + config.toString(16));
 
   // Display temperature
   temp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
