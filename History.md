@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.2.0 / Dec 13 2014
+===================
 
   * corrected initial release date
   * use callbacks rather than events for asychronous open method
