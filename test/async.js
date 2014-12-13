@@ -11,7 +11,7 @@ var DS1621_ADDR = 0x48,
 // Wait while non volatile memory busy
 function waitForWrite(cb) {
   i2c1.readByteData(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
-    assert(!err, 'can\'t read config to determine memory status');    
+    assert(!err, 'can\'t read config to determine memory status');
     if (config & 0x10) {
       return waitForWrite(cb);
     }
@@ -28,7 +28,7 @@ function readWriteByteData(cb) {
       i2c1.readByteData(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
         assert(!err, 'can\'t read byte data from config');
         assert.strictEqual(config & 0x1, 0, 'continuous mode not eneterd');
-        cb(null, config);
+        cb(config);
       });
     });
   });
@@ -69,7 +69,7 @@ function readWriteWordData(cb) {
 }
 
 function test() {
-  readWriteByteData(function (err, config) {
+  readWriteByteData(function (config) {
     readWriteByte(config, function () {
       readWriteWordData(function () {
         i2c1.close(function () {
