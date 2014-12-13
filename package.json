@@ -1,6 +1,6 @@
 {
   "name": "i2c-bus",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "I2C serial computer bus access",
   "main": "i2c-bus.js",
   "directories": {
