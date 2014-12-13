@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * check for valid arguments in addon methods
+
 0.3.0 / Dec 13 2014
 ===================
 

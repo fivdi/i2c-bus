@@ -43,8 +43,12 @@ private:
 NAN_METHOD(ReadWordDataAsync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int cmd = args[1]->Uint32Value();
+  if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
+    return NanThrowError("incorrect arguments passed to readWordData(int fd, int cmd, function cb)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int cmd = args[1]->Int32Value();
   NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
 
   NanAsyncQueueWorker(new ReadWordDataWorker(callback, fd, cmd));
@@ -54,8 +58,12 @@ NAN_METHOD(ReadWordDataAsync) {
 NAN_METHOD(ReadWordDataSync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int cmd = args[1]->Uint32Value();
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
+    return NanThrowError("incorrect arguments passed to readWordDataSync(int fd, int cmd)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int cmd = args[1]->Int32Value();
 
   int ret = ReadWordData(fd, cmd);
   if (ret == -1) {

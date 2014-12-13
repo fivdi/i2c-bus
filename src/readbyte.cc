@@ -44,7 +44,11 @@ private:
 NAN_METHOD(ReadByteAsync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsFunction()) {
+    return NanThrowError("incorrect arguments passed to readByte(int fd, function cb)");
+  }
+
+  int fd = args[0]->Int32Value();
   NanCallback *callback = new NanCallback(args[1].As<v8::Function>());
 
   NanAsyncQueueWorker(new ReadByteWorker(callback, fd));
@@ -54,7 +58,11 @@ NAN_METHOD(ReadByteAsync) {
 NAN_METHOD(ReadByteSync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
+  if (args.Length() < 1 || !args[0]->IsInt32()) {
+    return NanThrowError("incorrect arguments passed to readByteSync(int fd)");
+  }
+
+  int fd = args[0]->Int32Value();
 
   int ret = ReadByte(fd);
   if (ret == -1) {

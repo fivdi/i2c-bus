@@ -39,8 +39,12 @@ private:
 NAN_METHOD(WriteByteAsync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int val = args[1]->Uint32Value();
+  if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
+    return NanThrowError("incorrect arguments passed to writeByte(int fd, int val, function cb)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int val = args[1]->Int32Value();
   NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
 
   NanAsyncQueueWorker(new WriteByteWorker(callback, fd, val));
@@ -50,8 +54,12 @@ NAN_METHOD(WriteByteAsync) {
 NAN_METHOD(WriteByteSync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int val = args[1]->Uint32Value();
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
+    return NanThrowError("incorrect arguments passed to writeByteSync(int fd, int val)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int val = args[1]->Int32Value();
 
   int ret = WriteByte(fd, val);
   if (ret == -1) {

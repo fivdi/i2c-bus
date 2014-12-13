@@ -38,8 +38,12 @@ private:
 NAN_METHOD(SetAddrAsync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int addr = args[1]->Uint32Value();
+  if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
+    return NanThrowError("incorrect arguments passed to setAddr(int fd, int addr, function cb)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int addr = args[1]->Int32Value();
   NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
 
   NanAsyncQueueWorker(new SetAddrWorker(callback, fd, addr));
@@ -49,8 +53,12 @@ NAN_METHOD(SetAddrAsync) {
 NAN_METHOD(SetAddrSync) {
   NanScope();
 
-  int fd = args[0]->Uint32Value();
-  int addr = args[1]->Uint32Value();
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
+    return NanThrowError("incorrect arguments passed to setAddrSync(int fd, int addr)");
+  }
+
+  int fd = args[0]->Int32Value();
+  int addr = args[1]->Int32Value();
 
   if (SetAddr(fd, addr) != 0) {
     return NanThrowError(strerror(errno), errno);

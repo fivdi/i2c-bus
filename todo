@@ -1,7 +1,4 @@
-- error handling
-  - chack arg count and arg types in addon methods
 - in addon methods, return integer instead of number where possible?
-- there's lots of this: int fd = args[0]->Uint32Value(); int and unsigned int together!
 - block operations
 - test with two buses
 - test with more than one device on a single bus
