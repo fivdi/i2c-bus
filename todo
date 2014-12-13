@@ -1,4 +1,3 @@
-- in addon methods, return integer instead of number where possible?
 - block operations
 - test with two buses
 - test with more than one device on a single bus

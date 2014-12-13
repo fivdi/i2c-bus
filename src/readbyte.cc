@@ -30,7 +30,7 @@ public:
 
     v8::Local<v8::Value> argv[] = {
       NanNull(),
-      NanNew<v8::Number>(val)
+      NanNew<v8::Integer>(val)
     };
 
     callback->Call(2, argv);
@@ -69,6 +69,6 @@ NAN_METHOD(ReadByteSync) {
     return NanThrowError(strerror(errno), errno);
   }
 
-  NanReturnValue(NanNew<v8::Number>(ret));
+  NanReturnValue(NanNew<v8::Integer>(ret));
 }
 
