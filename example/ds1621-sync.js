@@ -64,5 +64,7 @@ function convertToTemp(rawTemp) {
   // Display config (using readByteDataSync)
   config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
   console.log('config: 0x' + config.toString(16));
+
+  i2c1.closeSync();
 }());
 

@@ -1,8 +1,6 @@
 - error handling
   - chack arg count and arg types in addon methods
 - in addon methods, return integer instead of number where possible?
-- close and closeSync also needed
-- jslint everything
 - example + fritzing for ds1621
 - there's lots of this: int fd = args[0]->Uint32Value(); int and unsigned int together!
 - block operations

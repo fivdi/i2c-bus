@@ -25,6 +25,8 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Class Bus
 
+  * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclose-cb)
+  * [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
   * [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
   * [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
   * [bus.readByteData(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbytedataaddr-cmd-cb)
@@ -48,6 +50,15 @@ Asynchronous open. Returns a new Bus object. The callback gets one argument (err
 - busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
 
 Synchronous open. Returns a new Bus object.
+
+### bus.close(cb)
+- cb - completion callback
+
+Asynchronous close. The callback gets one argument (err).
+
+### bus.closeSync()
+
+Synchronous close.
 
 ### bus.readByte(addr, cb)
 - addr - I2C device address

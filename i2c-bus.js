@@ -55,10 +55,12 @@ function setAddrSync(bus, addr) {
   }
 }
 
-Bus.prototype.close = function () {
+Bus.prototype.close = function (cb) {
+  fs.close(this.fd, cb);
 };
 
 Bus.prototype.closeSync = function () {
+  fs.closeSync(this.fd);
 };
 
 Bus.prototype.readByte = function (addr, cb) {
