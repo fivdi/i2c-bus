@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.4.0 / Dec 13 2014
+===================
 
   * check for valid arguments in addon methods
   * added sync and async tests
