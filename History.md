@@ -6,6 +6,7 @@ Unpublished
   * documentation
   * return this in synchronous write methods
   * added close and closeSync methods
+  * added example
 
 0.1.0 / Dec 09 2014
 ===================
