@@ -3,7 +3,6 @@
 - in addon methods, return integer instead of number where possible?
 - close and closeSync also needed
 - jslint everything
-- write documentation
 - example + fritzing for ds1621
 - there's lots of this: int fd = args[0]->Uint32Value(); int and unsigned int together!
 - return this in all js methods where it makes sense
