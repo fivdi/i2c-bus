@@ -19,8 +19,6 @@ var i2cbus = require('i2c-bus'),
 
 var DS1621_ADDR = 0x48,
   CMD_ACCESS_CONFIG = 0xac,
-  CMD_ACCESS_TH = 0xa1,
-  CMD_ACCESS_TL = 0xa2,
   CMD_READ_TEMP = 0xaa,
   CMD_START_CONVERT = 0xee;
 
@@ -35,7 +33,7 @@ function convertToTemp(rawTemp) {
 }
 
 (function () {
-  var config, tl, th, temp;
+  var config, temp;
 
   // Enter one shot mode
   i2c1.writeByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
