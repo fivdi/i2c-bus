@@ -119,6 +119,7 @@ Bus.prototype.writeByte = function (addr, val, cb) {
 Bus.prototype.writeByteSync = function (addr, val) {
   setAddrSync(this, addr);
   i2c.writeByteSync(this.fd, val);
+  return this;
 };
 
 Bus.prototype.writeByteData = function (addr, cmd, val, cb) {
@@ -134,6 +135,7 @@ Bus.prototype.writeByteData = function (addr, cmd, val, cb) {
 Bus.prototype.writeByteDataSync = function (addr, cmd, val) {
   setAddrSync(this, addr);
   i2c.writeByteDataSync(this.fd, cmd, val);
+  return this;
 };
 
 Bus.prototype.writeWordData = function (addr, cmd, val, cb) {
@@ -149,5 +151,6 @@ Bus.prototype.writeWordData = function (addr, cmd, val, cb) {
 Bus.prototype.writeWordDataSync = function (addr, cmd, val) {
   setAddrSync(this, addr);
   i2c.writeWordDataSync(this.fd, cmd, val);
+  return this;
 };
 

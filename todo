@@ -5,7 +5,6 @@
 - jslint everything
 - example + fritzing for ds1621
 - there's lots of this: int fd = args[0]->Uint32Value(); int and unsigned int together!
-- return this in all js methods where it makes sense
 - block operations
 - test with two buses
 - test with more than one device on a single bus
