@@ -20,7 +20,6 @@ use try/catch to handle exceptions or allow them to bubble up.
 
   * [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
   * [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
-
   * [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
   * [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
   * bus.readByteData(addr, cmd, cb)
