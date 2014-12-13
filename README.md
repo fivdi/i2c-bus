@@ -18,21 +18,21 @@ completed successfully, then the first argument will be null or undefined.
 When using the synchronous form any exceptions are immediately thrown. You can
 use try/catch to handle exceptions or allow them to bubble up. 
 
-- [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
-- [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
+  * [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
+  * [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
 
-- [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
-- [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
-- bus.readByteData(addr, cmd, cb)
-- bus.readByteDataSync(addr, cmd)
-- bus.readWordData(addr, cmd, cb)
-- bus.readWordDataSync(addr, cmd)
-- bus.writeByte(addr, val, cb)
-- bus.writeByteSync(addr, val)
-- bus.writeByteData(addr, cmd, val, cb)
-- bus.writeByteDataSync(addr, cmd, val)
-- bus.writeWordData(addr, cmd, val, cb)
-- bus.writeWordDataSync(addr, cmd, val)
+  * [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
+  * [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
+  * bus.readByteData(addr, cmd, cb)
+  * bus.readByteDataSync(addr, cmd)
+  * bus.readWordData(addr, cmd, cb)
+  * bus.readWordDataSync(addr, cmd)
+  * bus.writeByte(addr, val, cb)
+  * bus.writeByteSync(addr, val)
+  * bus.writeByteData(addr, cmd, val, cb)
+  * bus.writeByteDataSync(addr, cmd, val)
+  * bus.writeWordData(addr, cmd, val, cb)
+  * bus.writeWordDataSync(addr, cmd, val)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
