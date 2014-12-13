@@ -18,8 +18,13 @@ completed successfully, then the first argument will be null or undefined.
 When using the synchronous form any exceptions are immediately thrown. You can
 use try/catch to handle exceptions or allow them to bubble up. 
 
+### Methods
+
   * [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
   * [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
+
+### Class Bus
+
   * [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
   * [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
   * bus.readByteData(addr, cmd, cb)
