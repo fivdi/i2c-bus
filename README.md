@@ -50,13 +50,82 @@ Asynchronous open. Returns a new Bus object. The callback gets one argument (err
 Synchronous open. Returns a new Bus object.
 
 ### bus.readByte(addr, cb)
-- addr - device address
+- addr - I2C device address
 - cb - completion callback
 
 Asynchronous receive byte. The callback gets two arguments (err, byte).
 
 ### bus.readByteSync(addr)
-- addr - device address
+- addr - I2C device address
 
 Synchronous receive byte. Returns the byte received.
+
+### bus.readByteData(addr, cmd, cb)
+- addr - I2C device address
+- cmd - command code
+- cb - completion callback
+
+Asynchronous read byte. The callback gets two arguments (err, byte).
+
+### bus.readByteDataSync(addr, cmd)
+- addr - I2C device address
+- cmd - command code
+
+Synchronous read byte. Returns the byte read.
+
+### bus.readWordData(addr, cmd, cb)
+- addr - I2C device address
+- cmd - command code
+- cb - completion callback
+
+Asynchronous read word. The callback gets two arguments (err, word).
+
+### bus.readWordDataSync(addr, cmd)
+- addr - I2C device address
+- cmd - command code
+
+Synchronous read word. Returns the word read.
+
+### bus.writeByte(addr, val, cb)
+- addr - I2C device address
+- val - data byte
+- cb - completion callback
+
+Asynchronous send byte. The callback gets one argument (err).
+
+### bus.writeByteSync(addr, val)
+- addr - I2C device address
+- val - data byte
+
+Synchronous send byte.
+
+### bus.writeByteData(addr, cmd, val, cb)
+- addr - I2C device address
+- cmd - command code
+- val - data byte
+- cb - completion callback
+
+Asynchronous write byte. The callback gets one argument (err).
+
+### bus.writeByteDataSync(addr, cmd, val)
+- addr - I2C device address
+- cmd - command code
+- val - data byte
+
+Synchronous write byte.
+
+### bus.writeWordData(addr, cmd, val, cb)
+- addr - I2C device address
+- cmd - command code
+- val - data word
+- cb - completion callback
+
+Asynchronous write word. The callback gets one argument (err).
+
+### bus.writeWordDataSync(addr, cmd, val)
+- addr - I2C device address
+- cmd - command code
+- val - data word
+
+Synchronous write word. The callback gets one argument (err).
 
