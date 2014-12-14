@@ -85,7 +85,7 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.readWordData(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadworddataaddr-cmd-cb)
   * [bus.readWordDataSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadworddatasyncaddr-cmd)
   * [bus.readI2cBlockData(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadi2cblockdataaddr-cmd-length-buffer-cb)
-  * [bus.readI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblockdataaddr-cmd-length-buffer)
+  * [bus.readI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblockdatasyncaddr-cmd-length-buffer)
   * [bus.writeByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-val-cb)
   * [bus.writeByteSync(addr, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-val)
   * [bus.writeByteData(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebytedataaddr-cmd-val-cb)
@@ -93,7 +93,7 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.writeWordData(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswriteworddataaddr-cmd-val-cb)
   * [bus.writeWordDataSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswriteworddatasyncaddr-cmd-val)
   * [bus.writeI2cBlockData(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockdataaddr-cmd-length-buffer-cb)
-  * [bus.writeI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblockdataaddr-cmd-length-buffer)
+  * [bus.writeI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblockdatasyncaddr-cmd-length-buffer)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -161,7 +161,7 @@ Synchronous read word. Returns the word read.
 
 Asynchronous I2C read write. The callback gets three arguments (err, bytesRead, buffer).
 
-### bus.readI2cBlockSync(addr, cmd, length, buffer)
+### bus.readI2cBlockDataSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
@@ -221,7 +221,7 @@ Synchronous write word.
 
 Asynchronous I2C block write. The callback gets one argument (err).
 
-### bus.writeI2cBlockSync(addr, cmd, length, buffer)
+### bus.writeI2cBlockDataSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
