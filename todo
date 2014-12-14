@@ -1,4 +1,5 @@
-- block operations
+- use __u8, __u32, and __s32 where appropriate
+- make callbacks optional
 - test with two buses
 - test with more than one device on a single bus
 - performance tests

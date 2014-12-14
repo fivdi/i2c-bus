@@ -4,8 +4,6 @@
 #include "./i2c-dev.h"
 #include "./readbyte.h"
 
-#include <stdio.h>
-
 static int ReadByte(int fd) {
   return i2c_smbus_read_byte(fd);
 }

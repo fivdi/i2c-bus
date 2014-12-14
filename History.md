@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * added block operations
+
 0.4.0 / Dec 13 2014
 ===================
 

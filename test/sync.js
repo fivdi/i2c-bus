@@ -10,14 +10,20 @@ var DS1621_ADDR = 0x48,
 
 // Wait while non volatile memory busy
 function waitForWrite() {
-  var config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
-  while (config & 0x10) {
-    config = i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
+  while (i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
   }
 }
 
 (function () {
-  var config, config2, oldtl, newtl, newtl2, self;
+  var config,
+    config2,
+    oldtl,
+    newtl,
+    newtl2,
+    tlbuf = new Buffer(10),
+    tlbuf2 = new Buffer(10),
+    bytesRead,
+    self;
 
   // Test writeByteDataSync & readByteDataSync
   // Enter one shot mode and verify that one shot mode has been entered
@@ -43,6 +49,16 @@ function waitForWrite() {
   waitForWrite();
   newtl2 = i2c1.readWordDataSync(DS1621_ADDR, CMD_ACCESS_TL);
   assert.strictEqual(newtl, newtl2, 'unexpected tl');
+
+  // Test writeI2cBlockDataSync & readI2cBlockDataSync
+  // Change value of tl to 22 and verify that tl has been changed
+  tlbuf.writeUInt16LE(22, 0);
+  self = i2c1.writeI2cBlockDataSync(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf);
+  assert.strictEqual(self, i2c1, 'expected writeI2cBlockDataSync to return this');
+  waitForWrite();
+  bytesRead = i2c1.readI2cBlockDataSync(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf2);
+  assert.strictEqual(bytesRead, 2, 'expected readI2cBlockDataSync to read 2 bytes');
+  assert.strictEqual(tlbuf2.readUInt16LE(0), 22, 'expected readI2cBlockDataSync to read value 22');
 
   i2c1.closeSync();
 

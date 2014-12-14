@@ -16,10 +16,12 @@
       "./src/readbyte.cc",
       "./src/readbytedata.cc",
       "./src/readworddata.cc",
+      "./src/readi2cblockdata.cc",
       "./src/setaddr.cc",
       "./src/writebyte.cc",
       "./src/writebytedata.cc",
-      "./src/writeworddata.cc"
+      "./src/writeworddata.cc",
+      "./src/writei2cblockdata.cc"
     ]
   }]
 }

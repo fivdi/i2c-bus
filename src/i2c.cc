@@ -3,10 +3,12 @@
 #include "./readbyte.h"
 #include "./readbytedata.h"
 #include "./readworddata.h"
+#include "./readi2cblockdata.h"
 #include "./setaddr.h"
 #include "./writebyte.h"
 #include "./writebytedata.h"
 #include "./writeworddata.h"
+#include "./writei2cblockdata.h"
 
 void InitAll(v8::Handle<v8::Object> exports) {
   exports->Set(NanNew<v8::String>("readByteAsync"),
@@ -23,6 +25,11 @@ void InitAll(v8::Handle<v8::Object> exports) {
     NanNew<v8::FunctionTemplate>(ReadWordDataAsync)->GetFunction());
   exports->Set(NanNew<v8::String>("readWordDataSync"),
     NanNew<v8::FunctionTemplate>(ReadWordDataSync)->GetFunction());
+
+  exports->Set(NanNew<v8::String>("readI2cBlockDataAsync"),
+    NanNew<v8::FunctionTemplate>(ReadI2cBlockDataAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("readI2cBlockDataSync"),
+    NanNew<v8::FunctionTemplate>(ReadI2cBlockDataSync)->GetFunction());
 
   exports->Set(NanNew<v8::String>("setAddrAsync"),
     NanNew<v8::FunctionTemplate>(SetAddrAsync)->GetFunction());
@@ -43,6 +50,11 @@ void InitAll(v8::Handle<v8::Object> exports) {
     NanNew<v8::FunctionTemplate>(WriteWordDataAsync)->GetFunction());
   exports->Set(NanNew<v8::String>("writeWordDataSync"),
     NanNew<v8::FunctionTemplate>(WriteWordDataSync)->GetFunction());
+
+  exports->Set(NanNew<v8::String>("writeI2cBlockDataAsync"),
+    NanNew<v8::FunctionTemplate>(WriteI2cBlockDataAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("writeI2cBlockDataSync"),
+    NanNew<v8::FunctionTemplate>(WriteI2cBlockDataSync)->GetFunction());
 }
 
 NODE_MODULE(i2c, InitAll)

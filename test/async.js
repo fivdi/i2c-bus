@@ -68,12 +68,33 @@ function readWriteWordData(cb) {
   });
 }
 
+function readWriteBlockData(cb) {
+  // Test writeI2cBlockData & readI2cBlockData
+  // Change value of tl to 25 and verify that tl has been changed
+  var newtl = new Buffer(10);
+
+  newtl.writeUInt16LE(25, 0);
+  i2c1.writeI2cBlockData(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err) {
+    assert(!err, 'can\'t write block data to tl');
+    waitForWrite(function () {
+      i2c1.readI2cBlockData(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesRead, buffer) {
+        assert(!err, 'can\'t read block data from tl');
+        assert.strictEqual(bytesRead, 2, 'expected readI2cBlockData to read 2 bytes');
+        assert.strictEqual(buffer.readUInt16LE(0), 25, 'expected readI2cBlockData to read value 25');
+        cb();
+      });
+    });
+  });
+}
+
 function test() {
   readWriteByteData(function (config) {
     readWriteByte(config, function () {
       readWriteWordData(function () {
-        i2c1.close(function () {
-          console.log('ok - async');
+        readWriteBlockData(function () {
+          i2c1.close(function () {
+            console.log('ok - async');
+          });
         });
       });
     });

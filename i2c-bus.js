@@ -108,6 +108,21 @@ Bus.prototype.readWordDataSync = function (addr, cmd) {
   return i2c.readWordDataSync(this.fd, cmd);
 };
 
+Bus.prototype.readI2cBlockData = function (addr, cmd, length, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.readI2cBlockDataAsync(this.fd, cmd, length, buffer, cb);
+  }.bind(this));
+};
+
+Bus.prototype.readI2cBlockDataSync = function (addr, cmd, length, buffer) {
+  setAddrSync(this, addr);
+  return i2c.readI2cBlockDataSync(this.fd, cmd, length, buffer);
+};
+
 Bus.prototype.writeByte = function (addr, val, cb) {
   setAddr(this, addr, function (err) {
     if (err) {
@@ -153,6 +168,22 @@ Bus.prototype.writeWordData = function (addr, cmd, val, cb) {
 Bus.prototype.writeWordDataSync = function (addr, cmd, val) {
   setAddrSync(this, addr);
   i2c.writeWordDataSync(this.fd, cmd, val);
+  return this;
+};
+
+Bus.prototype.writeI2cBlockData = function (addr, cmd, length, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.writeI2cBlockDataAsync(this.fd, cmd, length, buffer, cb);
+  }.bind(this));
+};
+
+Bus.prototype.writeI2cBlockDataSync = function (addr, cmd, length, buffer) {
+  setAddrSync(this, addr);
+  i2c.writeI2cBlockDataSync(this.fd, cmd, length, buffer);
   return this;
 };
 
