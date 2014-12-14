@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert'),
-  i2cbus = require('../'),
+  i2c = require('../'),
   i2c1;
 
 var DS1621_ADDR = 0x48,
@@ -101,7 +101,7 @@ function test() {
   });
 }
 
-i2c1 = i2cbus.open(1, function (err) {
+i2c1 = i2c.open(1, function (err) {
   assert(!err, 'can\'t open i2c bus');
   test();
 });

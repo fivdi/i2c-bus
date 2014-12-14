@@ -14,8 +14,8 @@ temperature sensor.
 <img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
 
 ```js
-var i2cbus = require('i2c-bus'),
-  i2c1 = i2cbus.openSync(1);
+var i2c = require('i2c-bus'),
+  i2c1 = i2c.openSync(1);
 
 var DS1621_ADDR = 0x48,
   CMD_ACCESS_CONFIG = 0xac,
