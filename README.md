@@ -6,7 +6,7 @@ I2C serial computer bus access
 
     $ npm install i2c-bus
 
-## Example
+## Example 1 - Determine Temperature
 
 Determine the temperature with a [DS1621](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 temperature sensor.
@@ -52,6 +52,35 @@ function rawTempToTemp(rawTemp) {
   // Display temperature
   rawTemp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
   console.log('temp: ' + rawTempToTemp(rawTemp));
+
+  i2c1.closeSync();
+}());
+```
+
+## Example 2 - One Bus Two Devices
+
+This example shows how to access two devices on the same bus; a
+[DS1621](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+temperature sensor and an
+[Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor](http://www.adafruit.com/products/439)
+
+```
+var i2c = require('i2c-bus'),
+  i2c1 = i2c.openSync(1);
+
+var DS1621_ADDR = 0x48,
+  DS1621_CMD_ACCESS_TH = 0xa1;
+
+var TSL2561_ADDR = 0x39,
+  TSL2561_CMD = 0x80,
+  TSL2561_REG_ID = 0x0a;
+
+(function () {
+  var ds1621TempHigh = i2c1.readWordDataSync(DS1621_ADDR, DS1621_CMD_ACCESS_TH),
+    tsl2561Id = i2c1.readByteDataSync(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID);
+
+  console.log("ds1621TempHigh: " + ds1621TempHigh);
+  console.log("tsl2561Id: " + tsl2561Id);
 
   i2c1.closeSync();
 }());

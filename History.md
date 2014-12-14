@@ -4,6 +4,7 @@ Unpublished
   * use __u8, __u16, and __s32 where appropriate
   * added brute force memory leak tests
   * added performance tests
+  * added an example using two devices on the same bus
 
 0.5.0 / Dec 14 2014
 ===================

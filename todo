@@ -1,4 +1,3 @@
 - test with two buses
-- test with more than one device on a single bus
 - async ds1621.js example isn't waiting long enough for 1st conversion
 
