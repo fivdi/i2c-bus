@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * use __u8, __u16, and __s32 where appropriate
+
 0.5.0 / Dec 14 2014
 ===================
 

@@ -4,7 +4,7 @@
 #include "./i2c-dev.h"
 #include "./readi2cblockdata.h"
 
-static __s32 ReadI2cBlockData(int fd, int cmd, __u8 length, __u8 *data) {
+static __s32 ReadI2cBlockData(int fd, __u8 cmd, __u8 length, __u8 *data) {
   return i2c_smbus_read_i2c_block_data(fd, cmd, length, data);
 }
 
@@ -13,7 +13,7 @@ public:
   ReadI2cBlockDataWorker(
     NanCallback *callback,
     int fd,
-    int cmd,
+    __u8 cmd,
     __u32 length,
     __u8* data,
     v8::Local<v8::Object> &bufferHandle
@@ -46,7 +46,7 @@ public:
 
 private:
   int fd;
-  int cmd;
+  __u8 cmd;
   __u32 length;
   __u8* data;
   __s32 bytesRead;
@@ -66,7 +66,7 @@ NAN_METHOD(ReadI2cBlockDataAsync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
   __u32 length = args[2]->Uint32Value();
   v8::Local<v8::Object> bufferHandle = args[3].As<v8::Object>();
   NanCallback *callback = new NanCallback(args[4].As<v8::Function>());
@@ -108,7 +108,7 @@ NAN_METHOD(ReadI2cBlockDataSync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
   __u32 length = args[2]->Uint32Value();
   v8::Local<v8::Object> bufferHandle = args[3].As<v8::Object>();
 

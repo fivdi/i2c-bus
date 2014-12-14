@@ -4,18 +4,18 @@
 #include "./i2c-dev.h"
 #include "./writebytedata.h"
 
-static int WriteByteData(int fd, int cmd, int val) {
-  return i2c_smbus_write_byte_data(fd, cmd, val);
+static __s32 WriteByteData(int fd, __u8 cmd, __u8 byte) {
+  return i2c_smbus_write_byte_data(fd, cmd, byte);
 }
 
 class WriteByteDataWorker : public NanAsyncWorker {
 public:
-  WriteByteDataWorker(NanCallback *callback, int fd, int cmd, int val)
-    : NanAsyncWorker(callback), fd(fd), cmd(cmd), val(val) {}
+  WriteByteDataWorker(NanCallback *callback, int fd, __u8 cmd, __u8 byte)
+    : NanAsyncWorker(callback), fd(fd), cmd(cmd), byte(byte) {}
   ~WriteByteDataWorker() {}
 
   void Execute() {
-    int ret = WriteByteData(fd, cmd, val);
+    __s32 ret = WriteByteData(fd, cmd, byte);
     if (ret == -1) {
       SetErrorMessage(strerror(errno));
     }
@@ -33,8 +33,8 @@ public:
 
 private:
   int fd;
-  int cmd;
-  int val;
+  __u8 cmd;
+  __u8 byte;
 };
 
 NAN_METHOD(WriteByteDataAsync) {
@@ -45,11 +45,11 @@ NAN_METHOD(WriteByteDataAsync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
-  int val = args[2]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
+  __u8 byte = args[2]->Int32Value();
   NanCallback *callback = new NanCallback(args[3].As<v8::Function>());
 
-  NanAsyncQueueWorker(new WriteByteDataWorker(callback, fd, cmd, val));
+  NanAsyncQueueWorker(new WriteByteDataWorker(callback, fd, cmd, byte));
   NanReturnUndefined();
 }
 
@@ -61,10 +61,10 @@ NAN_METHOD(WriteByteDataSync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
-  int val = args[2]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
+  __u8 byte = args[2]->Int32Value();
 
-  int ret = WriteByteData(fd, cmd, val);
+  __s32 ret = WriteByteData(fd, cmd, byte);
   if (ret == -1) {
     return NanThrowError(strerror(errno), errno);
   }

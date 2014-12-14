@@ -4,7 +4,7 @@
 #include "./i2c-dev.h"
 #include "./readbyte.h"
 
-static int ReadByte(int fd) {
+static __s32 ReadByte(int fd) {
   return i2c_smbus_read_byte(fd);
 }
 
@@ -15,11 +15,9 @@ public:
   ~ReadByteWorker() {}
 
   void Execute() {
-    int ret = ReadByte(fd);
-    if (ret == -1) {
+    byte = ReadByte(fd);
+    if (byte == -1) {
       SetErrorMessage(strerror(errno));
-    } else {
-      val = ret;
     }
   }
 
@@ -28,7 +26,7 @@ public:
 
     v8::Local<v8::Value> argv[] = {
       NanNull(),
-      NanNew<v8::Integer>(val)
+      NanNew<v8::Integer>(byte)
     };
 
     callback->Call(2, argv);
@@ -36,7 +34,7 @@ public:
 
 private:
   int fd;
-  int val;
+  __s32 byte;
 };
 
 NAN_METHOD(ReadByteAsync) {
@@ -62,11 +60,11 @@ NAN_METHOD(ReadByteSync) {
 
   int fd = args[0]->Int32Value();
 
-  int ret = ReadByte(fd);
-  if (ret == -1) {
+  __s32 byte = ReadByte(fd);
+  if (byte == -1) {
     return NanThrowError(strerror(errno), errno);
   }
 
-  NanReturnValue(NanNew<v8::Integer>(ret));
+  NanReturnValue(NanNew<v8::Integer>(byte));
 }
 

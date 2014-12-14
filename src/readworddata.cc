@@ -4,22 +4,20 @@
 #include "./i2c-dev.h"
 #include "./readworddata.h"
 
-static int ReadWordData(int fd, int cmd) {
+static __s32 ReadWordData(int fd, __u8 cmd) {
   return i2c_smbus_read_word_data(fd, cmd);
 }
 
 class ReadWordDataWorker : public NanAsyncWorker {
 public:
-  ReadWordDataWorker(NanCallback *callback, int fd, int cmd)
+  ReadWordDataWorker(NanCallback *callback, int fd, __u8 cmd)
     : NanAsyncWorker(callback), fd(fd), cmd(cmd) {}
   ~ReadWordDataWorker() {}
 
   void Execute() {
-    int ret = ReadWordData(fd, cmd);
-    if (ret == -1) {
+    word = ReadWordData(fd, cmd);
+    if (word == -1) {
       SetErrorMessage(strerror(errno));
-    } else {
-      val = ret;
     }
   }
 
@@ -28,7 +26,7 @@ public:
 
     v8::Local<v8::Value> argv[] = {
       NanNull(),
-      NanNew<v8::Integer>(val)
+      NanNew<v8::Integer>(word)
     };
 
     callback->Call(2, argv);
@@ -36,8 +34,8 @@ public:
 
 private:
   int fd;
-  int cmd;
-  int val;
+  __u8 cmd;
+  __s32 word;
 };
 
 NAN_METHOD(ReadWordDataAsync) {
@@ -48,7 +46,7 @@ NAN_METHOD(ReadWordDataAsync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
   NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
 
   NanAsyncQueueWorker(new ReadWordDataWorker(callback, fd, cmd));
@@ -63,13 +61,13 @@ NAN_METHOD(ReadWordDataSync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
 
-  int ret = ReadWordData(fd, cmd);
-  if (ret == -1) {
+  __s32 word = ReadWordData(fd, cmd);
+  if (word == -1) {
     return NanThrowError(strerror(errno), errno);
   }
 
-  NanReturnValue(NanNew<v8::Integer>(ret));
+  NanReturnValue(NanNew<v8::Integer>(word));
 }
 

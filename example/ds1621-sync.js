@@ -10,7 +10,7 @@ var DS1621_ADDR = 0x48,
   CMD_READ_TEMP = 0xaa,
   CMD_START_CONVERT = 0xee;
 
-function convertToTemp(rawTemp) {
+function rawTempToTemp(rawTemp) {
   var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
   if ((halfDegrees & 0x100) === 0) {
@@ -21,9 +21,9 @@ function convertToTemp(rawTemp) {
 }
 
 (function () {
-  var config, tl, th, temp;
+  var config, tl, th, rawTemp;
 
-  // Enter one shot mode
+  // Enter one shot mode (this is a non volatile setting)
   i2c1.writeByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
 
   // Wait while non volatile memory busy
@@ -45,16 +45,16 @@ function convertToTemp(rawTemp) {
   console.log('conversion complete... config: 0x' + config.toString(16));
 
   // Display temp
-  temp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
-  console.log('temp: ' + convertToTemp(temp));
+  rawTemp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
+  console.log('temp: ' + rawTempToTemp(rawTemp));
 
   // Display temp low
   tl = i2c1.readWordDataSync(DS1621_ADDR, CMD_ACCESS_TL);
-  console.log('tl: ' + convertToTemp(tl));
+  console.log('tl: ' + rawTempToTemp(tl));
 
   // Display temp high
   th = i2c1.readWordDataSync(DS1621_ADDR, CMD_ACCESS_TH);
-  console.log('th: ' + convertToTemp(th));
+  console.log('th: ' + rawTempToTemp(th));
 
   // Display config (using writeByteSync + readByteSync)
   config = i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG).

@@ -4,18 +4,18 @@
 #include "./i2c-dev.h"
 #include "./writeworddata.h"
 
-static int WriteWordData(int fd, int cmd, int val) {
-  return i2c_smbus_write_word_data(fd, cmd, val);
+static __s32 WriteWordData(int fd, __u8 cmd, __u16 word) {
+  return i2c_smbus_write_word_data(fd, cmd, word);
 }
 
 class WriteWordDataWorker : public NanAsyncWorker {
 public:
-  WriteWordDataWorker(NanCallback *callback, int fd, int cmd, int val)
-    : NanAsyncWorker(callback), fd(fd), cmd(cmd), val(val) {}
+  WriteWordDataWorker(NanCallback *callback, int fd, __u8 cmd, __u16 word)
+    : NanAsyncWorker(callback), fd(fd), cmd(cmd), word(word) {}
   ~WriteWordDataWorker() {}
 
   void Execute() {
-    int ret = WriteWordData(fd, cmd, val);
+    __s32 ret = WriteWordData(fd, cmd, word);
     if (ret == -1) {
       SetErrorMessage(strerror(errno));
     }
@@ -33,8 +33,8 @@ public:
 
 private:
   int fd;
-  int cmd;
-  int val;
+  __u8 cmd;
+  __u16 word;
 };
 
 NAN_METHOD(WriteWordDataAsync) {
@@ -45,11 +45,11 @@ NAN_METHOD(WriteWordDataAsync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
-  int val = args[2]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
+  __u16 word = args[2]->Int32Value();
   NanCallback *callback = new NanCallback(args[3].As<v8::Function>());
 
-  NanAsyncQueueWorker(new WriteWordDataWorker(callback, fd, cmd, val));
+  NanAsyncQueueWorker(new WriteWordDataWorker(callback, fd, cmd, word));
   NanReturnUndefined();
 }
 
@@ -61,10 +61,10 @@ NAN_METHOD(WriteWordDataSync) {
   }
 
   int fd = args[0]->Int32Value();
-  int cmd = args[1]->Int32Value();
-  int val = args[2]->Int32Value();
+  __u8 cmd = args[1]->Int32Value();
+  __u16 word = args[2]->Int32Value();
 
-  int ret = WriteWordData(fd, cmd, val);
+  __s32 ret = WriteWordData(fd, cmd, word);
   if (ret == -1) {
     return NanThrowError(strerror(errno), errno);
   }
