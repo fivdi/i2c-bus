@@ -3,4 +3,5 @@
 - test with more than one device on a single bus
 - performance tests
 - async ds1621.js example isn't waiting long enough for 1st conversion
+- change i2cbus = require('../') to i2c = require('../')
 
