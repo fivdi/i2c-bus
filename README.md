@@ -62,9 +62,9 @@ function rawTempToTemp(rawTemp) {
 This example shows how to access two devices on the same bus; a
 [DS1621](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 temperature sensor and an
-[Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor](http://www.adafruit.com/products/439)
+[Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor](http://www.adafruit.com/products/439).
 
-```
+```js
 var i2c = require('i2c-bus'),
   i2c1 = i2c.openSync(1);
 
