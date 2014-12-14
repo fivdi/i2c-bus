@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.5.0 / Dec 15 2014
+===================
 
   * added block operations
 
