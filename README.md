@@ -42,10 +42,10 @@ function rawTempToTemp(rawTemp) {
   while (i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
   }
 
-  // Start conversion
+  // Start temperature conversion
   i2c1.writeByteSync(DS1621_ADDR, CMD_START_CONVERT);
 
-  // Wait for conversion to complete
+  // Wait for temperature conversion to complete
   while ((i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
   }
 

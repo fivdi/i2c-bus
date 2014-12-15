@@ -1,4 +1,4 @@
 - most method names are too long/complex and could be improved
 - test with two buses
-- async ds1621.js example isn't waiting long enough for 1st conversion
+
 
