@@ -105,7 +105,7 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Class Bus
 
-  * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclose-cb)
+  * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclosecb)
   * [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
   * [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
   * [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
