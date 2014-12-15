@@ -36,21 +36,21 @@ function rawTempToTemp(rawTemp) {
   var rawTemp;
 
   // Enter one shot mode (this is a non volatile setting)
-  i2c1.writeByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
+  i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
 
   // Wait while non volatile memory busy
-  while (i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
+  while (i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
   }
 
   // Start temperature conversion
-  i2c1.writeByteSync(DS1621_ADDR, CMD_START_CONVERT);
+  i2c1.sendByteSync(DS1621_ADDR, CMD_START_CONVERT);
 
   // Wait for temperature conversion to complete
-  while ((i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
+  while ((i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
   }
 
   // Display temperature
-  rawTemp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
+  rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
   console.log('temp: ' + rawTempToTemp(rawTemp));
 
   i2c1.closeSync();
@@ -76,15 +76,14 @@ var TSL2561_ADDR = 0x39,
   TSL2561_REG_ID = 0x0a;
 
 (function () {
-  var ds1621TempHigh = i2c1.readWordDataSync(DS1621_ADDR, DS1621_CMD_ACCESS_TH),
-    tsl2561Id = i2c1.readByteDataSync(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID);
+  var ds1621TempHigh = i2c1.readWordSync(DS1621_ADDR, DS1621_CMD_ACCESS_TH),
+    tsl2561Id = i2c1.readByteSync(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID);
 
   console.log("ds1621TempHigh: " + ds1621TempHigh);
   console.log("tsl2561Id: " + tsl2561Id);
 
   i2c1.closeSync();
-}());
-```
+}());```
 
 ## API
 
@@ -107,22 +106,22 @@ use try/catch to handle exceptions or allow them to bubble up.
 
   * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclose-cb)
   * [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
-  * [bus.readByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cb)
-  * [bus.readByteSync(addr)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr)
-  * [bus.readByteData(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbytedataaddr-cmd-cb)
-  * [bus.readByteDataSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytedatasyncaddr-cmd)
-  * [bus.readWordData(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadworddataaddr-cmd-cb)
-  * [bus.readWordDataSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadworddatasyncaddr-cmd)
-  * [bus.readI2cBlockData(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadi2cblockdataaddr-cmd-length-buffer-cb)
-  * [bus.readI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblockdatasyncaddr-cmd-length-buffer)
-  * [bus.writeByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-val-cb)
-  * [bus.writeByteSync(addr, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-val)
-  * [bus.writeByteData(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebytedataaddr-cmd-val-cb)
-  * [bus.writeByteDataSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytedatasyncaddr-cmd-val)
-  * [bus.writeWordData(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswriteworddataaddr-cmd-val-cb)
-  * [bus.writeWordDataSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswriteworddatasyncaddr-cmd-val)
-  * [bus.writeI2cBlockData(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockdataaddr-cmd-length-buffer-cb)
-  * [bus.writeI2cBlockDataSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblockdatasyncaddr-cmd-length-buffer)
+  * [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
+  * [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
+  * [bus.readByte(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb)
+  * [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
+  * [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
+  * [bus.readWordSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadwordsyncaddr-cmd)
+  * [bus.readBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadbytesaddr-cmd-length-buffer-cb)
+  * [bus.readBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadbytessyncaddr-cmd-length-buffer)
+  * [bus.sendByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-val-cb)
+  * [bus.sendByteSync(addr, val)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-val)
+  * [bus.writeByte(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-val-cb)
+  * [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
+  * [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
+  * [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
+  * [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
+  * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -144,44 +143,44 @@ Asynchronous close. The callback gets one argument (err).
 
 Synchronous close.
 
-### bus.readByte(addr, cb)
+### bus.receiveByte(addr, cb)
 - addr - I2C device address
 - cb - completion callback
 
 Asynchronous receive byte. The callback gets two arguments (err, byte).
 
-### bus.readByteSync(addr)
+### bus.receiveByteSync(addr)
 - addr - I2C device address
 
 Synchronous receive byte. Returns the byte received.
 
-### bus.readByteData(addr, cmd, cb)
+### bus.readByte(addr, cmd, cb)
 - addr - I2C device address
 - cmd - command code
 - cb - completion callback
 
 Asynchronous read byte. The callback gets two arguments (err, byte).
 
-### bus.readByteDataSync(addr, cmd)
+### bus.readByteSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
 Synchronous read byte. Returns the byte read.
 
-### bus.readWordData(addr, cmd, cb)
+### bus.readWord(addr, cmd, cb)
 - addr - I2C device address
 - cmd - command code
 - cb - completion callback
 
 Asynchronous read word. The callback gets two arguments (err, word).
 
-### bus.readWordDataSync(addr, cmd)
+### bus.readWordSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
 Synchronous read word. Returns the word read.
 
-### bus.readI2cBlockData(addr, cmd, length, buffer, cb)
+### bus.readBytes(addr, cmd, length, buffer, cb)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
@@ -190,7 +189,7 @@ Synchronous read word. Returns the word read.
 
 Asynchronous I2C read write. The callback gets three arguments (err, bytesRead, buffer).
 
-### bus.readI2cBlockDataSync(addr, cmd, length, buffer)
+### bus.readBytesSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
@@ -198,20 +197,20 @@ Asynchronous I2C read write. The callback gets three arguments (err, bytesRead, 
 
 Synchronous I2C block read. Returns the number of bytes read.
 
-### bus.writeByte(addr, val, cb)
+### bus.sendByte(addr, val, cb)
 - addr - I2C device address
 - val - data byte
 - cb - completion callback
 
 Asynchronous send byte. The callback gets one argument (err).
 
-### bus.writeByteSync(addr, val)
+### bus.sendByteSync(addr, val)
 - addr - I2C device address
 - val - data byte
 
 Synchronous send byte.
 
-### bus.writeByteData(addr, cmd, val, cb)
+### bus.writeByte(addr, cmd, val, cb)
 - addr - I2C device address
 - cmd - command code
 - val - data byte
@@ -219,14 +218,14 @@ Synchronous send byte.
 
 Asynchronous write byte. The callback gets one argument (err).
 
-### bus.writeByteDataSync(addr, cmd, val)
+### bus.writeByteSync(addr, cmd, val)
 - addr - I2C device address
 - cmd - command code
 - val - data byte
 
 Synchronous write byte.
 
-### bus.writeWordData(addr, cmd, val, cb)
+### bus.writeWord(addr, cmd, val, cb)
 - addr - I2C device address
 - cmd - command code
 - val - data word
@@ -234,14 +233,14 @@ Synchronous write byte.
 
 Asynchronous write word. The callback gets one argument (err).
 
-### bus.writeWordDataSync(addr, cmd, val)
+### bus.writeWordSync(addr, cmd, val)
 - addr - I2C device address
 - cmd - command code
 - val - data word
 
 Synchronous write word.
 
-### bus.writeI2cBlockData(addr, cmd, length, buffer, cb)
+### bus.writeBytes(addr, cmd, length, buffer, cb)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
@@ -250,7 +249,7 @@ Synchronous write word.
 
 Asynchronous I2C block write. The callback gets one argument (err).
 
-### bus.writeI2cBlockDataSync(addr, cmd, length, buffer)
+### bus.writeBytesSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)

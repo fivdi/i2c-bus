@@ -14,8 +14,8 @@ var DS1621_ADDR = 0x48,
 
   for (i = 1; i <= 1000000; i += 1) {
     tlbuf = new Buffer(1000000);
-    bytesRead = i2c1.readI2cBlockDataSync(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf);
-    assert.strictEqual(bytesRead, 2, 'expected readI2cBlockDataSync to read 2 bytes');
+    bytesRead = i2c1.readBytesSync(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf);
+    assert.strictEqual(bytesRead, 2, 'expected readBytesSync to read 2 bytes');
     if (i % 1000 === 0) {
       console.log(i);
     }

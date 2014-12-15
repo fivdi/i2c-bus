@@ -1,0 +1,7 @@
+#!/bin/sh
+node async
+node async-performance
+node sync
+node sync-many-instances
+node sync-performance
+

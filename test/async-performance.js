@@ -3,7 +3,7 @@
 var assert = require('assert'),
   i2c = require('../'),
   i2c1,
-  iterations = 10000,
+  iterations = 5000,
   time,
   readsPerSec;
 
@@ -11,7 +11,7 @@ var DS1621_ADDR = 0x48,
   CMD_ACCESS_TL = 0xa2;
 
 function performanceTest(testRuns) {
-  i2c1.readWordData(DS1621_ADDR, CMD_ACCESS_TL, function (err, word) {
+  i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function (err, word) {
     testRuns -= 1;
     if (testRuns === 0) {
       time = process.hrtime(time);

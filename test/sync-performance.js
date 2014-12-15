@@ -8,12 +8,12 @@ var DS1621_ADDR = 0x48,
   CMD_ACCESS_TL = 0xa2;
 
 (function () {
-  var time, reads, readsPerSec, tl;
+  var time, reads, readsPerSec;
 
   time = process.hrtime();
 
-  for (reads = 1; reads <= 10000; reads += 1) {
-    tl = i2c1.readWordDataSync(DS1621_ADDR, CMD_ACCESS_TL);
+  for (reads = 1; reads <= 5000; reads += 1) {
+    i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
   }
 
   time = process.hrtime(time);

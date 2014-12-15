@@ -22,21 +22,21 @@ function rawTempToTemp(rawTemp) {
   var rawTemp;
 
   // Enter one shot mode (this is a non volatile setting)
-  i2c1.writeByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
+  i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
 
   // Wait while non volatile memory busy
-  while (i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
+  while (i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
   }
 
   // Start temperature conversion
-  i2c1.writeByteSync(DS1621_ADDR, CMD_START_CONVERT);
+  i2c1.sendByteSync(DS1621_ADDR, CMD_START_CONVERT);
 
   // Wait for temperature conversion to complete
-  while ((i2c1.readByteDataSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
+  while ((i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
   }
 
   // Display temperature
-  rawTemp = i2c1.readWordDataSync(DS1621_ADDR, CMD_READ_TEMP);
+  rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
   console.log('temp: ' + rawTempToTemp(rawTemp));
 
   i2c1.closeSync();

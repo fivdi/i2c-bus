@@ -14,14 +14,14 @@
     "sources": [
       "./src/i2c.cc",
       "./src/readbyte.cc",
-      "./src/readbytedata.cc",
-      "./src/readworddata.cc",
-      "./src/readi2cblockdata.cc",
+      "./src/readword.cc",
+      "./src/readbytes.cc",
+      "./src/receivebyte.cc",
+      "./src/sendbyte.cc",
       "./src/setaddr.cc",
       "./src/writebyte.cc",
-      "./src/writebytedata.cc",
-      "./src/writeworddata.cc",
-      "./src/writei2cblockdata.cc"
+      "./src/writeword.cc",
+      "./src/writebytes.cc"
     ]
   }]
 }

@@ -5,6 +5,7 @@ Unpublished
   * added brute force memory leak tests
   * added performance tests
   * added an example using two devices on the same bus
+  * renamed all public api methods
 
 0.5.0 / Dec 14 2014
 ===================

@@ -20,7 +20,7 @@ function rawTempToTemp(rawTemp) {
 
 // Wait while non volatile memory busy
 function whenMemoryReady(cb) {
-  i2c1.readByteData(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+  i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
     if (err) return cb(err);
     if (config & 0x10) return whenMemoryReady(cb);
     cb(null);
@@ -29,7 +29,7 @@ function whenMemoryReady(cb) {
 
 // Enter one shot mode (this is a non volatile setting)
 function startOneShotMode(cb) {
-  i2c1.writeByteData(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, function (err) {
+  i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, function (err) {
     if (err) return cb(err);
     whenMemoryReady(cb);
   });
@@ -37,7 +37,7 @@ function startOneShotMode(cb) {
 
 // Wait for temperature conversion to complete
 function whenConversionComplete(cb) {
-  i2c1.readByteData(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+  i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
     if (err) return cb(err);
     if ((config & 0x80) === 0) return whenConversionComplete(cb);
     cb(null);
@@ -46,14 +46,14 @@ function whenConversionComplete(cb) {
 
 // Start temperature conversion
 function startConversion(cb) {
-  i2c1.writeByte(DS1621_ADDR, CMD_START_CONVERT, function (err) {
+  i2c1.sendByte(DS1621_ADDR, CMD_START_CONVERT, function (err) {
     if (err) return cb(err);
     whenConversionComplete(cb);
   });
 }
 
 function readTemperature(cb) {
-  i2c1.readWordData(DS1621_ADDR, CMD_READ_TEMP, function (err, rawTemp) {
+  i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, function (err, rawTemp) {
     if (err) return cb(err);
     cb(null, rawTempToTemp(rawTemp));
   });
