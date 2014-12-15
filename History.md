@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.6.0 / Dec 15 2014
+===================
 
   * use __u8, __u16, and __s32 where appropriate
   * added brute force memory leak tests
