@@ -83,7 +83,8 @@ var TSL2561_ADDR = 0x39,
   console.log("tsl2561Id: " + tsl2561Id);
 
   i2c1.closeSync();
-}());```
+}());
+```
 
 ## API
 
