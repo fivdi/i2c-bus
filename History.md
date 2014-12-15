@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * faster compile
+
 0.6.0 / Dec 15 2014
 ===================
 

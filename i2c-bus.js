@@ -42,9 +42,7 @@ function setAddr(bus, addr, cb) {
       cb(null);
     });
   } else {
-    setImmediate(function () {
-      cb(null);
-    });
+    setImmediate(cb);
   }
 }
 

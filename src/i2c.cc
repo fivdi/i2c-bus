@@ -59,3 +59,18 @@ void InitAll(v8::Handle<v8::Object> exports) {
 
 NODE_MODULE(i2c, InitAll)
 
+// Hack to speed up compilation.
+// Originally all the cc files included below were listed in the sources
+// section of binding.gyp. Including them here rather than compiling them
+// individually, which is what happens if they're listed in binding.gyp,
+// reduces the build time from 36s to 15s on a BBB.
+#include "./readbyte.cc"
+#include "./readword.cc"
+#include "./readbytes.cc"
+#include "./receivebyte.cc"
+#include "./sendbyte.cc"
+#include "./setaddr.cc"
+#include "./writebyte.cc"
+#include "./writeword.cc"
+#include "./writebytes.cc"
+

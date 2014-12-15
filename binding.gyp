@@ -12,16 +12,7 @@
       "<!(node -e \"require('nan')\")"
     ],
     "sources": [
-      "./src/i2c.cc",
-      "./src/readbyte.cc",
-      "./src/readword.cc",
-      "./src/readbytes.cc",
-      "./src/receivebyte.cc",
-      "./src/sendbyte.cc",
-      "./src/setaddr.cc",
-      "./src/writebyte.cc",
-      "./src/writeword.cc",
-      "./src/writebytes.cc"
+      "./src/i2c.cc"
     ]
   }]
 }
