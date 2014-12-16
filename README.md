@@ -125,13 +125,13 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
 
 ### open(busNumber, cb)
-- busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
+- busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
 - cb - completion callback
 
 Asynchronous open. Returns a new Bus object. The callback gets one argument (err).
 
 ### openSync(busNumber)
-- busNumber - the number of the I2C bus to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
+- busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
 
 Synchronous open. Returns a new Bus object.
 
@@ -188,7 +188,8 @@ Synchronous read word. Returns the word read.
 - buffer - the buffer that the data will be written to (must conatin at least length bytes)
 - cb - completion callback
 
-Asynchronous I2C read write. The callback gets three arguments (err, bytesRead, buffer).
+Asynchronous I2C block read. The callback gets three arguments (err, bytesRead, buffer).
+bytesRead is the number of bytes read.
 
 ### bus.readBytesSync(addr, cmd, length, buffer)
 - addr - I2C device address
