@@ -78,11 +78,33 @@ function readWriteBytes() {
   assert.strictEqual(newtl.readUInt16LE(0), 22, 'expected readBytesSync to read value 22');
 }
 
+// Test i2cWriteSync & i2cReadSync
+// Change value of tl to 25 and verify that tl has been changed
+function i2cPlainReadWrite() {
+  var cmdSetTL = new Buffer([CMD_ACCESS_TL, 25, 0]),
+    cmdGetTL = new Buffer([CMD_ACCESS_TL]),
+    tl = new Buffer(2),
+    bytesWritten,
+    bytesRead;
+
+  bytesWritten = i2c1.i2cWriteSync(DS1621_ADDR, cmdSetTL.length, cmdSetTL);
+  assert.strictEqual(bytesWritten, 3, 'expected i2cWriteSync to write 3 bytes');
+  waitForWrite();
+
+  bytesWritten = i2c1.i2cWriteSync(DS1621_ADDR, cmdGetTL.length, cmdGetTL);
+  assert.strictEqual(bytesWritten, 1, 'expected i2cWriteSync to write 1 byte');
+
+  bytesRead = i2c1.i2cReadSync(DS1621_ADDR, 2, tl);
+  assert.strictEqual(bytesRead, 2, 'expected i2cReadSync to read 2 bytes');
+  assert.strictEqual(tl.readUInt16LE(0), 25, 'expected i2cReadSync to read value 25');
+}
+
 (function () {
   readWriteByte();
   sendReceiveByte();
   readWriteWord();
   readWriteBytes();
+  i2cPlainReadWrite();
 
   i2c1.closeSync();
 

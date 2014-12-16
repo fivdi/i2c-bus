@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * faster compile
+  * added plain i2cRead, i2cReadSync, i2cWrite, and i2cWriteSync methods
 
 0.6.0 / Dec 15 2014
 ===================

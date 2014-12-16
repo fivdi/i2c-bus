@@ -185,3 +185,33 @@ Bus.prototype.writeBytesSync = function (addr, cmd, length, buffer) {
   return this;
 };
 
+Bus.prototype.i2cRead = function (addr, length, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    fs.read(this.fd, buffer, 0, length, 0, cb);
+  }.bind(this));
+};
+
+Bus.prototype.i2cReadSync = function (addr, length, buffer) {
+  setAddrSync(this, addr);
+  return fs.readSync(this.fd, buffer, 0, length, 0);
+};
+
+Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    fs.write(this.fd, buffer, 0, length, 0, cb);
+  }.bind(this));
+};
+
+Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
+  setAddrSync(this, addr);
+  return fs.writeSync(this.fd, buffer, 0, length, 0);
+};
+

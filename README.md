@@ -123,6 +123,10 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
   * [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
   * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
+  * bus.i2cRead(addr, length, buffer, cb) 
+  * bus.i2cReadSync(addr, length, buffer)
+  * bus.i2cWrite(addr, length, buffer, cb)
+  * bus.i2cWriteSync(addr, length, buffer)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -258,4 +262,35 @@ Asynchronous I2C block write. The callback gets one argument (err).
 - buffer - the buffer containing the data to write (must conatin at least length bytes)
 
 Synchronous I2C block write.
+
+
+### bus.i2cRead(addr, length, buffer, cb)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to read
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- cb - completion callback
+
+Asynchronous plain I2C read. The callback gets three argument (err, bytesRead, buffer).
+
+### bus.i2cReadSync(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to read
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+
+Synchronous plain I2C read. Returns the number of bytes read.
+
+### bus.i2cWrite(addr, length, buffer, cb)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to write
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- cb - completion callback
+
+Asynchronous plain I2C write. The callback gets three argument (err, bytesWritten, buffer).
+
+### bus.i2cWriteSync(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to write
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+
+Synchronous plain I2C write. Returns the number of bytes written.
 

@@ -25,21 +25,49 @@ function finished() {
   });
 }
 
+function i2cPlainReadWrite() {
+  // Test i2cWrite & i2cRead
+  // Change value of tl to 25 and verify that tl has been changed
+  var cmdSetTL = new Buffer([CMD_ACCESS_TL, 25, 0]),
+    cmdGetTL = new Buffer([CMD_ACCESS_TL]),
+    tl = new Buffer(2);
+
+  i2c1.i2cWrite(DS1621_ADDR, cmdSetTL.length, cmdSetTL, function (err, bytesWritten, buffer) {
+    assert(!err, 'can\'t i2cWrite cmdSetTL');
+    assert.strictEqual(bytesWritten, cmdSetTL.length, 'expected i2cWrite to write 3 bytes');
+
+    waitForWrite(function () {
+      i2c1.i2cWrite(DS1621_ADDR, cmdGetTL.length, cmdGetTL, function (err, bytesWritten, buffer) {
+        assert(!err, 'can\'t i2cWrite cmdGetTL');
+        assert.strictEqual(bytesWritten, cmdGetTL.length, 'expected i2cWrite to write 1 byte');
+
+        i2c1.i2cRead(DS1621_ADDR, 2, tl, function (err, bytesRead, buffer) {
+          assert(!err, 'can\'t i2cRead tl');
+          assert.strictEqual(bytesRead, 2, 'expected i2cRead to read 2 bytes');
+          assert.strictEqual(tl.readUInt16LE(0), 25, 'expected i2cRead to read value 25');
+
+          finished();
+        });
+      });
+    });
+  });
+}
+
 function readWriteBytes() {
   // Test writeBytes & readBytes
-  // Change value of tl to 25 and verify that tl has been changed
+  // Change value of tl to 22 and verify that tl has been changed
   var newtl = new Buffer(10);
 
-  newtl.writeUInt16LE(25, 0);
+  newtl.writeUInt16LE(22, 0);
   i2c1.writeBytes(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err) {
     assert(!err, 'can\'t writeBytes to tl');
     waitForWrite(function () {
       i2c1.readBytes(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesRead, buffer) {
         assert(!err, 'can\'t readBytes from tl');
         assert.strictEqual(bytesRead, 2, 'expected readBytes to read 2 bytes');
-        assert.strictEqual(buffer.readUInt16LE(0), 25, 'expected readBytes to read value 25');
+        assert.strictEqual(buffer.readUInt16LE(0), 22, 'expected readBytes to read value 22');
 
-        finished();
+        i2cPlainReadWrite();
       });
     });
   });
