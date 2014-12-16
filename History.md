@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * added a plain i2c performance test
+
 0.7.0 / Dec 16 2014
 ===================
 
