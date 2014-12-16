@@ -107,6 +107,10 @@ use try/catch to handle exceptions or allow them to bubble up.
 
   * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclosecb)
   * [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
+  * [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
+  * [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
+  * [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
+  * [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
   * [bus.readByte(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb)
   * [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
   * [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
@@ -123,10 +127,6 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
   * [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
   * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
-  * [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
-  * [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
-  * [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
-  * [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -147,6 +147,38 @@ Asynchronous close. The callback gets one argument (err).
 ### bus.closeSync()
 
 Synchronous close.
+
+### bus.i2cRead(addr, length, buffer, cb)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to read
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- cb - completion callback
+
+Asynchronous plain I2C read. The callback gets three argument (err, bytesRead, buffer).
+bytesRead is the number of bytes read.
+
+### bus.i2cReadSync(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to read
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+
+Synchronous plain I2C read. Returns the number of bytes read.
+
+### bus.i2cWrite(addr, length, buffer, cb)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to write
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- cb - completion callback
+
+Asynchronous plain I2C write. The callback gets three argument (err, bytesWritten, buffer).
+bytesWritten is the number of bytes written.
+
+### bus.i2cWriteSync(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to write
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+
+Synchronous plain I2C write. Returns the number of bytes written.
 
 ### bus.readByte(addr, cmd, cb)
 - addr - I2C device address
@@ -269,36 +301,4 @@ The callback gets one argument (err).
 
 Synchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
-
-### bus.i2cRead(addr, length, buffer, cb)
-- addr - I2C device address
-- length - an integer specifying the number of bytes to read
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
-- cb - completion callback
-
-Asynchronous plain I2C read. The callback gets three argument (err, bytesRead, buffer).
-bytesRead is the number of bytes read.
-
-### bus.i2cReadSync(addr, length, buffer)
-- addr - I2C device address
-- length - an integer specifying the number of bytes to read
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
-
-Synchronous plain I2C read. Returns the number of bytes read.
-
-### bus.i2cWrite(addr, length, buffer, cb)
-- addr - I2C device address
-- length - an integer specifying the number of bytes to write
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
-- cb - completion callback
-
-Asynchronous plain I2C write. The callback gets three argument (err, bytesWritten, buffer).
-bytesWritten is the number of bytes written.
-
-### bus.i2cWriteSync(addr, length, buffer)
-- addr - I2C device address
-- length - an integer specifying the number of bytes to write
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
-
-Synchronous plain I2C write. Returns the number of bytes written.
 

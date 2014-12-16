@@ -2,4 +2,8 @@
 - can the callback for writeBytes get three arguments for consistency with
   other similar callbacks (err, bytesWritten, buffer)?
 - should writeBytesSync return the the number of bytes read rather than this?
+- rename readBytes to i2cReadBytes?
+- rename readBytesSync to i2cReadBytesSync?
+- rename writeBytes to i2cWriteBytes?
+- rename writeBytesSync to i2cWriteBytesSync?
 
