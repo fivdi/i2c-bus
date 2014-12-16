@@ -123,10 +123,10 @@ use try/catch to handle exceptions or allow them to bubble up.
   * [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
   * [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
   * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
-  * bus.i2cRead(addr, length, buffer, cb) 
-  * bus.i2cReadSync(addr, length, buffer)
-  * bus.i2cWrite(addr, length, buffer, cb)
-  * bus.i2cWriteSync(addr, length, buffer)
+  * [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
+  * [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
+  * [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
+  * [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
