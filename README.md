@@ -148,11 +148,12 @@ Asynchronous close. The callback gets one argument (err).
 
 Synchronous close.
 
-### bus.receiveByte(addr, cb)
+### bus.readByte(addr, cmd, cb)
 - addr - I2C device address
+- cmd - command code
 - cb - completion callback
 
-Asynchronous SMBus receive byte. The callback gets two arguments (err, byte).
+Asynchronous SMBus read byte. The callback gets two arguments (err, byte).
 
 ### bus.readByteSync(addr, cmd)
 - addr - I2C device address
@@ -195,17 +196,16 @@ Synchronous I2C block read (not defined by the SMBus specification). Reads a
 block of bytes from a device, from a designated register that is specified by
 cmd. Returns the number of bytes read.
 
+### bus.receiveByte(addr, cb)
+- addr - I2C device address
+- cb - completion callback
+
+Asynchronous SMBus receive byte. The callback gets two arguments (err, byte).
+
 ### bus.receiveByteSync(addr)
 - addr - I2C device address
 
 Synchronous SMBus receive byte. Returns the byte received.
-
-### bus.readByte(addr, cmd, cb)
-- addr - I2C device address
-- cmd - command code
-- cb - completion callback
-
-Asynchronous SMBus read byte. The callback gets two arguments (err, byte).
 
 ### bus.sendByte(addr, val, cb)
 - addr - I2C device address
