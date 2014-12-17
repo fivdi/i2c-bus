@@ -8,8 +8,7 @@ I2C serial computer bus access on Linux boards such as the Raspberry Pi or Beagl
 
 ## Example 1 - Determine Temperature
 
-Determine the temperature with a [DS1621](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-temperature sensor.
+Determine the temperature with a [DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html).
 
 <img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
 
@@ -60,8 +59,8 @@ function rawTempToTemp(rawTemp) {
 ## Example 2 - One Bus Two Devices
 
 This example shows how to access two devices on the same bus; a
-[DS1621](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-temperature sensor and an
+[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+and an
 [Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor](http://www.adafruit.com/products/439).
 
 ```js
