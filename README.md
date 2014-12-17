@@ -1,6 +1,6 @@
 ## i2c-bus
 
-I2C serial computer bus access
+I2C serial computer bus access on Linux boards such as the Raspberry Pi or BeagleBone.
 
 ## Installation
 
