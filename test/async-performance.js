@@ -1,7 +1,6 @@
 'use strict';
 
-var assert = require('assert'),
-  i2c = require('../'),
+var i2c = require('../'),
   i2c1,
   iterations = 5000,
   time,
@@ -11,7 +10,7 @@ var DS1621_ADDR = 0x48,
   CMD_ACCESS_TL = 0xa2;
 
 function performanceTest(testRuns) {
-  i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function (err, word) {
+  i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function () {
     testRuns -= 1;
     if (testRuns === 0) {
       time = process.hrtime(time);
@@ -24,7 +23,7 @@ function performanceTest(testRuns) {
   });
 }
 
-i2c1 = i2c.open(1, function (err) {
+i2c1 = i2c.open(1, function () {
   time = process.hrtime();
   performanceTest(iterations);
 });

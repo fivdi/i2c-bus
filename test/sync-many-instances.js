@@ -1,7 +1,6 @@
 'use strict';
 
-var assert = require('assert'),
-  i2c = require('../');
+var i2c = require('../');
 
 var DS1621_ADDR = 0x48,
   CMD_ACCESS_TL = 0xa2;

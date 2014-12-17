@@ -35,16 +35,19 @@ function i2cPlainReadWrite() {
   i2c1.i2cWrite(DS1621_ADDR, cmdSetTL.length, cmdSetTL, function (err, bytesWritten, buffer) {
     assert(!err, 'can\'t i2cWrite cmdSetTL');
     assert.strictEqual(bytesWritten, cmdSetTL.length, 'expected i2cWrite to write 3 bytes');
+    assert.strictEqual(cmdSetTL, buffer, 'expected i2cWrite to to return buffer cmdSetTL');
 
     waitForWrite(function () {
       i2c1.i2cWrite(DS1621_ADDR, cmdGetTL.length, cmdGetTL, function (err, bytesWritten, buffer) {
         assert(!err, 'can\'t i2cWrite cmdGetTL');
         assert.strictEqual(bytesWritten, cmdGetTL.length, 'expected i2cWrite to write 1 byte');
+        assert.strictEqual(cmdGetTL, buffer, 'expected i2cWrite to to return buffer cmdGetTL');
 
         i2c1.i2cRead(DS1621_ADDR, 2, tl, function (err, bytesRead, buffer) {
           assert(!err, 'can\'t i2cRead tl');
           assert.strictEqual(bytesRead, 2, 'expected i2cRead to read 2 bytes');
           assert.strictEqual(tl.readUInt16LE(0), 25, 'expected i2cRead to read value 25');
+          assert.strictEqual(tl, buffer, 'expected i2cRead to to return buffer tl');
 
           finished();
         });
@@ -66,6 +69,7 @@ function readWriteBytes() {
         assert(!err, 'can\'t readBytes from tl');
         assert.strictEqual(bytesRead, 2, 'expected readBytes to read 2 bytes');
         assert.strictEqual(buffer.readUInt16LE(0), 22, 'expected readBytes to read value 22');
+        assert.strictEqual(newtl, buffer, 'expected i2cRead to to return buffer newtl');
 
         i2cPlainReadWrite();
       });
@@ -80,6 +84,7 @@ function readWriteWord() {
     var newtl;
 
     assert(!err, 'can\'t readWord from tl');
+    assert(typeof oldtl === 'number' && oldtl <= 0xffff, 'expeted readWord to read a word');
 
     newtl = (oldtl === 24 ? 23 : 24);
     i2c1.writeWord(DS1621_ADDR, CMD_ACCESS_TL, newtl, function (err) {
@@ -87,6 +92,7 @@ function readWriteWord() {
 
       i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function (err, newtl2) {
         assert(!err, 'can\'t read new word from tl');
+        assert(typeof newtl2 === 'number' && newtl2 <= 0xffff, 'expeted readWord to read a word');
         assert.strictEqual(newtl, newtl2, 'unexpected');
 
         readWriteBytes();
@@ -102,6 +108,7 @@ function sendReceiveByte(epectedConfig) {
     assert(!err, 'can\'t send byte to config');
     i2c1.receiveByte(DS1621_ADDR, function (err, config) {
       assert(!err, 'can\'t receive byte from config');
+      assert(typeof config === 'number' && config <= 0xff, 'expeted receiveByte to receive a byte');
       assert.strictEqual(config, epectedConfig, '1st and 2nd config read differ');
 
       readWriteWord();
@@ -117,6 +124,7 @@ function readWriteByte() {
     waitForWrite(function () {
       i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
         assert(!err, 'can\'t read byte from config');
+        assert(typeof config === 'number' && config <= 0xff, 'expeted readByte to read a byte');
         assert.strictEqual(config & 0x1, 0, 'continuous mode not eneterd');
 
         sendReceiveByte(config);

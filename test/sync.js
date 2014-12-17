@@ -24,6 +24,7 @@ function readWriteByte() {
   assert.strictEqual(self, i2c1, 'expected writeByteSync to return this');
   waitForWrite();
   config = i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
+  assert(typeof config === 'number' && config <= 0xff, 'expeted readByteSync to read a byte');
   assert.strictEqual(config & 0x1, 1, 'one shot mode not eneterd');
 }
 
@@ -36,10 +37,13 @@ function sendReceiveByte() {
     config;
 
   expectedConfig = i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
+  assert(typeof expectedConfig === 'number' && expectedConfig <= 0xff, 'expeted readByteSync to read a byte');
 
   self = i2c1.sendByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
   assert.strictEqual(self, i2c1, 'expected sendByteSync to return this');
+
   config = i2c1.receiveByteSync(DS1621_ADDR);
+  assert(typeof config === 'number' && config <= 0xff, 'expeted receiveByteSync to receive a byte');
   assert.strictEqual(config, expectedConfig, '1st and 2nd config read differ');
 }
 
@@ -52,11 +56,16 @@ function readWriteWord() {
     newtl;
 
   oldtl = i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
+  assert(typeof oldtl === 'number' && oldtl <= 0xffff, 'expeted readWordSync to read a word');
+
   tl = (oldtl === 24 ? 23 : 24);
+
   self = i2c1.writeWordSync(DS1621_ADDR, CMD_ACCESS_TL, tl);
   assert.strictEqual(self, i2c1, 'expected writeWordSync to return this');
   waitForWrite();
+
   newtl = i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
+  assert(typeof newtl === 'number' && newtl <= 0xffff, 'expeted readWordSync to read a word');
   assert.strictEqual(tl, newtl, 'unexpected tl');
 }
 

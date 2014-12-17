@@ -1,7 +1,6 @@
 'use strict';
 
-var assert = require('assert'),
-  i2c = require('../'),
+var i2c = require('../'),
   i2c1 = i2c.openSync(1);
 
 var DS1621_ADDR = 0x48,
