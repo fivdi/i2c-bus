@@ -14,6 +14,30 @@ function Bus(busNumber) {
   this.currAddr = -1;
 }
 
+function I2cFuncs(i2cFuncBits) {
+  if (!(this instanceof I2cFuncs)) {
+    return new I2cFuncs(i2cFuncBits);
+  }
+
+  this.i2c = i2cFuncBits & i2c.I2C_FUNC_I2C;
+  this.tenBitAddr = i2cFuncBits & i2c.I2C_FUNC_10BIT_ADDR;
+  this.protocolMangling = i2cFuncBits & i2c.I2C_FUNC_PROTOCOL_MANGLING;
+  this.smbusPec = i2cFuncBits & i2c.I2C_FUNC_SMBUS_PEC;
+  this.smbusBlockProcCall = i2cFuncBits & i2c.I2C_FUNC_SMBUS_BLOCK_PROC_CALL;
+  this.smbusQuick = i2cFuncBits & i2c.I2C_FUNC_SMBUS_QUICK;
+  this.smbusReceive = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE;
+  this.smbusSend = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE;
+  this.smbusReadByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE_DATA;
+  this.smbusWriteByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE_DATA;
+  this.smbusReadWord = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_WORD_DATA;
+  this.smbusWriteWord = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_WORD_DATA;
+  this.smbusProcCall = i2cFuncBits & i2c.I2C_FUNC_SMBUS_PROC_CALL;
+  this.smbusReadBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BLOCK_DATA;
+  this.smbusWriteBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BLOCK_DATA;
+  this.smbusReadI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_I2C_BLOCK;
+  this.smbusWriteI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_I2C_BLOCK;
+}
+
 module.exports.open = function (busNumber, cb) {
   var bus = new Bus(busNumber);
   fs.open(DEVICE_PREFIX + busNumber, 'r+', function (err, fd) {
@@ -59,6 +83,28 @@ Bus.prototype.close = function (cb) {
 
 Bus.prototype.closeSync = function () {
   fs.closeSync(this.fd);
+};
+
+Bus.prototype.i2cFuncs = function (cb) {
+  if (!this.funcs) {
+    i2c.i2cFuncsAsync(this.fd, function (err, i2cFuncBits) {
+      if (err) {
+        return cb(err);
+      }
+      this.funcs = Object.freeze(new I2cFuncs(i2cFuncBits));
+      cb(null, this.funcs);
+    });
+  } else {
+    setImmediate(cb, null, this.funcs);
+  }
+};
+
+Bus.prototype.i2cFuncsSync = function () {
+  if (!this.funcs) {
+    this.funcs = Object.freeze(new I2cFuncs(i2c.i2cFuncsSync(this.fd)));
+  }
+
+  return this.funcs;
 };
 
 Bus.prototype.readByte = function (addr, cmd, cb) {

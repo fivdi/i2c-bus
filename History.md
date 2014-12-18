@@ -2,6 +2,8 @@ Unpublished
 ===========
 
   * added a plain i2c performance test
+  * added i2cFuncs and i2cFuncsSync
+  * added an example that does the same as command 'i2cdetect -F 1'
 
 0.7.0 / Dec 16 2014
 ===================

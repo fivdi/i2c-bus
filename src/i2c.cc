@@ -1,5 +1,6 @@
 #include <node.h>
 #include <nan.h>
+#include "./i2cfuncs.h"
 #include "./readbyte.h"
 #include "./readword.h"
 #include "./readbytes.h"
@@ -9,8 +10,14 @@
 #include "./writebyte.h"
 #include "./writeword.h"
 #include "./writebytes.h"
+#include "./i2c-dev.h"
 
 void InitAll(v8::Handle<v8::Object> exports) {
+  exports->Set(NanNew<v8::String>("i2cFuncsAsync"),
+    NanNew<v8::FunctionTemplate>(I2cFuncsAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("i2cFuncsSync"),
+    NanNew<v8::FunctionTemplate>(I2cFuncsSync)->GetFunction());
+
   exports->Set(NanNew<v8::String>("readByteAsync"),
     NanNew<v8::FunctionTemplate>(ReadByteAsync)->GetFunction());
   exports->Set(NanNew<v8::String>("readByteSync"),
@@ -55,6 +62,41 @@ void InitAll(v8::Handle<v8::Object> exports) {
     NanNew<v8::FunctionTemplate>(WriteBytesAsync)->GetFunction());
   exports->Set(NanNew<v8::String>("writeBytesSync"),
     NanNew<v8::FunctionTemplate>(WriteBytesSync)->GetFunction());
+
+  exports->Set(NanNew<v8::String>("I2C_FUNC_I2C"),
+    NanNew<v8::Integer>(I2C_FUNC_I2C));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_10BIT_ADDR"),
+    NanNew<v8::Integer>(I2C_FUNC_10BIT_ADDR));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_PROTOCOL_MANGLING"),
+    NanNew<v8::Integer>(I2C_FUNC_PROTOCOL_MANGLING));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_PEC"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_PEC));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_BLOCK_PROC_CALL"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_BLOCK_PROC_CALL));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_QUICK"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_QUICK));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BYTE"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BYTE_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_WORD_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_WORD_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_WORD_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_WORD_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_PROC_CALL"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_PROC_CALL));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BLOCK_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BLOCK_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BLOCK_DATA"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BLOCK_DATA));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_I2C_BLOCK"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_I2C_BLOCK));
+  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_I2C_BLOCK"),
+    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_I2C_BLOCK));
 }
 
 NODE_MODULE(i2c, InitAll)
@@ -64,6 +106,7 @@ NODE_MODULE(i2c, InitAll)
 // section of binding.gyp. Including them here rather than compiling them
 // individually, which is what happens if they're listed in binding.gyp,
 // reduces the build time from 36s to 15s on a BBB.
+#include "./i2cfuncs.cc"
 #include "./readbyte.cc"
 #include "./readword.cc"
 #include "./readbytes.cc"

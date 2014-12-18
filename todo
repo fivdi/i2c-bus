@@ -2,13 +2,15 @@
 - can the callback for writeBytes get three arguments for consistency with
   other similar callbacks (err, bytesWritten, buffer)?
 - should writeBytesSync return the the number of bytes read rather than this?
-- rename readBytes to i2cReadBytes?
-- rename readBytesSync to i2cReadBytesSync?
-- rename writeBytes to i2cWriteBytes?
-- rename writeBytesSync to i2cWriteBytesSync?
+- rename readBytes to i2cReadBytes, or readI2cBytes, or readI2cBlock?
+- rename readBytesSync to i2cReadBytesSync, or ...?
+- rename writeBytes to i2cWriteBytes, or ...?
+- rename writeBytesSync to i2cWriteBytesSync, or ...?
 - implement smbus quick command
 - implement smbus block read (do the renaming mentioned above first)
 - implement smbus block write (do the renaming mentioned above first)
 - implement smbus process call
 - implement smbus block process call
+- use open rather than openSync in ds1621-async
+- rename smbusReadbyte to smbusReadByte
 

@@ -1,6 +1,7 @@
 ## i2c-bus
 
-I2C serial computer bus access on Linux boards such as the Raspberry Pi or BeagleBone.
+I2C serial computer bus access on Linux boards such as the Raspberry Pi or
+BeagleBone. All methods have asynchronous and synchronous forms.
 
 ## Installation
 
@@ -99,33 +100,62 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Methods
 
-  * [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
-  * [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
+- [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
+- [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
 
 ### Class Bus
 
-  * [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclosecb)
-  * [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
-  * [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
-  * [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
-  * [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
-  * [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
-  * [bus.readByte(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb)
-  * [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
-  * [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
-  * [bus.readWordSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadwordsyncaddr-cmd)
-  * [bus.readBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadbytesaddr-cmd-length-buffer-cb)
-  * [bus.readBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadbytessyncaddr-cmd-length-buffer)
-  * [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
-  * [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
-  * [bus.sendByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-val-cb)
-  * [bus.sendByteSync(addr, val)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-val)
-  * [bus.writeByte(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-val-cb)
-  * [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
-  * [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
-  * [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
-  * [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
-  * [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
+- Free resources
+  - [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclosecb)
+  - [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
+
+- Information
+  - [bus.i2cFuncs(cb)]()
+  - [bus.i2cFuncsSync()]()
+
+- Plain I2C
+  - [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
+  - [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
+  - [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
+  - [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
+
+- SMBus
+  - [bus.readByte(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb)
+  - [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
+  - [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
+  - [bus.readWordSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadwordsyncaddr-cmd)
+  - [bus.readBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadbytesaddr-cmd-length-buffer-cb)
+  - [bus.readBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadbytessyncaddr-cmd-length-buffer)
+  - [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
+  - [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
+  - [bus.sendByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-val-cb)
+  - [bus.sendByteSync(addr, val)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-val)
+  - [bus.writeByte(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-val-cb)
+  - [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
+  - [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
+  - [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
+  - [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
+  - [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
+
+### Class I2cFuncs
+
+- [funcs.i2c]()
+- [funcs.tenBitAddr]()
+- [funcs.protocolMangling]()
+- [funcs.smbusPec]()
+- [funcs.smbusBlockProcCall]()
+- [funcs.smbusQuick]()
+- [funcs.smbusReceive]()
+- [funcs.smbusSend]()
+- [funcs.smbusReadbyte]()
+- [funcs.smbusWriteByte]()
+- [funcs.smbusReadWord]()
+- [funcs.smbusWriteWord]()
+- [funcs.smbusProcCall]()
+- [funcs.smbusReadBlock]()
+- [funcs.smbusWriteBlock]()
+- [funcs.smbusReadI2cBlock]()
+- [funcs.smbusWriteI2cBlock]()
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -146,6 +176,22 @@ Asynchronous close. The callback gets one argument (err).
 ### bus.closeSync()
 
 Synchronous close.
+
+### bus.i2cFuncs(cb)
+- cb - completion callback
+
+Determine functionality of the bus/adapter asynchronously. The callback gets
+two argument (err, funcs). funcs is a frozen
+[I2cFuncs]()
+object describing the functionality available.
+See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
+
+### bus.i2cFuncs()
+
+Determine functionality of the bus/adapter Synchronously. Returns a frozen
+[I2cFuncs]()
+object describing the functionality available.
+See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address
@@ -300,4 +346,75 @@ The callback gets one argument (err).
 
 Synchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
+
+### funcs.i2c - boolean
+Specifies whether or not the adapter handles plain I2C-level commands (Pure
+SMBus adapters typically can not do these,
+I2C_FUNC_I2C).
+
+### funcs.tenBitAddr - boolean
+Specifies whether or not the adapter handles the 10-bit address extensions
+(I2C_FUNC_10BIT_ADDR).
+
+### funcs.protocolMangling - boolean
+Specifies whether or not the adapter knows about the I2C_M_IGNORE_NAK,
+I2C_M_REV_DIR_ADDR and I2C_M_NO_RD_ACK flags (which modify the I2C protocol!
+I2C_FUNC_PROTOCOL_MANGLING).
+
+### funcs.smbusPec - boolean
+Specifies whether or not the adapter handles packet error checking
+(I2C_FUNC_SMBUS_PEC).
+
+### funcs.smbusBlockProcCall - boolean
+Specifies whether or not the adapter handles the SMBus block process call
+command
+(I2C_FUNC_SMBUS_BLOCK_PROC_CALL).
+
+### funcs.smbusQuick - boolean
+Specifies whether or not the adapter handles the SMBus quick command
+(I2C_FUNC_SMBUS_QUICK).
+
+### funcs.smbusReceive - boolean
+Specifies whether or not the adapter handles the SMBus receive byte command
+(I2C_FUNC_SMBUS_READ_BYTE).
+
+### funcs.smbusSend - boolean
+Specifies whether or not the adapter handles the SMBus send byte command
+(I2C_FUNC_SMBUS_WRITE_BYTE).
+
+### funcs.smbusReadbyte - boolean
+Specifies whether or not the adapter handles the SMBus read byte command
+(I2C_FUNC_SMBUS_READ_BYTE_DATA).
+
+### funcs.smbusWriteByte - boolean
+Specifies whether or not the adapter handles the SMBus write byte command
+(I2C_FUNC_SMBUS_WRITE_BYTE_DATA).
+
+### funcs.smbusReadWord - boolean
+Specifies whether or not the adapter handles the SMBus read word command
+(I2C_FUNC_SMBUS_READ_WORD_DATA).
+
+### funcs.smbusWriteWord - boolean
+Specifies whether or not the adapter handles the SMBus write word command
+(I2C_FUNC_SMBUS_WRITE_WORD_DATA).
+
+### funcs.smbusProcCall - boolean
+Specifies whether or not the adapter handles the SMBus process call command
+(I2C_FUNC_SMBUS_PROC_CALL).
+
+### funcs.smbusReadBlock - boolean
+Specifies whether or not the adapter handles the SMBus read block command
+(I2C_FUNC_SMBUS_READ_BLOCK_DATA).
+
+### funcs.smbusWriteBlock - boolean
+Specifies whether or not the adapter handles the SMBus write block command
+(I2C_FUNC_SMBUS_WRITE_BLOCK_DATA).
+
+### funcs.smbusReadI2cBlock - boolean
+Specifies whether or not the adapter handles the SMBus read I2C block command
+(I2C_FUNC_SMBUS_READ_I2C_BLOCK).
+
+### funcs.smbusWriteI2cBlock - boolean
+Specifies whether or not the adapter handles the SMBus write i2c block command
+(I2C_FUNC_SMBUS_WRITE_I2C_BLOCK).
 
