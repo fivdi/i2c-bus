@@ -110,8 +110,8 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
 
 - Information
-  - [bus.i2cFuncs(cb)]()
-  - [bus.i2cFuncsSync()]()
+  - [bus.i2cFuncs(cb)](https://github.com/fivdi/i2c-bus#busi2cfuncscb)
+  - [bus.i2cFuncsSync()](https://github.com/fivdi/i2c-bus#busi2cfuncs)
 
 - Plain I2C
   - [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
@@ -139,23 +139,23 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Class I2cFuncs
 
-- [funcs.i2c]()
-- [funcs.tenBitAddr]()
-- [funcs.protocolMangling]()
-- [funcs.smbusPec]()
-- [funcs.smbusBlockProcCall]()
-- [funcs.smbusQuick]()
-- [funcs.smbusReceive]()
-- [funcs.smbusSend]()
-- [funcs.smbusReadbyte]()
-- [funcs.smbusWriteByte]()
-- [funcs.smbusReadWord]()
-- [funcs.smbusWriteWord]()
-- [funcs.smbusProcCall]()
-- [funcs.smbusReadBlock]()
-- [funcs.smbusWriteBlock]()
-- [funcs.smbusReadI2cBlock]()
-- [funcs.smbusWriteI2cBlock]()
+- [funcs.i2c](https://github.com/fivdi/i2c-bus#funcsi2c---boolean)
+- [funcs.tenBitAddr](https://github.com/fivdi/i2c-bus#funcstenbitaddr---boolean)
+- [funcs.protocolMangling](https://github.com/fivdi/i2c-bus#funcsprotocolmangling---boolean)
+- [funcs.smbusPec](https://github.com/fivdi/i2c-bus#funcssmbuspec---boolean)
+- [funcs.smbusBlockProcCall](https://github.com/fivdi/i2c-bus#funcssmbusblockproccall---boolean)
+- [funcs.smbusQuick](https://github.com/fivdi/i2c-bus#funcssmbusquick---boolean)
+- [funcs.smbusReceive](https://github.com/fivdi/i2c-bus#funcssmbusreceive---boolean)
+- [funcs.smbusSend](https://github.com/fivdi/i2c-bus#funcssmbussend---boolean)
+- [funcs.smbusReadbyte](https://github.com/fivdi/i2c-bus#funcssmbusreadbyte---boolean)
+- [funcs.smbusWriteByte](https://github.com/fivdi/i2c-bus#funcssmbuswritebyte---boolean)
+- [funcs.smbusReadWord](https://github.com/fivdi/i2c-bus#funcssmbusreadword---boolean)
+- [funcs.smbusWriteWord](https://github.com/fivdi/i2c-bus#funcssmbuswriteword---boolean)
+- [funcs.smbusProcCall](https://github.com/fivdi/i2c-bus#funcssmbusproccall---boolean)
+- [funcs.smbusReadBlock](https://github.com/fivdi/i2c-bus#funcssmbusreadblock---boolean)
+- [funcs.smbusWriteBlock](https://github.com/fivdi/i2c-bus#funcssmbuswriteblock---boolean)
+- [funcs.smbusReadI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbusreadi2cblock---boolean)
+- [funcs.smbusWriteI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbuswritei2cblock---boolean)
 
 ### open(busNumber, cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -182,14 +182,14 @@ Synchronous close.
 
 Determine functionality of the bus/adapter asynchronously. The callback gets
 two argument (err, funcs). funcs is a frozen
-[I2cFuncs]()
+[I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
 ### bus.i2cFuncs()
 
 Determine functionality of the bus/adapter Synchronously. Returns a frozen
-[I2cFuncs]()
+[I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
