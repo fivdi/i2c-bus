@@ -1,7 +1,7 @@
 'use strict';
 
 var i2c = require('../'),
-  i2c1 = i2c.openSync(1);
+  i2c1;
 
 var DS1621_ADDR = 0x48,
   CMD_ACCESS_CONFIG = 0xac,
@@ -59,7 +59,7 @@ function readTemperature(cb) {
   });
 }
 
-(function () {
+i2c1 = i2c.open(1, function () {
   startOneShotMode(function (err) {
     if (err) throw err;
 
@@ -75,5 +75,5 @@ function readTemperature(cb) {
       });
     });
   });
-}());
+});
 

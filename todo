@@ -11,6 +11,5 @@
 - implement smbus block write (do the renaming mentioned above first)
 - implement smbus process call
 - implement smbus block process call
-- use open rather than openSync in ds1621-async
 - rename smbusReadbyte to smbusReadByte
 
