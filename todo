@@ -11,5 +11,4 @@
 - implement smbus block write (do the renaming mentioned above first)
 - implement smbus process call
 - implement smbus block process call
-- rename smbusReadbyte to smbusReadByte
 
