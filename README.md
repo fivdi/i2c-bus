@@ -111,7 +111,7 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 - Information
   - [bus.i2cFuncs(cb)](https://github.com/fivdi/i2c-bus#busi2cfuncscb)
-  - [bus.i2cFuncsSync()](https://github.com/fivdi/i2c-bus#busi2cfuncs)
+  - [bus.i2cFuncsSync()](https://github.com/fivdi/i2c-bus#busi2cfuncssync)
 
 - Plain I2C
   - [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
@@ -186,7 +186,7 @@ two argument (err, funcs). funcs is a frozen
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
-### bus.i2cFuncs()
+### bus.i2cFuncsSync()
 
 Determine functionality of the bus/adapter Synchronously. Returns a frozen
 [I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
