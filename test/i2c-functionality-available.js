@@ -4,8 +4,8 @@ var i2c = require('../'),
   i2c1 = i2c.openSync(1);
 
 (function () {
-  var i2cfuncs = i2c1.i2cFuncsSync();
-  var platform = i2cfuncs.smbusQuick ? 'may have been tested on a pi' : 'may have been tested on a bb';
+  var i2cfuncs = i2c1.i2cFuncsSync(),
+    platform = i2cfuncs.smbusQuick ? 'Raspberry Pi?' : 'BeagleBone?';
 
   i2c1.closeSync();
 
