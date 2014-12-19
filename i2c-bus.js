@@ -25,8 +25,8 @@ function I2cFuncs(i2cFuncBits) {
   this.smbusPec = i2cFuncBits & i2c.I2C_FUNC_SMBUS_PEC;
   this.smbusBlockProcCall = i2cFuncBits & i2c.I2C_FUNC_SMBUS_BLOCK_PROC_CALL;
   this.smbusQuick = i2cFuncBits & i2c.I2C_FUNC_SMBUS_QUICK;
-  this.smbusReceive = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE;
-  this.smbusSend = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE;
+  this.smbusReceiveByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE;
+  this.smbusSendByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE;
   this.smbusReadByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE_DATA;
   this.smbusWriteByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE_DATA;
   this.smbusReadWord = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_WORD_DATA;

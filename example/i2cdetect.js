@@ -22,8 +22,8 @@ i2c1 = i2c.open(1, function (err) {
     console.log('Functionalities implemented by /dev/i2c-1:');
     console.log('I2C                              ' + boolToYesNo(i2cFuncs.i2c));
     console.log('SMBus Quick Command              ' + boolToYesNo(i2cFuncs.smbusQuick));
-    console.log('SMBus Send Byte                  ' + boolToYesNo(i2cFuncs.smbusSend));
-    console.log('SMBus Receive Byte               ' + boolToYesNo(i2cFuncs.smbusReceive));
+    console.log('SMBus Send Byte                  ' + boolToYesNo(i2cFuncs.smbusSendByte));
+    console.log('SMBus Receive Byte               ' + boolToYesNo(i2cFuncs.smbusReceiveByte));
     console.log('SMBus Write Byte                 ' + boolToYesNo(i2cFuncs.smbusWriteByte));
     console.log('SMBus Read Byte                  ' + boolToYesNo(i2cFuncs.smbusReadByte));
     console.log('SMBus Write Word                 ' + boolToYesNo(i2cFuncs.smbusWriteWord));

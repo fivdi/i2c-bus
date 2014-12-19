@@ -145,8 +145,8 @@ use try/catch to handle exceptions or allow them to bubble up.
 - [funcs.smbusPec](https://github.com/fivdi/i2c-bus#funcssmbuspec---boolean)
 - [funcs.smbusBlockProcCall](https://github.com/fivdi/i2c-bus#funcssmbusblockproccall---boolean)
 - [funcs.smbusQuick](https://github.com/fivdi/i2c-bus#funcssmbusquick---boolean)
-- [funcs.smbusReceive](https://github.com/fivdi/i2c-bus#funcssmbusreceive---boolean)
-- [funcs.smbusSend](https://github.com/fivdi/i2c-bus#funcssmbussend---boolean)
+- [funcs.smbusReceiveByte](https://github.com/fivdi/i2c-bus#funcssmbusreceivebyte---boolean)
+- [funcs.smbusSendByte](https://github.com/fivdi/i2c-bus#funcssmbussendbyte---boolean)
 - [funcs.smbusReadByte](https://github.com/fivdi/i2c-bus#funcssmbusreadbyte---boolean)
 - [funcs.smbusWriteByte](https://github.com/fivdi/i2c-bus#funcssmbuswritebyte---boolean)
 - [funcs.smbusReadWord](https://github.com/fivdi/i2c-bus#funcssmbusreadword---boolean)
@@ -374,11 +374,11 @@ command
 Specifies whether or not the adapter handles the SMBus quick command
 (I2C_FUNC_SMBUS_QUICK).
 
-### funcs.smbusReceive - boolean
+### funcs.smbusReceiveByte - boolean
 Specifies whether or not the adapter handles the SMBus receive byte command
 (I2C_FUNC_SMBUS_READ_BYTE).
 
-### funcs.smbusSend - boolean
+### funcs.smbusSendByte - boolean
 Specifies whether or not the adapter handles the SMBus send byte command
 (I2C_FUNC_SMBUS_WRITE_BYTE).
 
