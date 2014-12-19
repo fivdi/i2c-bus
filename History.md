@@ -8,6 +8,7 @@ Unpublished
   * renamed readBytesSync to readI2cBlockSync
   * renamed writeBytes to writeI2cBlock
   * renamed writeBytesSync to writeI2cBlockSync
+  * added an example that scans a bus for devices like 'i2cdetect -y -r 1'
 
 0.7.0 / Dec 16 2014
 ===================
