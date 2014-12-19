@@ -3,13 +3,13 @@
 #include "./i2cfuncs.h"
 #include "./readbyte.h"
 #include "./readword.h"
-#include "./readbytes.h"
+#include "./readi2cblock.h"
 #include "./receivebyte.h"
 #include "./sendbyte.h"
 #include "./setaddr.h"
 #include "./writebyte.h"
 #include "./writeword.h"
-#include "./writebytes.h"
+#include "./writei2cblock.h"
 #include "./i2c-dev.h"
 
 void InitAll(v8::Handle<v8::Object> exports) {
@@ -28,10 +28,10 @@ void InitAll(v8::Handle<v8::Object> exports) {
   exports->Set(NanNew<v8::String>("readWordSync"),
     NanNew<v8::FunctionTemplate>(ReadWordSync)->GetFunction());
 
-  exports->Set(NanNew<v8::String>("readBytesAsync"),
-    NanNew<v8::FunctionTemplate>(ReadBytesAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("readBytesSync"),
-    NanNew<v8::FunctionTemplate>(ReadBytesSync)->GetFunction());
+  exports->Set(NanNew<v8::String>("readI2cBlockAsync"),
+    NanNew<v8::FunctionTemplate>(ReadI2cBlockAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("readI2cBlockSync"),
+    NanNew<v8::FunctionTemplate>(ReadI2cBlockSync)->GetFunction());
 
   exports->Set(NanNew<v8::String>("receiveByteAsync"),
     NanNew<v8::FunctionTemplate>(ReceiveByteAsync)->GetFunction());
@@ -58,10 +58,10 @@ void InitAll(v8::Handle<v8::Object> exports) {
   exports->Set(NanNew<v8::String>("writeWordSync"),
     NanNew<v8::FunctionTemplate>(WriteWordSync)->GetFunction());
 
-  exports->Set(NanNew<v8::String>("writeBytesAsync"),
-    NanNew<v8::FunctionTemplate>(WriteBytesAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeBytesSync"),
-    NanNew<v8::FunctionTemplate>(WriteBytesSync)->GetFunction());
+  exports->Set(NanNew<v8::String>("writeI2cBlockAsync"),
+    NanNew<v8::FunctionTemplate>(WriteI2cBlockAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("writeI2cBlockSync"),
+    NanNew<v8::FunctionTemplate>(WriteI2cBlockSync)->GetFunction());
 
   exports->Set(NanNew<v8::String>("I2C_FUNC_I2C"),
     NanNew<v8::Integer>(I2C_FUNC_I2C));
@@ -109,11 +109,11 @@ NODE_MODULE(i2c, InitAll)
 #include "./i2cfuncs.cc"
 #include "./readbyte.cc"
 #include "./readword.cc"
-#include "./readbytes.cc"
+#include "./readi2cblock.cc"
 #include "./receivebyte.cc"
 #include "./sendbyte.cc"
 #include "./setaddr.cc"
 #include "./writebyte.cc"
 #include "./writeword.cc"
-#include "./writebytes.cc"
+#include "./writei2cblock.cc"
 

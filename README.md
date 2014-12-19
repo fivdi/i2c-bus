@@ -124,8 +124,8 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
   - [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
   - [bus.readWordSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadwordsyncaddr-cmd)
-  - [bus.readBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadbytesaddr-cmd-length-buffer-cb)
-  - [bus.readBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadbytessyncaddr-cmd-length-buffer)
+  - [bus.readI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadi2cblockaddr-cmd-length-buffer-cb)
+  - [bus.readI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblocksyncaddr-cmd-length-buffer)
   - [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
   - [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
   - [bus.sendByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-val-cb)
@@ -134,8 +134,8 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
   - [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
   - [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
-  - [bus.writeBytes(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritebytesaddr-cmd-length-buffer-cb)
-  - [bus.writeBytesSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritebytessyncaddr-cmd-length-buffer)
+  - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockaddr-cmd-length-buffer-cb)
+  - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblocksyncaddr-cmd-length-buffer)
 
 ### Class I2cFuncs
 
@@ -251,7 +251,7 @@ Asynchronous SMBus read word. The callback gets two arguments (err, word).
 
 Synchronous SMBus read word. Returns the word read.
 
-### bus.readBytes(addr, cmd, length, buffer, cb)
+### bus.readI2cBlock(addr, cmd, length, buffer, cb)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
@@ -263,7 +263,7 @@ block of bytes from a device, from a designated register that is specified by
 cmd. The callback gets three arguments (err, bytesRead, buffer). bytesRead is
 the number of bytes read.
 
-### bus.readBytesSync(addr, cmd, length, buffer)
+### bus.readI2cBlockSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
@@ -327,7 +327,7 @@ Asynchronous SMBus write word. The callback gets one argument (err).
 
 Synchronous SMBus write word.
 
-### bus.writeBytes(addr, cmd, length, buffer, cb)
+### bus.writeI2cBlock(addr, cmd, length, buffer, cb)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
@@ -338,7 +338,7 @@ Asynchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
 The callback gets one argument (err).
 
-### bus.writeBytesSync(addr, cmd, length, buffer)
+### bus.writeI2cBlockSync(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)

@@ -2,29 +2,29 @@
 #include <node.h>
 #include <nan.h>
 #include "./i2c-dev.h"
-#include "./readbytes.h"
+#include "./readi2cblock.h"
 
-static __s32 ReadBytes(int fd, __u8 cmd, __u8 length, __u8 *data) {
-  return i2c_smbus_read_i2c_block_data(fd, cmd, length, data);
+static __s32 ReadI2cBlock(int fd, __u8 cmd, __u8 length, __u8 *block) {
+  return i2c_smbus_read_i2c_block_data(fd, cmd, length, block);
 }
 
-class ReadBytesWorker : public NanAsyncWorker {
+class ReadI2cBlockWorker : public NanAsyncWorker {
 public:
-  ReadBytesWorker(
+  ReadI2cBlockWorker(
     NanCallback *callback,
     int fd,
     __u8 cmd,
     __u32 length,
-    __u8* data,
+    __u8* block,
     v8::Local<v8::Object> &bufferHandle
-  ) : NanAsyncWorker(callback), fd(fd), cmd(cmd), length(length), data(data), bytesRead(0) {
+  ) : NanAsyncWorker(callback), fd(fd), cmd(cmd), length(length), block(block), bytesRead(0) {
     SaveToPersistent("buffer", bufferHandle);
   }
 
-  ~ReadBytesWorker() {}
+  ~ReadI2cBlockWorker() {}
 
   void Execute() {
-    bytesRead = ReadBytes(fd, cmd, length, data);
+    bytesRead = ReadI2cBlock(fd, cmd, length, block);
     if (bytesRead == -1) {
       SetErrorMessage(strerror(errno));
     }
@@ -48,11 +48,11 @@ private:
   int fd;
   __u8 cmd;
   __u32 length;
-  __u8* data;
+  __u8* block;
   __s32 bytesRead;
 };
 
-NAN_METHOD(ReadBytesAsync) {
+NAN_METHOD(ReadI2cBlockAsync) {
   NanScope();
 
   if (args.Length() < 5 ||
@@ -61,7 +61,7 @@ NAN_METHOD(ReadBytesAsync) {
       !args[2]->IsUint32() ||
       !args[3]->IsObject() ||
       !args[4]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to readBytes"
+    return NanThrowError("incorrect arguments passed to readI2cBlock"
       "(int fd, int cmd, int length, Buffer buffer, function cb)");
   }
 
@@ -75,16 +75,16 @@ NAN_METHOD(ReadBytesAsync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (length > I2C_SMBUS_I2C_BLOCK_MAX) {
-    return NanThrowError("readBytes can't read blocks "
+    return NanThrowError("readI2cBlock can't read blocks "
       "with more than 32 characters");
   }
 
   if (length > bufferLength) {
-    return NanThrowError("buffer passed to readBytes "
-      "contains less data than expected");
+    return NanThrowError("buffer passed to readI2cBlock "
+      "contains less than 'length' bytes");
   }
 
-  NanAsyncQueueWorker(new ReadBytesWorker(
+  NanAsyncQueueWorker(new ReadI2cBlockWorker(
     callback,
     fd,
     cmd,
@@ -95,7 +95,7 @@ NAN_METHOD(ReadBytesAsync) {
   NanReturnUndefined();
 }
 
-NAN_METHOD(ReadBytesSync) {
+NAN_METHOD(ReadI2cBlockSync) {
   NanScope();
 
   if (args.Length() < 4 ||
@@ -103,7 +103,7 @@ NAN_METHOD(ReadBytesSync) {
       !args[1]->IsInt32() ||
       !args[2]->IsUint32() ||
       !args[3]->IsObject()) {
-    return NanThrowError("incorrect arguments passed to readBytesSync"
+    return NanThrowError("incorrect arguments passed to readI2cBlockSync"
       "(int fd, int cmd, int length, Buffer buffer)");
   }
 
@@ -116,16 +116,16 @@ NAN_METHOD(ReadBytesSync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (length > I2C_SMBUS_I2C_BLOCK_MAX) {
-    return NanThrowError("readBytesSync can't read blocks "
+    return NanThrowError("readI2cBlockSync can't read blocks "
       "with more than 32 bytes");
   }
 
   if (length > bufferLength) {
-    return NanThrowError("buffer passed to readBytesSync "
-      "contains less data than expected");
+    return NanThrowError("buffer passed to readI2cBlockSync "
+      "contains less than 'length' bytes");
   }
 
-  __s32 bytesRead = ReadBytes(fd, cmd, length, bufferData);
+  __s32 bytesRead = ReadI2cBlock(fd, cmd, length, bufferData);
   if (bytesRead == -1) {
     return NanThrowError(strerror(errno), errno);
   }

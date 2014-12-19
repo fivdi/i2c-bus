@@ -10,9 +10,9 @@ var DS1621_ADDR = 0x48,
 function leakTest(testRuns) {
   var tlbuf = new Buffer(1000000);
 
-  i2c1.readBytes(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf, function (err, bytesRead, buffer) {
+  i2c1.readI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf, function (err, bytesRead, buffer) {
     assert(!err, 'can\'t read block data from tl');
-    assert.strictEqual(bytesRead, 2, 'expected readBytes to read 2 bytes');
+    assert.strictEqual(bytesRead, 2, 'expected readI2cBlock to read 2 bytes');
 
     if (testRuns % 1000 === 0) {
       console.log(testRuns);
