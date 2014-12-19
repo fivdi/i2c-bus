@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.8.0 / Dec 19 2014
+===================
 
   * added a plain i2c performance test
   * added i2cFuncs and i2cFuncsSync
