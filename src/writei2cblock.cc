@@ -33,11 +33,15 @@ public:
   void HandleOKCallback() {
     NanScope();
 
+    v8::Local<v8::Object> bufferHandle = GetFromPersistent("buffer");
+
     v8::Local<v8::Value> argv[] = {
-      NanNull()
+      NanNull(),
+      NanNew<v8::Integer>(length),
+      bufferHandle
     };
 
-    callback->Call(1, argv);
+    callback->Call(3, argv);
   }
 
 private:

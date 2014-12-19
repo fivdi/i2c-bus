@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * callback for writeI2cBlock now gets 3 arguments (err, bytesWritten, buffer)
+
 0.8.0 / Dec 19 2014
 ===================
 

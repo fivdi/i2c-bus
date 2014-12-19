@@ -336,7 +336,8 @@ Synchronous SMBus write word.
 
 Asynchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
-The callback gets one argument (err).
+The callback gets three argument (err, bytesWritten, buffer). bytesWritten is
+the number of bytes written.
 
 ### bus.writeI2cBlockSync(addr, cmd, length, buffer)
 - addr - I2C device address

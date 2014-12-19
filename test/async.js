@@ -62,14 +62,17 @@ function readWriteI2cBlock() {
   var newtl = new Buffer(10);
 
   newtl.writeUInt16LE(22, 0);
-  i2c1.writeI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err) {
+  i2c1.writeI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesWritten, buffer) {
     assert(!err, 'can\'t writeI2cBlock to tl');
+    assert.strictEqual(bytesWritten, 2, 'expected writeI2cBlock to write 2 bytes');
+    assert.strictEqual(newtl, buffer, 'expected writeI2cBlock to to return buffer newtl');
+
     waitForWrite(function () {
       i2c1.readI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesRead, buffer) {
         assert(!err, 'can\'t readI2cBlock from tl');
         assert.strictEqual(bytesRead, 2, 'expected readI2cBlock to read 2 bytes');
         assert.strictEqual(buffer.readUInt16LE(0), 22, 'expected readI2cBlock to read value 22');
-        assert.strictEqual(newtl, buffer, 'expected i2cRead to to return buffer newtl');
+        assert.strictEqual(newtl, buffer, 'expected readI2cBlock to to return buffer newtl');
 
         i2cPlainReadWrite();
       });
@@ -106,6 +109,7 @@ function sendReceiveByte(epectedConfig) {
   // Read config and verify that it's epectedConfig
   i2c1.sendByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err) {
     assert(!err, 'can\'t send byte to config');
+
     i2c1.receiveByte(DS1621_ADDR, function (err, config) {
       assert(!err, 'can\'t receive byte from config');
       assert(typeof config === 'number' && config <= 0xff, 'expeted receiveByte to receive a byte');
@@ -121,6 +125,7 @@ function readWriteByte() {
   // Enter continuous mode and verify that continuous mode has been entered
   i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x0, function (err) {
     assert(!err, 'can\'t write byte to config');
+
     waitForWrite(function () {
       i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
         assert(!err, 'can\'t read byte from config');
