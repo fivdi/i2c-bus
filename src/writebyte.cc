@@ -41,7 +41,7 @@ NAN_METHOD(WriteByteAsync) {
   NanScope();
 
   if (args.Length() < 4 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsInt32() || !args[3]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to writeByte(int fd, int cmd, int val, function cb)");
+    return NanThrowError("incorrect arguments passed to writeByte(int fd, int cmd, int byte, function cb)");
   }
 
   int fd = args[0]->Int32Value();
@@ -57,7 +57,7 @@ NAN_METHOD(WriteByteSync) {
   NanScope();
 
   if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to writeByteSync(int fd, int cmd, int val)");
+    return NanThrowError("incorrect arguments passed to writeByteSync(int fd, int cmd, int byte)");
   }
 
   int fd = args[0]->Int32Value();

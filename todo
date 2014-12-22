@@ -4,7 +4,4 @@
 - implement smbus block write
 - implement smbus process call
 - implement smbus block process call
-- in sendByte[Sync] rename val parameter to byte
-- in writeByte[Sync] rename val parameter to byte
-- in writeWord[Sync] rename val parameter to word
 

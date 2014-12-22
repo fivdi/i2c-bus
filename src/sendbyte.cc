@@ -40,7 +40,7 @@ NAN_METHOD(SendByteAsync) {
   NanScope();
 
   if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to sendByte(int fd, int val, function cb)");
+    return NanThrowError("incorrect arguments passed to sendByte(int fd, int byte, function cb)");
   }
 
   int fd = args[0]->Int32Value();
@@ -55,7 +55,7 @@ NAN_METHOD(SendByteSync) {
   NanScope();
 
   if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to sendByteSync(int fd, int val)");
+    return NanThrowError("incorrect arguments passed to sendByteSync(int fd, int byte)");
   }
 
   int fd = args[0]->Int32Value();

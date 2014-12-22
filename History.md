@@ -3,6 +3,8 @@ Unpublished
 
   * callback for writeI2cBlock now gets 3 arguments (err, bytesWritten, buffer)
   * added writeQuick and writeQuickSync
+  * added example i2cquickscan to scan a bus for devices like 'i2cdetect -y -q 1'
+  * fixed i2cscan example on the pi
 
 0.8.0 / Dec 19 2014
 ===================

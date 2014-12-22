@@ -128,12 +128,12 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.readI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblocksyncaddr-cmd-length-buffer)
   - [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
   - [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
-  - [bus.sendByte(addr, val, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-val-cb)
-  - [bus.sendByteSync(addr, val)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-val)
-  - [bus.writeByte(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-val-cb)
-  - [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
-  - [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
-  - [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
+  - [bus.sendByte(addr, byte, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-byte-cb)
+  - [bus.sendByteSync(addr, byte)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-byte)
+  - [bus.writeByte(addr, cmd, byte, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-byte-cb)
+  - [bus.writeByteSync(addr, cmd, byte)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-byte)
+  - [bus.writeWord(addr, cmd, word, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-word-cb)
+  - [bus.writeWordSync(addr, cmd, word)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-word)
   - [bus.writeQuick(addr, bit, cb)](https://github.com/fivdi/i2c-bus#buswritequickaddr-bit-cb)
   - [bus.writeQuickSync(addr, bit)](https://github.com/fivdi/i2c-bus#buswritequicksyncaddr-bit)
   - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockaddr-cmd-length-buffer-cb)
@@ -286,46 +286,46 @@ Asynchronous SMBus receive byte. The callback gets two arguments (err, byte).
 
 Synchronous SMBus receive byte. Returns the byte received.
 
-### bus.sendByte(addr, val, cb)
+### bus.sendByte(addr, byte, cb)
 - addr - I2C device address
-- val - data byte
+- byte - data byte
 - cb - completion callback
 
 Asynchronous SMBus send byte. The callback gets one argument (err).
 
-### bus.sendByteSync(addr, val)
+### bus.sendByteSync(addr, byte)
 - addr - I2C device address
-- val - data byte
+- byte - data byte
 
 Synchronous SMBus send byte.
 
-### bus.writeByte(addr, cmd, val, cb)
+### bus.writeByte(addr, cmd, byte, cb)
 - addr - I2C device address
 - cmd - command code
-- val - data byte
+- byte - data byte
 - cb - completion callback
 
 Asynchronous SMBus write byte. The callback gets one argument (err).
 
-### bus.writeByteSync(addr, cmd, val)
+### bus.writeByteSync(addr, cmd, byte)
 - addr - I2C device address
 - cmd - command code
-- val - data byte
+- byte - data byte
 
 Synchronous SMBus write byte.
 
-### bus.writeWord(addr, cmd, val, cb)
+### bus.writeWord(addr, cmd, word, cb)
 - addr - I2C device address
 - cmd - command code
-- val - data word
+- word - data word
 - cb - completion callback
 
 Asynchronous SMBus write word. The callback gets one argument (err).
 
-### bus.writeWordSync(addr, cmd, val)
+### bus.writeWordSync(addr, cmd, word)
 - addr - I2C device address
 - cmd - command code
-- val - data word
+- word - data word
 
 Synchronous SMBus write word.
 
