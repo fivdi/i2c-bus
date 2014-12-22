@@ -24,7 +24,7 @@ function scan(first, last) {
         i2c1.receiveByteSync(addr);
         fs.writeSync(0, ' ' + addr.toString(16)); // device found, print addr
       } catch (e) {
-        if (e.message === 'Remote I/O error') {
+        if (e.message === 'Remote I/O error' || e.message == 'Input/output error') {
           fs.writeSync(0, ' --');
         } else if (e.message === 'Device or resource busy') {
           fs.writeSync(0, ' UU');
