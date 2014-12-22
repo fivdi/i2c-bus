@@ -54,7 +54,7 @@ NAN_METHOD(WriteQuickAsync) {
 NAN_METHOD(WriteQuickSync) {
   NanScope();
 
-  if (args.Length() < 3 || !args[0]->IsInt32() || !args[2]->IsInt32()) {
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[2]->IsInt32()) {
     return NanThrowError("incorrect arguments passed to writeQuickSync(int fd, int bit)");
   }
 
