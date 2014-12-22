@@ -134,6 +134,8 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.writeByteSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-val)
   - [bus.writeWord(addr, cmd, val, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-val-cb)
   - [bus.writeWordSync(addr, cmd, val)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-val)
+  - [bus.writeQuick(addr, bit, cb)](https://github.com/fivdi/i2c-bus#buswritequickaddr-bit-cb)
+  - [bus.writeQuickSync(addr, bit)](https://github.com/fivdi/i2c-bus#buswritequicksyncaddr-bit)
   - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockaddr-cmd-length-buffer-cb)
   - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblocksyncaddr-cmd-length-buffer)
 
@@ -326,6 +328,20 @@ Asynchronous SMBus write word. The callback gets one argument (err).
 - val - data word
 
 Synchronous SMBus write word.
+
+### bus.writeQuick(addr, bit, cb)
+- addr - I2C device address
+- bit - bit to write (0 or 1)
+- cb - completion callback
+
+Asynchronous SMBus quick command. Writes a single bit to the device.
+The callback gets one argument (err).
+
+### bus.writeQuickSync(addr, bit)
+- addr - I2C device address
+- bit - bit to write (0 or 1)
+
+Synchronous SMBus quick command. Writes a single bit to the device.
 
 ### bus.writeI2cBlock(addr, cmd, length, buffer, cb)
 - addr - I2C device address

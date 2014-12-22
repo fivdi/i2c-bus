@@ -26,6 +26,6 @@ var DS1621_ADDR = 0x48,
 
   i2c1.closeSync();
 
-  console.log('ok - sync-plain-i2c-performance - ' + opsPerSec + ' operations per second');
+  console.log('ok - sync-plain-i2c-performance - ' + opsPerSec + ' (x 2) operations per second');
 }());
 

@@ -10,6 +10,7 @@
 #include "./writebyte.h"
 #include "./writeword.h"
 #include "./writei2cblock.h"
+#include "./writequick.h"
 #include "./i2c-dev.h"
 
 void InitAll(v8::Handle<v8::Object> exports) {
@@ -62,6 +63,11 @@ void InitAll(v8::Handle<v8::Object> exports) {
     NanNew<v8::FunctionTemplate>(WriteI2cBlockAsync)->GetFunction());
   exports->Set(NanNew<v8::String>("writeI2cBlockSync"),
     NanNew<v8::FunctionTemplate>(WriteI2cBlockSync)->GetFunction());
+
+  exports->Set(NanNew<v8::String>("writeQuickAsync"),
+    NanNew<v8::FunctionTemplate>(WriteQuickAsync)->GetFunction());
+  exports->Set(NanNew<v8::String>("writeQuickSync"),
+    NanNew<v8::FunctionTemplate>(WriteQuickSync)->GetFunction());
 
   exports->Set(NanNew<v8::String>("I2C_FUNC_I2C"),
     NanNew<v8::Integer>(I2C_FUNC_I2C));
@@ -116,4 +122,5 @@ NODE_MODULE(i2c, InitAll)
 #include "./writebyte.cc"
 #include "./writeword.cc"
 #include "./writei2cblock.cc"
+#include "./writequick.cc"
 

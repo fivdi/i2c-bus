@@ -215,6 +215,22 @@ Bus.prototype.writeWordSync = function (addr, cmd, val) {
   return this;
 };
 
+Bus.prototype.writeQuick = function (addr, bit, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.writeQuickAsync(this.fd, bit, cb);
+  }.bind(this));
+};
+
+Bus.prototype.writeQuickSync = function (addr, bit) {
+  setAddrSync(this, addr);
+  i2c.writeQuickSync(this.fd, bit);
+  return this;
+};
+
 Bus.prototype.writeI2cBlock = function (addr, cmd, length, buffer, cb) {
   setAddr(this, addr, function (err) {
     if (err) {

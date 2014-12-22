@@ -1,8 +1,10 @@
 - test with two buses
 - should writeI2cBlockSync return the the number of bytes read rather than this?
-- implement smbus quick command
 - implement smbus block read
 - implement smbus block write
 - implement smbus process call
 - implement smbus block process call
+- in sendByte[Sync] rename val parameter to byte
+- in writeByte[Sync] rename val parameter to byte
+- in writeWord[Sync] rename val parameter to word
 
