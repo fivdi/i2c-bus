@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.9.0 / Dec 22 2014
+===================
 
   * callback for writeI2cBlock now gets 3 arguments (err, bytesWritten, buffer)
   * added writeQuick and writeQuickSync
