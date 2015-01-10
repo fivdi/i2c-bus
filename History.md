@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * added async example
+
 0.9.0 / Dec 22 2014
 ===================
 
