@@ -8,7 +8,7 @@ var DS1621_ADDR = 0x48,
   CMD_READ_TEMP = 0xaa,
   CMD_START_CONVERT = 0xee;
 
-function rawTempToTemp(rawTemp) {
+function toCelsius(rawTemp) {
   var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
   if ((halfDegrees & 0x100) === 0) {
@@ -37,7 +37,7 @@ function rawTempToTemp(rawTemp) {
 
   // Display temperature
   rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
-  console.log('temp: ' + rawTempToTemp(rawTemp));
+  console.log('temp: ' + toCelsius(rawTemp));
 
   i2c1.closeSync();
 }());
