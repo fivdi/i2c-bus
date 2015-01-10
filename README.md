@@ -7,9 +7,11 @@ BeagleBone. All methods have asynchronous and synchronous forms.
 
     $ npm install i2c-bus
 
-## Example 1 - Determine Temperature
+## Example 1 - Determine Temperature Synchronously
 
-Determine the temperature with a [DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html).
+Determine the temperature with a
+[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+Synchronously.
 
 <img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
 
@@ -57,7 +59,16 @@ function toCelsius(rawTemp) {
 }());
 ```
 
-## Example 2 - One Bus Two Devices
+## Example 2 - Determine Temperature Asynchronously
+
+Determine the temperature with a
+[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+Asynchronously.
+
+```js
+```
+
+## Example 3 - One Bus Two Devices
 
 This example shows how to access two devices on the same bus; a
 [DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
