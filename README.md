@@ -1,5 +1,7 @@
 ## i2c-bus
 
+**i2c-bus is io.js and Node.js compatable**
+
 I2C serial computer bus access on Linux boards such as the Raspberry Pi or
 BeagleBone. All methods have asynchronous and synchronous forms.
 
