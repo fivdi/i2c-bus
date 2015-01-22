@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * added async example
+  * strerror replaced with strerror_r
 
 0.9.0 / Dec 22 2014
 ===================

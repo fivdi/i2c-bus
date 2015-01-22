@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./writequick.h"
+#include "./util.h"
 
 static __s32 WriteQuick(int fd, __u8 bit) {
   return i2c_smbus_write_quick(fd, bit);
@@ -17,7 +18,8 @@ public:
   void Execute() {
     __s32 ret = WriteQuick(fd, bit);
     if (ret == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -63,7 +65,8 @@ NAN_METHOD(WriteQuickSync) {
 
   __s32 ret = WriteQuick(fd, bit);
   if (ret == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnUndefined();

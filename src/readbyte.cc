@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./readbyte.h"
+#include "./util.h"
 
 static __s32 ReadByte(int fd, __u8 cmd) {
   return i2c_smbus_read_byte_data(fd, cmd);
@@ -17,7 +18,8 @@ public:
   void Execute() {
     byte = ReadByte(fd, cmd);
     if (byte == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -65,7 +67,8 @@ NAN_METHOD(ReadByteSync) {
 
   __s32 byte = ReadByte(fd, cmd);
   if (byte == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnValue(NanNew<v8::Integer>(byte));

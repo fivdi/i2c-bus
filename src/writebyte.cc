@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./writebyte.h"
+#include "./util.h"
 
 static __s32 WriteByte(int fd, __u8 cmd, __u8 byte) {
   return i2c_smbus_write_byte_data(fd, cmd, byte);
@@ -17,7 +18,8 @@ public:
   void Execute() {
     __s32 ret = WriteByte(fd, cmd, byte);
     if (ret == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -66,7 +68,8 @@ NAN_METHOD(WriteByteSync) {
 
   __s32 ret = WriteByte(fd, cmd, byte);
   if (ret == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnUndefined();

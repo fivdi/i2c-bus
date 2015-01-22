@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./i2cfuncs.h"
+#include "./util.h"
 
 static __s32 I2cFuncs(int fd, unsigned long *i2cfuncs) {
   return ioctl(fd, I2C_FUNCS, i2cfuncs);
@@ -17,7 +18,8 @@ public:
   void Execute() {
     __s32 ret = I2cFuncs(fd, &i2cfuncs);
     if (ret == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -63,7 +65,8 @@ NAN_METHOD(I2cFuncsSync) {
   unsigned long i2cfuncs;
   __s32 ret = I2cFuncs(fd, &i2cfuncs);
   if (ret == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnValue(NanNew<v8::Integer>(i2cfuncs));

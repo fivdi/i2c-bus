@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./writei2cblock.h"
+#include "./util.h"
 
 static __s32 WriteI2cBlock(int fd, __u8 cmd, __u8 length, const __u8 *block) {
   return i2c_smbus_write_i2c_block_data(fd, cmd, length, block);
@@ -26,7 +27,8 @@ public:
   void Execute() {
     __s32 ret = WriteI2cBlock(fd, cmd, length, block);
     if (ret == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -126,7 +128,8 @@ NAN_METHOD(WriteI2cBlockSync) {
 
   __s32 ret = WriteI2cBlock(fd, cmd, length, bufferData);
   if (ret == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnUndefined();

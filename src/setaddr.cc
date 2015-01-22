@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./setaddr.h"
+#include "./util.h"
 
 static int SetAddr(int fd, int addr) {
   return ioctl(fd, I2C_SLAVE, addr);
@@ -16,7 +17,8 @@ public:
 
   void Execute() {
     if (SetAddr(fd, addr) == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -61,7 +63,8 @@ NAN_METHOD(SetAddrSync) {
   int addr = args[1]->Int32Value();
 
   if (SetAddr(fd, addr) != 0) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnUndefined();

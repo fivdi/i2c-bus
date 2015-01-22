@@ -3,6 +3,7 @@
 #include <nan.h>
 #include "./i2c-dev.h"
 #include "./readi2cblock.h"
+#include "./util.h"
 
 static __s32 ReadI2cBlock(int fd, __u8 cmd, __u8 length, __u8 *block) {
   return i2c_smbus_read_i2c_block_data(fd, cmd, length, block);
@@ -26,7 +27,8 @@ public:
   void Execute() {
     bytesRead = ReadI2cBlock(fd, cmd, length, block);
     if (bytesRead == -1) {
-      SetErrorMessage(strerror(errno));
+      char buf[ERRBUFSZ];
+      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
     }
   }
 
@@ -127,7 +129,8 @@ NAN_METHOD(ReadI2cBlockSync) {
 
   __s32 bytesRead = ReadI2cBlock(fd, cmd, length, bufferData);
   if (bytesRead == -1) {
-    return NanThrowError(strerror(errno), errno);
+    char buf[ERRBUFSZ];
+    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
   NanReturnValue(NanNew<v8::Integer>(bytesRead));
