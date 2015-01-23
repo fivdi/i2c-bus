@@ -3,11 +3,19 @@
 **i2c-bus is io.js and Node.js compatable**
 
 I2C serial computer bus access on Linux boards such as the Raspberry Pi or
-BeagleBone. All methods have asynchronous and synchronous forms.
+BeagleBone Black. All methods have asynchronous and synchronous forms.
 
 ## Installation
 
     $ npm install i2c-bus
+
+## Temperature Sensor Circuits
+
+**DS1621 temperature sensor connected to a Raspberry Pi**
+<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_pi.png">
+
+**DS1621 temperature sensor connected to a BeagleBone Black**
+<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
 
 ## Example 1 - Determine Temperature Synchronously
 
@@ -15,7 +23,6 @@ Determine the temperature with a
 [DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 Synchronously.
 
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
 
 ```js
 var i2c = require('i2c-bus'),
