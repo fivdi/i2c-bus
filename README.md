@@ -12,10 +12,10 @@ BeagleBone Black. All methods have asynchronous and synchronous forms.
 ## Temperature Sensor Circuits
 
 **DS1621 temperature sensor connected to a Raspberry Pi**
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_pi.png">
+<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-pi.png">
 
 **DS1621 temperature sensor connected to a BeagleBone Black**
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621_bb.png">
+<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-bb.png">
 
 ## Example 1 - Determine Temperature Synchronously
 
