@@ -28,7 +28,7 @@ public:
 
     v8::Local<v8::Value> argv[] = {
       NanNull(),
-      NanNew<v8::Integer>(i2cfuncs)
+      NanNew<v8::Uint32>(static_cast<unsigned int>(i2cfuncs))
     };
 
     callback->Call(2, argv);
@@ -69,6 +69,6 @@ NAN_METHOD(I2cFuncsSync) {
     return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
   }
 
-  NanReturnValue(NanNew<v8::Integer>(i2cfuncs));
+  NanReturnValue(NanNew<v8::Uint32>(static_cast<unsigned int>(i2cfuncs)));
 }
 

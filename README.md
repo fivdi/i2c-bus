@@ -20,7 +20,7 @@ BeagleBone Black. All methods have asynchronous and synchronous forms.
 ## Example 1 - Determine Temperature Synchronously
 
 Determine the temperature with a
-[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 Synchronously.
 
 
@@ -71,7 +71,7 @@ function toCelsius(rawTemp) {
 ## Example 2 - Determine Temperature Asynchronously
 
 Determine the temperature with a
-[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 Asynchronously.
 
 ```js
@@ -147,9 +147,9 @@ function toCelsius(rawTemp) {
 ## Example 3 - One Bus Two Devices
 
 This example shows how to access two devices on the same bus; a
-[DS1621 Digital Thermometer and Thermostat](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
 and an
-[Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor](http://www.adafruit.com/products/439).
+[Adafruit TSL2561 digital luminosity/lux/light sensor](http://www.adafruit.com/products/439).
 
 ```js
 var i2c = require('i2c-bus'),
@@ -171,6 +171,59 @@ var TSL2561_ADDR = 0x39,
 
   i2c1.closeSync();
 }());
+```
+
+If multiple devices need to be accessed asyncronously and concurrently, each
+decice should be accessed through a unique bus object.
+
+```
+var i2c = require('../'),
+  ds1621,
+  tsl2561;
+
+var DS1621_ADDR = 0x48,
+  DS1621_CMD_ACCESS_TH = 0xa1;
+
+var TSL2561_ADDR = 0x39,
+  TSL2561_CMD = 0x80,
+  TSL2561_REG_ID = 0x0a;
+
+ds1621 = i2c.open(2, function (err) {
+  if (err) {
+    throw err;
+  }
+
+  (function read() {
+    ds1621.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, function (err, tempHigh) {
+      if (err) {
+        throw err;
+      }
+
+      console.log(tempHigh);
+
+      read();
+    });
+  }());
+});
+
+tsl2561 = i2c.open(2, function (err) {
+  if (err) {
+    throw err;
+  }
+
+  (function read() {
+    tsl2561.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, function (err, id) {
+      if (err) {
+        throw err;
+      }
+
+      console.log(id);
+
+      read();
+    });
+  }());
+});
+
 ```
 
 ## API
