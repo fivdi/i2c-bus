@@ -9,7 +9,11 @@ BeagleBone Black. All methods have asynchronous and synchronous forms.
 
     $ npm install i2c-bus
 
-## Temperature Sensor Circuits
+## Example Temperature Sensor Circuits
+
+Some of the examples programs use a
+[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
+to show how the i2c-bus package functions. 
 
 **DS1621 temperature sensor connected to a Raspberry Pi**
 <img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-pi.png">
@@ -19,10 +23,7 @@ BeagleBone Black. All methods have asynchronous and synchronous forms.
 
 ## Example 1 - Determine Temperature Synchronously
 
-Determine the temperature with a
-[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-Synchronously.
-
+Determine the temperature with a DS1621 temperature sensor Synchronously.
 
 ```js
 var i2c = require('i2c-bus'),
@@ -70,10 +71,9 @@ function toCelsius(rawTemp) {
 
 ## Example 2 - Determine Temperature Asynchronously
 
-Determine the temperature with a
-[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-Asynchronously. Example 2 does exactly the same thing as example 1, but uses
-the asynchronous rather than the synchronous API.
+Determine the temperature with a DS1621 temperature sensor Asynchronously.
+Example 2 does exactly the same thing as example 1, but uses the asynchronous
+rather than the synchronous API.
 
 ```js
 var async = require('async'),
@@ -145,11 +145,10 @@ function toCelsius(rawTemp) {
 }());
 ```
 
-## Example 3 - One Bus Two Devices
+## Example 3 - Accessing Multiple Devices Synchronously
 
-This example shows how to access two devices on the same bus; a
-[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-and an
+This example shows how to access two devices on the same bus synchronously; a
+DS1621 temperature sensor and an
 [Adafruit TSL2561 digital luminosity/lux/light sensor](http://www.adafruit.com/products/439).
 
 ```js
@@ -173,6 +172,8 @@ var TSL2561_ADDR = 0x39,
   i2c1.closeSync();
 }());
 ```
+
+## Example 4 - Accessing Multiple Devices Asynchronously and Concurrently
 
 If multiple devices need to be accessed asyncronously and concurrently, each
 device should be accessed through a unique bus object.
