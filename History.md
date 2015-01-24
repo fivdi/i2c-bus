@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.10.0 / Jan 24 2015
+====================
 
   * added async example
   * strerror replaced with strerror_r
