@@ -174,7 +174,7 @@ var TSL2561_ADDR = 0x39,
 ```
 
 If multiple devices need to be accessed asyncronously and concurrently, each
-decice should be accessed through a unique bus object.
+device should be accessed through a unique bus object.
 
 ```js
 var i2c = require('../'),
@@ -188,7 +188,7 @@ var TSL2561_ADDR = 0x39,
   TSL2561_CMD = 0x80,
   TSL2561_REG_ID = 0x0a;
 
-ds1621 = i2c.open(2, function (err) {
+ds1621 = i2c.open(1, function (err) {
   if (err) {
     throw err;
   }
@@ -206,7 +206,7 @@ ds1621 = i2c.open(2, function (err) {
   }());
 });
 
-tsl2561 = i2c.open(2, function (err) {
+tsl2561 = i2c.open(1, function (err) {
   if (err) {
     throw err;
   }
