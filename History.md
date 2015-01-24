@@ -3,6 +3,7 @@ Unpublished
 
   * added async example
   * strerror replaced with strerror_r
+  * nan 1.6.1
 
 0.9.0 / Dec 22 2014
 ===================
