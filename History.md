@@ -4,6 +4,7 @@ Unpublished
   * added async example
   * strerror replaced with strerror_r
   * nan 1.5.3
+  * added async access to multiple devices concurrently example
 
 0.9.0 / Dec 22 2014
 ===================
