@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * added writeBlock and writeBlockSync - UNTESTED and undocumented due to lack of supporting hardware
+  * added readBlock and readBlockSync - UNTESTED and undocumented due to lack of supporting hardware
+
 0.10.0 / Jan 24 2015
 ====================
 

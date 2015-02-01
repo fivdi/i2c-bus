@@ -137,6 +137,23 @@ Bus.prototype.readWordSync = function (addr, cmd) {
   return i2c.readWordSync(this.fd, cmd);
 };
 
+// UNTESTED and undocumented due to lack of supporting hardware
+Bus.prototype.readBlock = function (addr, cmd, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.readBlockAsync(this.fd, cmd, buffer, cb);
+  }.bind(this));
+};
+
+// UNTESTED and undocumented due to lack of supporting hardware
+Bus.prototype.readBlockSync = function (addr, cmd, buffer) {
+  setAddrSync(this, addr);
+  return i2c.readBlockSync(this.fd, cmd, buffer);
+};
+
 Bus.prototype.readI2cBlock = function (addr, cmd, length, buffer, cb) {
   setAddr(this, addr, function (err) {
     if (err) {
@@ -228,6 +245,24 @@ Bus.prototype.writeQuick = function (addr, bit, cb) {
 Bus.prototype.writeQuickSync = function (addr, bit) {
   setAddrSync(this, addr);
   i2c.writeQuickSync(this.fd, bit);
+  return this;
+};
+
+// UNTESTED and undocumented due to lack of supporting hardware
+Bus.prototype.writeBlock = function (addr, cmd, length, buffer, cb) {
+  setAddr(this, addr, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.writeBlockAsync(this.fd, cmd, length, buffer, cb);
+  }.bind(this));
+};
+
+// UNTESTED and undocumented due to lack of supporting hardware
+Bus.prototype.writeBlockSync = function (addr, cmd, length, buffer) {
+  setAddrSync(this, addr);
+  i2c.writeBlockSync(this.fd, cmd, length, buffer);
   return this;
 };
 
