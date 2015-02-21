@@ -9,7 +9,9 @@ BeagleBone Black. All methods have asynchronous and synchronous forms.
 
     $ npm install i2c-bus
 
-See [Configuring I2C on the Raspberry Pi]() if you're a Pi user.
+See
+[Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+if you're a Pi user.
 
 ## Example Temperature Sensor Circuits
 
