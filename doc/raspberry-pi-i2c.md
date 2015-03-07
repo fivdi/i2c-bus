@@ -31,3 +31,4 @@ This will give all users access to I2C and sudo need not be specified when
 executing programs using i2c-bus. A more selective rule should be used if
 required.
 
+After performing the above steps, reboot the Raspberry Pi.
