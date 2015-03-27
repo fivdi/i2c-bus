@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * Simplify concurrent asynchronous access to multiple devices [#4](https://github.com/fivdi/i2c-bus/issues/4)
+
 0.11.0 / Feb 01 2015
 ====================
 

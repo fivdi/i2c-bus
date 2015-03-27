@@ -10,8 +10,8 @@ function Bus(busNumber) {
     return new Bus(busNumber);
   }
 
-  this.fd = -1;
-  this.currAddr = -1;
+  this._busNumber = busNumber;
+  this._peripherals = [];
 }
 
 function I2cFuncs(i2cFuncBits) {
@@ -40,59 +40,92 @@ function I2cFuncs(i2cFuncBits) {
 
 module.exports.open = function (busNumber, cb) {
   var bus = new Bus(busNumber);
-  fs.open(DEVICE_PREFIX + busNumber, 'r+', function (err, fd) {
-    if (err) {
-      return cb(err);
-    }
-    bus.fd = fd;
-    cb(null);
-  });
+  setImmediate(cb, null);
   return bus;
 };
 
 module.exports.openSync = function (busNumber) {
-  var bus = new Bus(busNumber);
-  bus.fd = fs.openSync(DEVICE_PREFIX + busNumber, 'r+');
-  return bus;
+  return new Bus(busNumber);
 };
 
-function setAddr(bus, addr, cb) {
-  if (bus.currAddr !== addr) {
-    i2c.setAddrAsync(bus.fd, addr, function (err) {
+function peripheral(bus, addr, cb) {
+  var device = bus._peripherals[addr];
+
+  if (device === undefined) {
+    fs.open(DEVICE_PREFIX + bus._busNumber, 'r+', function (err, device) {
       if (err) {
         return cb(err);
       }
-      bus.currAddr = addr;
-      cb(null);
+
+      i2c.setAddrAsync(device, addr, function (err) {
+        if (err) {
+          return cb(err);
+        }
+
+        bus._peripherals[addr] = device;
+
+        cb(null, device);
+      });
     });
   } else {
-    setImmediate(cb);
+    setImmediate(cb, null, device);
   }
 }
 
-function setAddrSync(bus, addr) {
-  if (bus.currAddr !== addr) {
-    i2c.setAddrSync(bus.fd, addr);
-    bus.currAddr = addr;
+function peripheralSync(bus, addr) {
+  var peripheral = bus._peripherals[addr];
+
+  if (peripheral === undefined) {
+    peripheral = fs.openSync(DEVICE_PREFIX + bus._busNumber, 'r+');
+    i2c.setAddrSync(peripheral, addr);
+    bus._peripherals[addr] = peripheral;
   }
+
+  return peripheral;
 }
 
 Bus.prototype.close = function (cb) {
-  fs.close(this.fd, cb);
+  var peripherals = this._peripherals.filter(function (peripheral) {
+    return peripheral !== undefined;
+  });
+
+  (function close() {
+    if (peripherals.length === 0) {
+      return setImmediate(cb, null);
+    }
+
+    fs.close(peripherals.pop(), function (err) {
+      if (err) {
+        return cb(err);
+      }
+      close();
+    });
+  }());
 };
 
 Bus.prototype.closeSync = function () {
-  fs.closeSync(this.fd);
+  this._peripherals.forEach(function (peripheral) {
+    if (peripheral !== undefined) {
+      fs.closeSync(peripheral);
+    }
+  });
+  this._peripherals = [];
 };
 
 Bus.prototype.i2cFuncs = function (cb) {
   if (!this.funcs) {
-    i2c.i2cFuncsAsync(this.fd, function (err, i2cFuncBits) {
+    peripheral(this, 0, function (err, device) {
       if (err) {
         return cb(err);
       }
-      this.funcs = Object.freeze(new I2cFuncs(i2cFuncBits));
-      cb(null, this.funcs);
+
+      i2c.i2cFuncsAsync(device, function (err, i2cFuncBits) {
+        if (err) {
+          return cb(err);
+        }
+        this.funcs = Object.freeze(new I2cFuncs(i2cFuncBits));
+        cb(null, this.funcs);
+      });
     });
   } else {
     setImmediate(cb, null, this.funcs);
@@ -101,214 +134,201 @@ Bus.prototype.i2cFuncs = function (cb) {
 
 Bus.prototype.i2cFuncsSync = function () {
   if (!this.funcs) {
-    this.funcs = Object.freeze(new I2cFuncs(i2c.i2cFuncsSync(this.fd)));
+    this.funcs = Object.freeze(new I2cFuncs(i2c.i2cFuncsSync(peripheralSync(this, 0))));
   }
 
   return this.funcs;
 };
 
 Bus.prototype.readByte = function (addr, cmd, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.readByteAsync(this.fd, cmd, cb);
+    i2c.readByteAsync(device, cmd, cb);
   }.bind(this));
 };
 
 Bus.prototype.readByteSync = function (addr, cmd) {
-  setAddrSync(this, addr);
-  return i2c.readByteSync(this.fd, cmd);
+  return i2c.readByteSync(peripheralSync(this, addr), cmd);
 };
 
 Bus.prototype.readWord = function (addr, cmd, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.readWordAsync(this.fd, cmd, cb);
+    i2c.readWordAsync(device, cmd, cb);
   }.bind(this));
 };
 
 Bus.prototype.readWordSync = function (addr, cmd) {
-  setAddrSync(this, addr);
-  return i2c.readWordSync(this.fd, cmd);
+  return i2c.readWordSync(peripheralSync(this, addr), cmd);
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.readBlock = function (addr, cmd, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.readBlockAsync(this.fd, cmd, buffer, cb);
+    i2c.readBlockAsync(device, cmd, buffer, cb);
   }.bind(this));
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.readBlockSync = function (addr, cmd, buffer) {
-  setAddrSync(this, addr);
-  return i2c.readBlockSync(this.fd, cmd, buffer);
+  return i2c.readBlockSync(peripheralSync(this, addr), cmd, buffer);
 };
 
 Bus.prototype.readI2cBlock = function (addr, cmd, length, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.readI2cBlockAsync(this.fd, cmd, length, buffer, cb);
+    i2c.readI2cBlockAsync(device, cmd, length, buffer, cb);
   }.bind(this));
 };
 
 Bus.prototype.readI2cBlockSync = function (addr, cmd, length, buffer) {
-  setAddrSync(this, addr);
-  return i2c.readI2cBlockSync(this.fd, cmd, length, buffer);
+  return i2c.readI2cBlockSync(peripheralSync(this, addr), cmd, length, buffer);
 };
 
 Bus.prototype.receiveByte = function (addr, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.receiveByteAsync(this.fd, cb);
+    i2c.receiveByteAsync(device, cb);
   }.bind(this));
 };
 
 Bus.prototype.receiveByteSync = function (addr) {
-  setAddrSync(this, addr);
-  return i2c.receiveByteSync(this.fd);
+  return i2c.receiveByteSync(peripheralSync(this, addr));
 };
 
 Bus.prototype.sendByte = function (addr, byte, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.sendByteAsync(this.fd, byte, cb);
+    i2c.sendByteAsync(device, byte, cb);
   }.bind(this));
 };
 
 Bus.prototype.sendByteSync = function (addr, byte) {
-  setAddrSync(this, addr);
-  i2c.sendByteSync(this.fd, byte);
+  i2c.sendByteSync(peripheralSync(this, addr), byte);
   return this;
 };
 
 Bus.prototype.writeByte = function (addr, cmd, byte, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.writeByteAsync(this.fd, cmd, byte, cb);
+    i2c.writeByteAsync(device, cmd, byte, cb);
   }.bind(this));
 };
 
 Bus.prototype.writeByteSync = function (addr, cmd, byte) {
-  setAddrSync(this, addr);
-  i2c.writeByteSync(this.fd, cmd, byte);
+  i2c.writeByteSync(peripheralSync(this, addr), cmd, byte);
   return this;
 };
 
 Bus.prototype.writeWord = function (addr, cmd, word, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.writeWordAsync(this.fd, cmd, word, cb);
+    i2c.writeWordAsync(device, cmd, word, cb);
   }.bind(this));
 };
 
 Bus.prototype.writeWordSync = function (addr, cmd, word) {
-  setAddrSync(this, addr);
-  i2c.writeWordSync(this.fd, cmd, word);
+  i2c.writeWordSync(peripheralSync(this, addr), cmd, word);
   return this;
 };
 
 Bus.prototype.writeQuick = function (addr, bit, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.writeQuickAsync(this.fd, bit, cb);
+    i2c.writeQuickAsync(device, bit, cb);
   }.bind(this));
 };
 
 Bus.prototype.writeQuickSync = function (addr, bit) {
-  setAddrSync(this, addr);
-  i2c.writeQuickSync(this.fd, bit);
+  i2c.writeQuickSync(peripheralSync(this, addr), bit);
   return this;
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.writeBlock = function (addr, cmd, length, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.writeBlockAsync(this.fd, cmd, length, buffer, cb);
+    i2c.writeBlockAsync(device, cmd, length, buffer, cb);
   }.bind(this));
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.writeBlockSync = function (addr, cmd, length, buffer) {
-  setAddrSync(this, addr);
-  i2c.writeBlockSync(this.fd, cmd, length, buffer);
+  i2c.writeBlockSync(peripheralSync(this, addr), cmd, length, buffer);
   return this;
 };
 
 Bus.prototype.writeI2cBlock = function (addr, cmd, length, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    i2c.writeI2cBlockAsync(this.fd, cmd, length, buffer, cb);
+    i2c.writeI2cBlockAsync(device, cmd, length, buffer, cb);
   }.bind(this));
 };
 
 Bus.prototype.writeI2cBlockSync = function (addr, cmd, length, buffer) {
-  setAddrSync(this, addr);
-  i2c.writeI2cBlockSync(this.fd, cmd, length, buffer);
+  i2c.writeI2cBlockSync(peripheralSync(this, addr), cmd, length, buffer);
   return this;
 };
 
 Bus.prototype.i2cRead = function (addr, length, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    fs.read(this.fd, buffer, 0, length, 0, cb);
+    fs.read(device, buffer, 0, length, 0, cb);
   }.bind(this));
 };
 
 Bus.prototype.i2cReadSync = function (addr, length, buffer) {
-  setAddrSync(this, addr);
-  return fs.readSync(this.fd, buffer, 0, length, 0);
+  return fs.readSync(peripheralSync(this, addr), buffer, 0, length, 0);
 };
 
 Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
-  setAddr(this, addr, function (err) {
+  peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
     }
 
-    fs.write(this.fd, buffer, 0, length, 0, cb);
+    fs.write(device, buffer, 0, length, 0, cb);
   }.bind(this));
 };
 
 Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
-  setAddrSync(this, addr);
-  return fs.writeSync(this.fd, buffer, 0, length, 0);
+  return fs.writeSync(peripheralSync(this, addr), buffer, 0, length, 0);
 };
 

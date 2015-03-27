@@ -149,15 +149,15 @@ function toCelsius(rawTemp) {
 }());
 ```
 
-## Example 3 - Accessing Multiple Devices Synchronously
+## Example 3 - Accessing Multiple Devices Asynchronously and Concurrently
 
-This example shows how to access two devices on the same bus synchronously; a
-DS1621 temperature sensor and an
+This example demonstrates concurrent asynchronous access to two devices on the
+same bus, a DS1621 temperature sensor and an
 [Adafruit TSL2561 digital luminosity/lux/light sensor](http://www.adafruit.com/products/439).
 
 ```js
 var i2c = require('i2c-bus'),
-  i2c1 = i2c.openSync(1);
+  i2c1;
 
 var DS1621_ADDR = 0x48,
   DS1621_CMD_ACCESS_TH = 0xa1;
@@ -166,52 +166,22 @@ var TSL2561_ADDR = 0x39,
   TSL2561_CMD = 0x80,
   TSL2561_REG_ID = 0x0a;
 
-(function () {
-  var ds1621TempHigh = i2c1.readWordSync(DS1621_ADDR, DS1621_CMD_ACCESS_TH),
-    tsl2561Id = i2c1.readByteSync(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID);
-
-  console.log("ds1621TempHigh: " + ds1621TempHigh);
-  console.log("tsl2561Id: " + tsl2561Id);
-
-  i2c1.closeSync();
-}());
-```
-
-## Example 4 - Accessing Multiple Devices Asynchronously and Concurrently
-
-If multiple devices need to be accessed asyncronously and concurrently, each
-device should be accessed through a unique bus object.
-
-```js
-var i2c = require('i2c-bus'),
-  ds1621,
-  tsl2561;
-
-var DS1621_ADDR = 0x48,
-  DS1621_CMD_ACCESS_TH = 0xa1;
-
-var TSL2561_ADDR = 0x39,
-  TSL2561_CMD = 0x80,
-  TSL2561_REG_ID = 0x0a;
-
-ds1621 = i2c.open(1, function (err) {
+i2c1 = i2c.open(1, function (err) {
   if (err) throw err;
-  (function read() {
-    ds1621.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, function (err, tempHigh) {
+
+  (function readTempHigh() {
+    i2c1.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, function (err, tempHigh) {
       if (err) throw err;
       console.log(tempHigh);
-      read();
+      readTempHigh();
     });
   }());
-});
 
-tsl2561 = i2c.open(1, function (err) {
-  if (err) throw err;
-  (function read() {
-    tsl2561.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, function (err, id) {
+  (function readId() {
+    i2c1.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, function (err, id) {
       if (err) throw err;
       console.log(id);
-      read();
+      readId();
     });
   }());
 });
