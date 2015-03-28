@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * Simplify concurrent asynchronous access to multiple devices [#4](https://github.com/fivdi/i2c-bus/issues/4)
+  * nan 1.7.0
 
 0.11.0 / Feb 01 2015
 ====================
