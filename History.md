@@ -1,3 +1,7 @@
+0.11.2 / May 07 2015
+====================
+  * io.js v2.0.0+ compatibility [#7](https://github.com/fivdi/i2c-bus/issues/7)
+
 0.11.1 / Mar 28 2015
 ====================
 
