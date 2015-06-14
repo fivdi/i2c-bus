@@ -2,7 +2,7 @@
 
 I2C bus 6 is broken out to the header pins labeled SDA and SCL on the Intel
 Edison Arduino base board. The
-[edison-i2c-config`](https://github.com/fivdi/edison-i2c-config)
+[edison-i2c-config](https://github.com/fivdi/edison-i2c-config)
 package can be used to configure this I2C bus:
 
 ```js
