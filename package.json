@@ -27,6 +27,12 @@
   },
   "keywords": [
     "i2c",
+    "raspberry",
+    "raspi",
+    "rpi",
+    "pi",
+    "edison",
+    "beaglebone",
     "smbus",
     "linux"
   ],

@@ -1,16 +1,18 @@
 ## i2c-bus
 
 I2C serial bus access with **io.js** or **Node.js** on Linux boards like the
-Raspberry Pi, Raspberry Pi 2, BeagleBone, or BeagleBone Black. All methods
-have asynchronous and synchronous forms.
+Raspberry Pi, Raspberry Pi 2, BeagleBone, BeagleBone Black, and Intel Edison.
+All methods have asynchronous and synchronous forms.
 
 ## Installation
 
     $ npm install i2c-bus
 
-See
-[Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
-if you're a Pi user.
+The way in which I2C is configured varies from board to board. Sometimes no
+configuraton is required, but sometimes it is:
+
+* [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+* [Configuring I2C on the Intel Edison Arduino Base Board](https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
 ## Example Temperature Sensor Circuits
 

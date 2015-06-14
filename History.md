@@ -1,3 +1,8 @@
+Unpublished
+===========
+  * documented configuration on edison arduino base board
+  * documented configuration on the pi
+
 0.11.2 / May 07 2015
 ====================
   * io.js v2.0.0+ compatibility [#7](https://github.com/fivdi/i2c-bus/issues/7)
