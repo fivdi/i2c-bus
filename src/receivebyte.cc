@@ -9,10 +9,10 @@ static __s32 ReceiveByte(int fd) {
   return i2c_smbus_read_byte(fd);
 }
 
-class ReceiveByteWorker : public NanAsyncWorker {
+class ReceiveByteWorker : public Nan::AsyncWorker {
 public:
-  ReceiveByteWorker(NanCallback *callback, int fd)
-    : NanAsyncWorker(callback), fd(fd) {}
+  ReceiveByteWorker(Nan::Callback *callback, int fd)
+    : Nan::AsyncWorker(callback), fd(fd) {}
   ~ReceiveByteWorker() {}
 
   void Execute() {
@@ -24,11 +24,11 @@ public:
   }
 
   void HandleOKCallback() {
-    NanScope();
+    Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[] = {
-      NanNull(),
-      NanNew<v8::Integer>(byte)
+      Nan::Null(),
+      Nan::New<v8::Integer>(byte)
     };
 
     callback->Call(2, argv);
@@ -40,34 +40,29 @@ private:
 };
 
 NAN_METHOD(ReceiveByteAsync) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to receiveByte(int fd, function cb)");
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsFunction()) {
+    return Nan::ThrowError("incorrect arguments passed to receiveByte(int fd, function cb)");
   }
 
-  int fd = args[0]->Int32Value();
-  NanCallback *callback = new NanCallback(args[1].As<v8::Function>());
+  int fd = info[0]->Int32Value();
+  Nan::Callback *callback = new Nan::Callback(info[1].As<v8::Function>());
 
-  NanAsyncQueueWorker(new ReceiveByteWorker(callback, fd));
-  NanReturnUndefined();
+  Nan::AsyncQueueWorker(new ReceiveByteWorker(callback, fd));
 }
 
 NAN_METHOD(ReceiveByteSync) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to receiveByteSync(int fd)");
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError("incorrect arguments passed to receiveByteSync(int fd)");
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   __s32 byte = ReceiveByte(fd);
   if (byte == -1) {
     char buf[ERRBUFSZ];
-    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
+    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
   }
 
-  NanReturnValue(NanNew<v8::Integer>(byte));
+  info.GetReturnValue().Set(Nan::New<v8::Integer>(byte));
 }
 

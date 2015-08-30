@@ -15,106 +15,106 @@
 #include "./writequick.h"
 #include "./i2c-dev.h"
 
-void InitAll(v8::Handle<v8::Object> exports) {
-  exports->Set(NanNew<v8::String>("i2cFuncsAsync"),
-    NanNew<v8::FunctionTemplate>(I2cFuncsAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("i2cFuncsSync"),
-    NanNew<v8::FunctionTemplate>(I2cFuncsSync)->GetFunction());
+NAN_MODULE_INIT(InitAll) {
+  Nan::Set(target, Nan::New<v8::String>("i2cFuncsAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(I2cFuncsAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("i2cFuncsSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(I2cFuncsSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("readByteAsync"),
-    NanNew<v8::FunctionTemplate>(ReadByteAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("readByteSync"),
-    NanNew<v8::FunctionTemplate>(ReadByteSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("readByteAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadByteAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("readByteSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadByteSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("readWordAsync"),
-    NanNew<v8::FunctionTemplate>(ReadWordAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("readWordSync"),
-    NanNew<v8::FunctionTemplate>(ReadWordSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("readWordAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadWordAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("readWordSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadWordSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("readBlockAsync"),
-    NanNew<v8::FunctionTemplate>(ReadBlockAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("readBlockSync"),
-    NanNew<v8::FunctionTemplate>(ReadBlockSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("readBlockAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadBlockAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("readBlockSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadBlockSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("readI2cBlockAsync"),
-    NanNew<v8::FunctionTemplate>(ReadI2cBlockAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("readI2cBlockSync"),
-    NanNew<v8::FunctionTemplate>(ReadI2cBlockSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("readI2cBlockAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadI2cBlockAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("readI2cBlockSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReadI2cBlockSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("receiveByteAsync"),
-    NanNew<v8::FunctionTemplate>(ReceiveByteAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("receiveByteSync"),
-    NanNew<v8::FunctionTemplate>(ReceiveByteSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("receiveByteAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReceiveByteAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("receiveByteSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(ReceiveByteSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("sendByteAsync"),
-    NanNew<v8::FunctionTemplate>(SendByteAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("sendByteSync"),
-    NanNew<v8::FunctionTemplate>(SendByteSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("sendByteAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(SendByteAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("sendByteSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(SendByteSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("setAddrAsync"),
-    NanNew<v8::FunctionTemplate>(SetAddrAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("setAddrSync"),
-    NanNew<v8::FunctionTemplate>(SetAddrSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("setAddrAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(SetAddrAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("setAddrSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(SetAddrSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("writeByteAsync"),
-    NanNew<v8::FunctionTemplate>(WriteByteAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeByteSync"),
-    NanNew<v8::FunctionTemplate>(WriteByteSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("writeByteAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteByteAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("writeByteSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteByteSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("writeWordAsync"),
-    NanNew<v8::FunctionTemplate>(WriteWordAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeWordSync"),
-    NanNew<v8::FunctionTemplate>(WriteWordSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("writeWordAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteWordAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("writeWordSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteWordSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("writeBlockAsync"),
-    NanNew<v8::FunctionTemplate>(WriteBlockAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeBlockSync"),
-    NanNew<v8::FunctionTemplate>(WriteBlockSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("writeBlockAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteBlockAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("writeBlockSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteBlockSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("writeI2cBlockAsync"),
-    NanNew<v8::FunctionTemplate>(WriteI2cBlockAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeI2cBlockSync"),
-    NanNew<v8::FunctionTemplate>(WriteI2cBlockSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("writeI2cBlockAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteI2cBlockAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("writeI2cBlockSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteI2cBlockSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("writeQuickAsync"),
-    NanNew<v8::FunctionTemplate>(WriteQuickAsync)->GetFunction());
-  exports->Set(NanNew<v8::String>("writeQuickSync"),
-    NanNew<v8::FunctionTemplate>(WriteQuickSync)->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("writeQuickAsync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteQuickAsync)).ToLocalChecked());
+  Nan::Set(target, Nan::New<v8::String>("writeQuickSync").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(WriteQuickSync)).ToLocalChecked());
 
-  exports->Set(NanNew<v8::String>("I2C_FUNC_I2C"),
-    NanNew<v8::Integer>(I2C_FUNC_I2C));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_10BIT_ADDR"),
-    NanNew<v8::Integer>(I2C_FUNC_10BIT_ADDR));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_PROTOCOL_MANGLING"),
-    NanNew<v8::Integer>(I2C_FUNC_PROTOCOL_MANGLING));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_PEC"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_PEC));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_BLOCK_PROC_CALL"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_BLOCK_PROC_CALL));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_QUICK"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_QUICK));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BYTE"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BYTE_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_WORD_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_WORD_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_WORD_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_WORD_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_PROC_CALL"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_PROC_CALL));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_BLOCK_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_BLOCK_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_BLOCK_DATA"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BLOCK_DATA));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_READ_I2C_BLOCK"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_READ_I2C_BLOCK));
-  exports->Set(NanNew<v8::String>("I2C_FUNC_SMBUS_WRITE_I2C_BLOCK"),
-    NanNew<v8::Integer>(I2C_FUNC_SMBUS_WRITE_I2C_BLOCK));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_I2C").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_I2C));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_10BIT_ADDR").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_10BIT_ADDR));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_PROTOCOL_MANGLING").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_PROTOCOL_MANGLING));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_PEC").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_PEC));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_BLOCK_PROC_CALL").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_BLOCK_PROC_CALL));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_QUICK").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_QUICK));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_READ_BYTE").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_READ_BYTE_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_READ_BYTE_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_WRITE_BYTE_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BYTE_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_READ_WORD_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_READ_WORD_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_WRITE_WORD_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_WRITE_WORD_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_PROC_CALL").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_PROC_CALL));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_READ_BLOCK_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_READ_BLOCK_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_WRITE_BLOCK_DATA").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_WRITE_BLOCK_DATA));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_READ_I2C_BLOCK").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_READ_I2C_BLOCK));
+  Nan::Set(target, Nan::New<v8::String>("I2C_FUNC_SMBUS_WRITE_I2C_BLOCK").ToLocalChecked(),
+    Nan::New<v8::Integer>(I2C_FUNC_SMBUS_WRITE_I2C_BLOCK));
 }
 
 NODE_MODULE(i2c, InitAll)
