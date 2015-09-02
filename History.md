@@ -1,5 +1,6 @@
-Unpublished
-===========
+0.11.3 / Sep 02 2015
+====================
+  * nan1 to nan2 migration for iojs v3
   * documented configuration on edison arduino base board
   * documented configuration on the pi
 
