@@ -9,10 +9,10 @@ static __s32 ReadByte(int fd, __u8 cmd) {
   return i2c_smbus_read_byte_data(fd, cmd);
 }
 
-class ReadByteWorker : public NanAsyncWorker {
+class ReadByteWorker : public Nan::AsyncWorker {
 public:
-  ReadByteWorker(NanCallback *callback, int fd, __u8 cmd)
-    : NanAsyncWorker(callback), fd(fd), cmd(cmd) {}
+  ReadByteWorker(Nan::Callback *callback, int fd, __u8 cmd)
+    : Nan::AsyncWorker(callback), fd(fd), cmd(cmd) {}
   ~ReadByteWorker() {}
 
   void Execute() {
@@ -24,11 +24,11 @@ public:
   }
 
   void HandleOKCallback() {
-    NanScope();
+    Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[] = {
-      NanNull(),
-      NanNew<v8::Integer>(byte)
+      Nan::Null(),
+      Nan::New<v8::Integer>(byte)
     };
 
     callback->Call(2, argv);
@@ -41,36 +41,31 @@ private:
 };
 
 NAN_METHOD(ReadByteAsync) {
-  NanScope();
-
-  if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to readByte(int fd, int cmd, function cb)");
+  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
+    return Nan::ThrowError("incorrect arguments passed to readByte(int fd, int cmd, function cb)");
   }
 
-  int fd = args[0]->Int32Value();
-  __u8 cmd = args[1]->Int32Value();
-  NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
+  int fd = info[0]->Int32Value();
+  __u8 cmd = info[1]->Int32Value();
+  Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
-  NanAsyncQueueWorker(new ReadByteWorker(callback, fd, cmd));
-  NanReturnUndefined();
+  Nan::AsyncQueueWorker(new ReadByteWorker(callback, fd, cmd));
 }
 
 NAN_METHOD(ReadByteSync) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to readByteSync(int fd, int cmd)");
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError("incorrect arguments passed to readByteSync(int fd, int cmd)");
   }
 
-  int fd = args[0]->Int32Value();
-  __u8 cmd = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  __u8 cmd = info[1]->Int32Value();
 
   __s32 byte = ReadByte(fd, cmd);
   if (byte == -1) {
     char buf[ERRBUFSZ];
-    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
+    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
   }
 
-  NanReturnValue(NanNew<v8::Integer>(byte));
+  info.GetReturnValue().Set(Nan::New<v8::Integer>(byte));
 }
 

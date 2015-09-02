@@ -9,10 +9,10 @@ static __s32 SendByte(int fd, __u8 byte) {
   return i2c_smbus_write_byte(fd, byte);
 }
 
-class SendByteWorker : public NanAsyncWorker {
+class SendByteWorker : public Nan::AsyncWorker {
 public:
-  SendByteWorker(NanCallback *callback, int fd, __u8 byte)
-    : NanAsyncWorker(callback), fd(fd), byte(byte) {}
+  SendByteWorker(Nan::Callback *callback, int fd, __u8 byte)
+    : Nan::AsyncWorker(callback), fd(fd), byte(byte) {}
   ~SendByteWorker() {}
 
   void Execute() {
@@ -24,10 +24,10 @@ public:
   }
 
   void HandleOKCallback() {
-    NanScope();
+    Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[] = {
-      NanNull()
+      Nan::Null()
     };
 
     callback->Call(1, argv);
@@ -39,36 +39,29 @@ private:
 };
 
 NAN_METHOD(SendByteAsync) {
-  NanScope();
-
-  if (args.Length() < 3 || !args[0]->IsInt32() || !args[1]->IsInt32() || !args[2]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to sendByte(int fd, int byte, function cb)");
+  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
+    return Nan::ThrowError("incorrect arguments passed to sendByte(int fd, int byte, function cb)");
   }
 
-  int fd = args[0]->Int32Value();
-  __u8 byte = args[1]->Int32Value();
-  NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
+  int fd = info[0]->Int32Value();
+  __u8 byte = info[1]->Int32Value();
+  Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
-  NanAsyncQueueWorker(new SendByteWorker(callback, fd, byte));
-  NanReturnUndefined();
+  Nan::AsyncQueueWorker(new SendByteWorker(callback, fd, byte));
 }
 
 NAN_METHOD(SendByteSync) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to sendByteSync(int fd, int byte)");
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+    return Nan::ThrowError("incorrect arguments passed to sendByteSync(int fd, int byte)");
   }
 
-  int fd = args[0]->Int32Value();
-  __u8 byte = args[1]->Int32Value();
+  int fd = info[0]->Int32Value();
+  __u8 byte = info[1]->Int32Value();
 
   __s32 ret = SendByte(fd, byte);
   if (ret == -1) {
     char buf[ERRBUFSZ];
-    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
+    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
   }
-
-  NanReturnUndefined();
 }
 

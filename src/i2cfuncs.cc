@@ -9,10 +9,10 @@ static __s32 I2cFuncs(int fd, unsigned long *i2cfuncs) {
   return ioctl(fd, I2C_FUNCS, i2cfuncs);
 }
 
-class I2cFuncsWorker : public NanAsyncWorker {
+class I2cFuncsWorker : public Nan::AsyncWorker {
 public:
-  I2cFuncsWorker(NanCallback *callback, int fd)
-    : NanAsyncWorker(callback), fd(fd) {}
+  I2cFuncsWorker(Nan::Callback *callback, int fd)
+    : Nan::AsyncWorker(callback), fd(fd) {}
   ~I2cFuncsWorker() {}
 
   void Execute() {
@@ -24,11 +24,11 @@ public:
   }
 
   void HandleOKCallback() {
-    NanScope();
+    Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[] = {
-      NanNull(),
-      NanNew<v8::Uint32>(static_cast<unsigned int>(i2cfuncs))
+      Nan::Null(),
+      Nan::New<v8::Uint32>(static_cast<unsigned int>(i2cfuncs))
     };
 
     callback->Call(2, argv);
@@ -40,35 +40,30 @@ private:
 };
 
 NAN_METHOD(I2cFuncsAsync) {
-  NanScope();
-
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsFunction()) {
-    return NanThrowError("incorrect arguments passed to i2cFuncs(int fd, function cb)");
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsFunction()) {
+    return Nan::ThrowError("incorrect arguments passed to i2cFuncs(int fd, function cb)");
   }
 
-  int fd = args[0]->Int32Value();
-  NanCallback *callback = new NanCallback(args[1].As<v8::Function>());
+  int fd = info[0]->Int32Value();
+  Nan::Callback *callback = new Nan::Callback(info[1].As<v8::Function>());
 
-  NanAsyncQueueWorker(new I2cFuncsWorker(callback, fd));
-  NanReturnUndefined();
+  Nan::AsyncQueueWorker(new I2cFuncsWorker(callback, fd));
 }
 
 NAN_METHOD(I2cFuncsSync) {
-  NanScope();
-
-  if (args.Length() < 1 || !args[0]->IsInt32()) {
-    return NanThrowError("incorrect arguments passed to i2cFuncsSync(int fd)");
+  if (info.Length() < 1 || !info[0]->IsInt32()) {
+    return Nan::ThrowError("incorrect arguments passed to i2cFuncsSync(int fd)");
   }
 
-  int fd = args[0]->Int32Value();
+  int fd = info[0]->Int32Value();
 
   unsigned long i2cfuncs;
   __s32 ret = I2cFuncs(fd, &i2cfuncs);
   if (ret == -1) {
     char buf[ERRBUFSZ];
-    return NanThrowError(strerror_r(errno, buf, ERRBUFSZ), errno);
+    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
   }
 
-  NanReturnValue(NanNew<v8::Uint32>(static_cast<unsigned int>(i2cfuncs)));
+  info.GetReturnValue().Set(Nan::New<v8::Uint32>(static_cast<unsigned int>(i2cfuncs)));
 }
 

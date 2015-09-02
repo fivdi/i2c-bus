@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "bindings": "~1.2.1",
-    "nan": "~1.8.4"
+    "nan": "~2.0.8"
   },
   "devDependencies": {
-    "async": "~0.9.0"
+    "async": "~1.4.2"
   },
   "keywords": [
     "i2c",
