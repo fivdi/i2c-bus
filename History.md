@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.12.0 / Oct 06 2015
+====================
 
   * added scan and scanSync [11](https://github.com/fivdi/i2c-bus/issues/11)
   * nan 2.0.9
