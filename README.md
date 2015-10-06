@@ -224,6 +224,8 @@ use try/catch to handle exceptions or allow them to bubble up.
 - Information
   - [bus.i2cFuncs(cb)](https://github.com/fivdi/i2c-bus#busi2cfuncscb)
   - [bus.i2cFuncsSync()](https://github.com/fivdi/i2c-bus#busi2cfuncssync)
+  - [bus.scan(cb)](https://github.com/fivdi/i2c-bus#busscancb)
+  - [bus.scanSync()](https://github.com/fivdi/i2c-bus#busscansync)
 
 - Plain I2C
   - [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
@@ -306,6 +308,20 @@ Determine functionality of the bus/adapter Synchronously. Returns a frozen
 [I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
+
+### bus.scan(cb)
+- cb - completion callback
+
+Scans the I2C bus asynchronously for devices the same way `i2cdetect -y -r`
+would. The callback gets two arguments (err, devices). devices is an array of
+numbers where each number represents the I2C address of a device which was
+detected.
+
+### bus.scanSync()
+
+Scans the I2C bus synchronously for devices the same way `i2cdetect -y -r`
+would. Returns an array of numbers where each number represents the I2C address
+of a device which was detected.
 
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address

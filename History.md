@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * added scan and scanSync [11](https://github.com/fivdi/i2c-bus/issues/11)
+
 0.11.3 / Sep 02 2015
 ====================
   * nan1 to nan2 migration for iojs v3

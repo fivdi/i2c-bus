@@ -6,3 +6,5 @@ node sync-many-instances
 node sync-performance
 node sync-plain-i2c-performance
 node i2c-functionality-available
+node scan
+

@@ -3,7 +3,9 @@
 var fs = require('fs'),
   i2c = require('bindings')('i2c.node');
 
-var DEVICE_PREFIX = '/dev/i2c-';
+var DEVICE_PREFIX = '/dev/i2c-',
+  FIRST_SCAN_ADDR = 0x03,
+  LAST_SCAN_ADDR = 0x77;
 
 function Bus(busNumber) {
   if (!(this instanceof Bus)) {
@@ -38,15 +40,17 @@ function I2cFuncs(i2cFuncBits) {
   this.smbusWriteI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_I2C_BLOCK;
 }
 
-module.exports.open = function (busNumber, cb) {
+function open(busNumber, cb) {
   var bus = new Bus(busNumber);
   setImmediate(cb, null);
   return bus;
-};
+}
+module.exports.open = open;
 
-module.exports.openSync = function (busNumber) {
+function openSync(busNumber) {
   return new Bus(busNumber);
-};
+}
+module.exports.openSync = openSync;
 
 function peripheral(bus, addr, cb) {
   var device = bus._peripherals[addr];
@@ -330,5 +334,63 @@ Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
 
 Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
   return fs.writeSync(peripheralSync(this, addr), buffer, 0, length, 0);
+};
+
+Bus.prototype.scan = function (cb) {
+  var scanBus,
+    addresses = [];
+
+  scanBus = open(this._busNumber, function (err) {
+    if (err) {
+      return cb(err);
+    }
+
+    (function next(addr) {
+      if (addr > LAST_SCAN_ADDR) {
+        return scanBus.close(function (err) {
+          if (err) {
+            return cb(err);
+          }
+          cb(null, addresses);
+        });
+      }
+
+      scanBus.receiveByte(addr, function (err) {
+        if (err) {
+          if (err.message !== 'Remote I/O error' &&
+              err.message !== 'Input/output error' &&
+              err.message !== 'Device or resource busy') {
+            return cb(err); // Oops, don't know what to do!
+          }
+        } else {
+          addresses.push(addr);
+        }
+
+        next(addr + 1);
+      });
+    }(FIRST_SCAN_ADDR));
+  });
+};
+
+Bus.prototype.scanSync = function () {
+  var scanBus = openSync(this._busNumber),
+    addresses = [],
+    addr;
+
+  for (addr = FIRST_SCAN_ADDR; addr <= LAST_SCAN_ADDR; addr += 1) {
+    try {
+      scanBus.receiveByteSync(addr);
+      addresses.push(addr);
+    } catch (e) {
+      if (e.message !== 'Remote I/O error' &&
+          e.message !== 'Input/output error' &&
+          e.message !== 'Device or resource busy') {
+        throw e; // Oops, don't know what to do!
+      }
+    }
+  }
+
+  scanBus.closeSync();
+  return addresses;
 };
 
