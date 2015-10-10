@@ -65,12 +65,12 @@ function peripheral(bus, addr, cb) {
         return cb(err);
       }
 
+      bus._peripherals[addr] = device;
+
       i2c.setAddrAsync(device, addr, function (err) {
         if (err) {
           return cb(err);
         }
-
-        bus._peripherals[addr] = device;
 
         cb(null, device);
       });
@@ -85,8 +85,8 @@ function peripheralSync(bus, addr) {
 
   if (peripheral === undefined) {
     peripheral = fs.openSync(DEVICE_PREFIX + bus._busNumber, 'r+');
-    i2c.setAddrSync(peripheral, addr);
     bus._peripherals[addr] = peripheral;
+    i2c.setAddrSync(peripheral, addr);
   }
 
   return peripheral;

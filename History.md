@@ -1,13 +1,14 @@
 Unpublished
 ===========
 
-  * refactored error objects
+  * prevent leaking of fds for busy devices [#13](https://github.com/fivdi/i2c-bus/issues/13)
+  * refactored error objects [#12](https://github.com/fivdi/i2c-bus/issues/12)
   * nan 2.1.0
 
 0.12.0 / Oct 06 2015
 ====================
 
-  * added scan and scanSync [11](https://github.com/fivdi/i2c-bus/issues/11)
+  * added scan and scanSync [#11](https://github.com/fivdi/i2c-bus/issues/11)
   * nan 2.0.9
 
 0.11.3 / Sep 02 2015
