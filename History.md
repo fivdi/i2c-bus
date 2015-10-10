@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.0.0 / Oct 10 2015
+===================
 
   * prevent leaking of fds for busy devices [#13](https://github.com/fivdi/i2c-bus/issues/13)
   * refactored error objects [#12](https://github.com/fivdi/i2c-bus/issues/12)
