@@ -9,17 +9,17 @@ static __s32 SendByte(int fd, __u8 byte) {
   return i2c_smbus_write_byte(fd, byte);
 }
 
-class SendByteWorker : public Nan::AsyncWorker {
+class SendByteWorker : public I2cAsyncWorker {
 public:
   SendByteWorker(Nan::Callback *callback, int fd, __u8 byte)
-    : Nan::AsyncWorker(callback), fd(fd), byte(byte) {}
+    : I2cAsyncWorker(callback), fd(fd), byte(byte) {}
   ~SendByteWorker() {}
 
   void Execute() {
     __s32 ret = SendByte(fd, byte);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("sendByte");
     }
   }
 
@@ -40,7 +40,8 @@ private:
 
 NAN_METHOD(SendByteAsync) {
   if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to sendByte(int fd, int byte, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "sendByte",
+      "incorrect arguments passed to sendByte(int fd, int byte, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -52,7 +53,8 @@ NAN_METHOD(SendByteAsync) {
 
 NAN_METHOD(SendByteSync) {
   if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
-    return Nan::ThrowError("incorrect arguments passed to sendByteSync(int fd, int byte)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "sendByteSync",
+      "incorrect arguments passed to sendByteSync(int fd, int byte)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -60,8 +62,7 @@ NAN_METHOD(SendByteSync) {
 
   __s32 ret = SendByte(fd, byte);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "sendByteSync"));
   }
 }
 

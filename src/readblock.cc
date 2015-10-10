@@ -9,7 +9,7 @@ static __s32 ReadBlock(int fd, __u8 cmd, __u8 *block) {
   return i2c_smbus_read_block_data(fd, cmd, block);
 }
 
-class ReadBlockWorker : public Nan::AsyncWorker {
+class ReadBlockWorker : public I2cAsyncWorker {
 public:
   ReadBlockWorker(
     Nan::Callback *callback,
@@ -17,7 +17,7 @@ public:
     __u8 cmd,
     __u8* block,
     v8::Local<v8::Object> &bufferHandle
-  ) : Nan::AsyncWorker(callback), fd(fd), cmd(cmd), block(block), bytesRead(0) {
+  ) : I2cAsyncWorker(callback), fd(fd), cmd(cmd), block(block), bytesRead(0) {
     SaveToPersistent("buffer", bufferHandle);
   }
 
@@ -26,8 +26,8 @@ public:
   void Execute() {
     bytesRead = ReadBlock(fd, cmd, block);
     if (bytesRead == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("readBlock");
     }
   }
 
@@ -58,8 +58,9 @@ NAN_METHOD(ReadBlockAsync) {
       !info[1]->IsInt32() ||
       !info[2]->IsObject() ||
       !info[3]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to readBlock"
-      "(int fd, int cmd, Buffer buffer, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readBlock",
+      "incorrect arguments passed to readBlock"
+      "(int fd, int cmd, Buffer buffer, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -71,8 +72,8 @@ NAN_METHOD(ReadBlockAsync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (bufferLength < 1) {
-    return Nan::ThrowError("buffer passed to readBlock "
-      "has no space for reading data");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readBlock",
+      "buffer passed to readBlock has no space for reading data"));
   }
 
   Nan::AsyncQueueWorker(new ReadBlockWorker(
@@ -89,8 +90,9 @@ NAN_METHOD(ReadBlockSync) {
       !info[0]->IsInt32() ||
       !info[1]->IsInt32() ||
       !info[2]->IsObject()) {
-    return Nan::ThrowError("incorrect arguments passed to readBlockSync"
-      "(int fd, int cmd, Buffer buffer)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readBlockSync",
+      "incorrect arguments passed to readBlockSync"
+      "(int fd, int cmd, Buffer buffer)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -101,14 +103,13 @@ NAN_METHOD(ReadBlockSync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (bufferLength < 1) {
-    return Nan::ThrowError("buffer passed to readBlockSync "
-      "has no space for reading data");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readBlockSync",
+      "buffer passed to readBlockSync has no space for reading data"));
   }
 
   __s32 bytesRead = ReadBlock(fd, cmd, bufferData);
   if (bytesRead == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readBlockSync"));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(bytesRead));

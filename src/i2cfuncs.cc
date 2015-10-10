@@ -9,17 +9,17 @@ static __s32 I2cFuncs(int fd, unsigned long *i2cfuncs) {
   return ioctl(fd, I2C_FUNCS, i2cfuncs);
 }
 
-class I2cFuncsWorker : public Nan::AsyncWorker {
+class I2cFuncsWorker : public I2cAsyncWorker {
 public:
   I2cFuncsWorker(Nan::Callback *callback, int fd)
-    : Nan::AsyncWorker(callback), fd(fd) {}
+    : I2cAsyncWorker(callback), fd(fd) {}
   ~I2cFuncsWorker() {}
 
   void Execute() {
     __s32 ret = I2cFuncs(fd, &i2cfuncs);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("i2cFuncs");
     }
   }
 
@@ -41,7 +41,8 @@ private:
 
 NAN_METHOD(I2cFuncsAsync) {
   if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to i2cFuncs(int fd, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "i2cFuncs",
+      "incorrect arguments passed to i2cFuncs(int fd, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -52,7 +53,8 @@ NAN_METHOD(I2cFuncsAsync) {
 
 NAN_METHOD(I2cFuncsSync) {
   if (info.Length() < 1 || !info[0]->IsInt32()) {
-    return Nan::ThrowError("incorrect arguments passed to i2cFuncsSync(int fd)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "i2cFuncsSync",
+      "incorrect arguments passed to i2cFuncsSync(int fd)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -60,8 +62,7 @@ NAN_METHOD(I2cFuncsSync) {
   unsigned long i2cfuncs;
   __s32 ret = I2cFuncs(fd, &i2cfuncs);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "i2cFuncsSync"));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Uint32>(static_cast<unsigned int>(i2cfuncs)));

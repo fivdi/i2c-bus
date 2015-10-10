@@ -9,17 +9,17 @@ static __s32 WriteQuick(int fd, __u8 bit) {
   return i2c_smbus_write_quick(fd, bit);
 }
 
-class WriteQuickWorker : public Nan::AsyncWorker {
+class WriteQuickWorker : public I2cAsyncWorker {
 public:
   WriteQuickWorker(Nan::Callback *callback, int fd, __u8 bit)
-    : Nan::AsyncWorker(callback), fd(fd), bit(bit) {}
+    : I2cAsyncWorker(callback), fd(fd), bit(bit) {}
   ~WriteQuickWorker() {}
 
   void Execute() {
     __s32 ret = WriteQuick(fd, bit);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("writeQuick");
     }
   }
 
@@ -40,7 +40,8 @@ private:
 
 NAN_METHOD(WriteQuickAsync) {
   if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[3]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to writeQuick(int fd, int bit, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeQuick",
+      "incorrect arguments passed to writeQuick(int fd, int bit, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -52,7 +53,8 @@ NAN_METHOD(WriteQuickAsync) {
 
 NAN_METHOD(WriteQuickSync) {
   if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
-    return Nan::ThrowError("incorrect arguments passed to writeQuickSync(int fd, int bit)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeQuickSync",
+      "incorrect arguments passed to writeQuickSync(int fd, int bit)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -60,8 +62,7 @@ NAN_METHOD(WriteQuickSync) {
 
   __s32 ret = WriteQuick(fd, bit);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeQuickSync"));
   }
 }
 

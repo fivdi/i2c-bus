@@ -9,17 +9,17 @@ static __s32 WriteWord(int fd, __u8 cmd, __u16 word) {
   return i2c_smbus_write_word_data(fd, cmd, word);
 }
 
-class WriteWordWorker : public Nan::AsyncWorker {
+class WriteWordWorker : public I2cAsyncWorker {
 public:
   WriteWordWorker(Nan::Callback *callback, int fd, __u8 cmd, __u16 word)
-    : Nan::AsyncWorker(callback), fd(fd), cmd(cmd), word(word) {}
+    : I2cAsyncWorker(callback), fd(fd), cmd(cmd), word(word) {}
   ~WriteWordWorker() {}
 
   void Execute() {
     __s32 ret = WriteWord(fd, cmd, word);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("writeWord");
     }
   }
 
@@ -41,7 +41,9 @@ private:
 
 NAN_METHOD(WriteWordAsync) {
   if (info.Length() < 4 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsInt32() || !info[3]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to writeWord(int fd, int cmd, int word, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeWord",
+      "incorrect arguments passed to writeWord"
+      "(int fd, int cmd, int word, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -54,8 +56,9 @@ NAN_METHOD(WriteWordAsync) {
 
 NAN_METHOD(WriteWordSync) {
   if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsInt32()) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeWordSync",
+      "incorrect arguments passed to writeWordSync"
+      "(int fd, int cmd, int word)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -64,8 +67,7 @@ NAN_METHOD(WriteWordSync) {
 
   __s32 ret = WriteWord(fd, cmd, word);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeWordSync"));
   }
 }
 

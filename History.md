@@ -1,6 +1,7 @@
 Unpublished
 ===========
 
+  * refactored error objects
   * nan 2.1.0
 
 0.12.0 / Oct 06 2015

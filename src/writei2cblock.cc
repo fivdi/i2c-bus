@@ -9,7 +9,7 @@ static __s32 WriteI2cBlock(int fd, __u8 cmd, __u8 length, const __u8 *block) {
   return i2c_smbus_write_i2c_block_data(fd, cmd, length, block);
 }
 
-class WriteI2cBlockWorker : public Nan::AsyncWorker {
+class WriteI2cBlockWorker : public I2cAsyncWorker {
 public:
   WriteI2cBlockWorker(
     Nan::Callback *callback,
@@ -18,7 +18,7 @@ public:
     __u32 length,
     const __u8* block,
     v8::Local<v8::Object> &bufferHandle
-  ) : Nan::AsyncWorker(callback), fd(fd), cmd(cmd), length(length), block(block) {
+  ) : I2cAsyncWorker(callback), fd(fd), cmd(cmd), length(length), block(block) {
     SaveToPersistent("buffer", bufferHandle);
   }
 
@@ -27,8 +27,8 @@ public:
   void Execute() {
     __s32 ret = WriteI2cBlock(fd, cmd, length, block);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("writeI2cBlock");
     }
   }
 
@@ -60,8 +60,9 @@ NAN_METHOD(WriteI2cBlockAsync) {
       !info[2]->IsUint32() ||
       !info[3]->IsObject() ||
       !info[4]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to writeI2cBlock"
-      "(int fd, int cmd, int length, Buffer buffer, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlock",
+      "incorrect arguments passed to writeI2cBlock"
+      "(int fd, int cmd, int length, Buffer buffer, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -74,13 +75,13 @@ NAN_METHOD(WriteI2cBlockAsync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (length > I2C_SMBUS_I2C_BLOCK_MAX) {
-    return Nan::ThrowError("writeI2cBlock can't write blocks "
-      "with more than 32 characters");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlock",
+      "writeI2cBlock can't write blocks with more than 32 bytes"));
   }
 
   if (length > bufferLength) {
-    return Nan::ThrowError("buffer passed to writeI2cBlock "
-      "contains less than 'length' bytes");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlock",
+      "buffer passed to writeI2cBlock contains less than 'length' bytes"));
   }
 
   Nan::AsyncQueueWorker(new WriteI2cBlockWorker(
@@ -99,8 +100,9 @@ NAN_METHOD(WriteI2cBlockSync) {
       !info[1]->IsInt32() ||
       !info[2]->IsUint32() ||
       !info[3]->IsObject()) {
-    return Nan::ThrowError("incorrect arguments passed to writeI2cBlockSync"
-      "(int fd, int cmd, int length, Buffer buffer)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlockSync",
+      "incorrect arguments passed to writeI2cBlockSync"
+      "(int fd, int cmd, int length, Buffer buffer)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -112,19 +114,18 @@ NAN_METHOD(WriteI2cBlockSync) {
   size_t bufferLength = node::Buffer::Length(bufferHandle);
 
   if (length > I2C_SMBUS_I2C_BLOCK_MAX) {
-    return Nan::ThrowError("writeI2cBlockSync can't write blocks "
-      "with more than 32 bytes");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlockSync",
+      "writeI2cBlockSync can't write blocks with more than 32 bytes"));
   }
 
   if (length > bufferLength) {
-    return Nan::ThrowError("buffer passed to writeI2cBlockSync "
-      "contains less than 'length' bytes");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeI2cBlockSync",
+      "buffer passed to writeI2cBlockSync contains less than 'length' bytes"));
   }
 
   __s32 ret = WriteI2cBlock(fd, cmd, length, bufferData);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeI2cBlockSync"));
   }
 }
 

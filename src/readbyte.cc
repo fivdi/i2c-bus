@@ -9,17 +9,17 @@ static __s32 ReadByte(int fd, __u8 cmd) {
   return i2c_smbus_read_byte_data(fd, cmd);
 }
 
-class ReadByteWorker : public Nan::AsyncWorker {
+class ReadByteWorker : public I2cAsyncWorker {
 public:
   ReadByteWorker(Nan::Callback *callback, int fd, __u8 cmd)
-    : Nan::AsyncWorker(callback), fd(fd), cmd(cmd) {}
+    : I2cAsyncWorker(callback), fd(fd), cmd(cmd) {}
   ~ReadByteWorker() {}
 
   void Execute() {
     byte = ReadByte(fd, cmd);
     if (byte == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("readByte");
     }
   }
 
@@ -42,7 +42,8 @@ private:
 
 NAN_METHOD(ReadByteAsync) {
   if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to readByte(int fd, int cmd, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readByte",
+      "incorrect arguments passed to readByte(int fd, int cmd, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -54,7 +55,8 @@ NAN_METHOD(ReadByteAsync) {
 
 NAN_METHOD(ReadByteSync) {
   if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
-    return Nan::ThrowError("incorrect arguments passed to readByteSync(int fd, int cmd)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "readByteSync",
+      "incorrect arguments passed to readByteSync(int fd, int cmd)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -62,8 +64,7 @@ NAN_METHOD(ReadByteSync) {
 
   __s32 byte = ReadByte(fd, cmd);
   if (byte == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readByteSync"));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(byte));

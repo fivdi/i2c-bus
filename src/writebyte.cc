@@ -9,17 +9,17 @@ static __s32 WriteByte(int fd, __u8 cmd, __u8 byte) {
   return i2c_smbus_write_byte_data(fd, cmd, byte);
 }
 
-class WriteByteWorker : public Nan::AsyncWorker {
+class WriteByteWorker : public I2cAsyncWorker {
 public:
   WriteByteWorker(Nan::Callback *callback, int fd, __u8 cmd, __u8 byte)
-    : Nan::AsyncWorker(callback), fd(fd), cmd(cmd), byte(byte) {}
+    : I2cAsyncWorker(callback), fd(fd), cmd(cmd), byte(byte) {}
   ~WriteByteWorker() {}
 
   void Execute() {
     __s32 ret = WriteByte(fd, cmd, byte);
     if (ret == -1) {
-      char buf[ERRBUFSZ];
-      SetErrorMessage(strerror_r(errno, buf, ERRBUFSZ));
+      SetErrorNo(errno);
+      SetErrorSyscall("writeByte");
     }
   }
 
@@ -41,7 +41,9 @@ private:
 
 NAN_METHOD(WriteByteAsync) {
   if (info.Length() < 4 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsInt32() || !info[3]->IsFunction()) {
-    return Nan::ThrowError("incorrect arguments passed to writeByte(int fd, int cmd, int byte, function cb)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeByte",
+      "incorrect arguments passed to writeByte"
+      "(int fd, int cmd, int byte, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -54,7 +56,8 @@ NAN_METHOD(WriteByteAsync) {
 
 NAN_METHOD(WriteByteSync) {
   if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsInt32()) {
-    return Nan::ThrowError("incorrect arguments passed to writeByteSync(int fd, int cmd, int byte)");
+    return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeByteSync",
+      "incorrect arguments passed to writeByteSync(int fd, int cmd, int byte)"));
   }
 
   int fd = info[0]->Int32Value();
@@ -63,8 +66,7 @@ NAN_METHOD(WriteByteSync) {
 
   __s32 ret = WriteByte(fd, cmd, byte);
   if (ret == -1) {
-    char buf[ERRBUFSZ];
-    return Nan::ThrowError(strerror_r(errno, buf, ERRBUFSZ)); // TODO - use errno also
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeByteSync"));
   }
 }
 
