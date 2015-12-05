@@ -60,7 +60,7 @@ NAN_METHOD(SetAddrSync) {
   int addr = info[1]->Int32Value();
 
   if (SetAddr(fd, addr) != 0) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "setAddrSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "setAddrSync", ""));
   }
 }
 

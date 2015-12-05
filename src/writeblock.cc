@@ -127,7 +127,7 @@ NAN_METHOD(WriteBlockSync) {
 
   __s32 ret = WriteBlock(fd, cmd, length, bufferData);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "writeBlockSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeBlockSync", ""));
   }
 }
 

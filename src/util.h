@@ -30,7 +30,7 @@ protected:
     Nan::HandleScope scope;
 
     v8::Local<v8::Value> argv[1] = {
-      Nan::ErrnoException(ErrorNo(), ErrorSyscall())
+      Nan::ErrnoException(ErrorNo(), ErrorSyscall(), "")
     };
 
     callback->Call(1, argv);

@@ -62,7 +62,7 @@ NAN_METHOD(WriteQuickSync) {
 
   __s32 ret = WriteQuick(fd, bit);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "writeQuickSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeQuickSync", ""));
   }
 }
 

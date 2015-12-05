@@ -126,7 +126,7 @@ NAN_METHOD(ReadI2cBlockSync) {
 
   __s32 bytesRead = ReadI2cBlock(fd, cmd, length, bufferData);
   if (bytesRead == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "readI2cBlockSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readI2cBlockSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(bytesRead));

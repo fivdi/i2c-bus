@@ -109,7 +109,7 @@ NAN_METHOD(ReadBlockSync) {
 
   __s32 bytesRead = ReadBlock(fd, cmd, bufferData);
   if (bytesRead == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "readBlockSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readBlockSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(bytesRead));

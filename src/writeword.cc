@@ -67,7 +67,7 @@ NAN_METHOD(WriteWordSync) {
 
   __s32 ret = WriteWord(fd, cmd, word);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "writeWordSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeWordSync", ""));
   }
 }
 

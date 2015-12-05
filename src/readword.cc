@@ -64,7 +64,7 @@ NAN_METHOD(ReadWordSync) {
 
   __s32 word = ReadWord(fd, cmd);
   if (word == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "readWordSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readWordSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(word));

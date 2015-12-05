@@ -66,7 +66,7 @@ NAN_METHOD(WriteByteSync) {
 
   __s32 ret = WriteByte(fd, cmd, byte);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "writeByteSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeByteSync", ""));
   }
 }
 

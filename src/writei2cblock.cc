@@ -125,7 +125,7 @@ NAN_METHOD(WriteI2cBlockSync) {
 
   __s32 ret = WriteI2cBlock(fd, cmd, length, bufferData);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "writeI2cBlockSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "writeI2cBlockSync", ""));
   }
 }
 

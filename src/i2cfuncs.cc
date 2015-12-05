@@ -62,7 +62,7 @@ NAN_METHOD(I2cFuncsSync) {
   unsigned long i2cfuncs;
   __s32 ret = I2cFuncs(fd, &i2cfuncs);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "i2cFuncsSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "i2cFuncsSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Uint32>(static_cast<unsigned int>(i2cfuncs)));

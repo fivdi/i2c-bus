@@ -64,7 +64,7 @@ NAN_METHOD(ReadByteSync) {
 
   __s32 byte = ReadByte(fd, cmd);
   if (byte == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "readByteSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "readByteSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(byte));

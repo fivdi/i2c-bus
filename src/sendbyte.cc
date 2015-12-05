@@ -62,7 +62,7 @@ NAN_METHOD(SendByteSync) {
 
   __s32 ret = SendByte(fd, byte);
   if (ret == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "sendByteSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "sendByteSync", ""));
   }
 }
 

@@ -61,7 +61,7 @@ NAN_METHOD(ReceiveByteSync) {
 
   __s32 byte = ReceiveByte(fd);
   if (byte == -1) {
-    return Nan::ThrowError(Nan::ErrnoException(errno, "receiveByteSync"));
+    return Nan::ThrowError(Nan::ErrnoException(errno, "receiveByteSync", ""));
   }
 
   info.GetReturnValue().Set(Nan::New<v8::Integer>(byte));
