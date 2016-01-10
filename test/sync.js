@@ -66,7 +66,7 @@ function readWriteWord() {
 
   newtl = i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
   assert(typeof newtl === 'number' && newtl <= 0xffff, 'expeted readWordSync to read a word');
-  assert.strictEqual(tl, newtl, 'unexpected tl');
+  assert.strictEqual(tl, newtl, 'expected to read word written');
 }
 
 // Test writeI2cBlockSync & readI2cBlockSync

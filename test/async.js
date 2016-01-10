@@ -35,19 +35,19 @@ function i2cPlainReadWrite() {
   i2c1.i2cWrite(DS1621_ADDR, cmdSetTL.length, cmdSetTL, function (err, bytesWritten, buffer) {
     assert(!err, 'can\'t i2cWrite cmdSetTL');
     assert.strictEqual(bytesWritten, cmdSetTL.length, 'expected i2cWrite to write 3 bytes');
-    assert.strictEqual(cmdSetTL, buffer, 'expected i2cWrite to to return buffer cmdSetTL');
+    assert.strictEqual(cmdSetTL, buffer, 'expected cmdSetTL to be passed to i2cWrite callback');
 
     waitForWrite(function () {
       i2c1.i2cWrite(DS1621_ADDR, cmdGetTL.length, cmdGetTL, function (err, bytesWritten, buffer) {
         assert(!err, 'can\'t i2cWrite cmdGetTL');
         assert.strictEqual(bytesWritten, cmdGetTL.length, 'expected i2cWrite to write 1 byte');
-        assert.strictEqual(cmdGetTL, buffer, 'expected i2cWrite to to return buffer cmdGetTL');
+        assert.strictEqual(cmdGetTL, buffer, 'expected cmdGetTL to be passed to i2cWrite callback');
 
         i2c1.i2cRead(DS1621_ADDR, 2, tl, function (err, bytesRead, buffer) {
           assert(!err, 'can\'t i2cRead tl');
           assert.strictEqual(bytesRead, 2, 'expected i2cRead to read 2 bytes');
           assert.strictEqual(tl.readUInt16LE(0), 25, 'expected i2cRead to read value 25');
-          assert.strictEqual(tl, buffer, 'expected i2cRead to to return buffer tl');
+          assert.strictEqual(tl, buffer, 'expected tl to be passed to i2cRead callback');
 
           finished();
         });
@@ -65,14 +65,14 @@ function readWriteI2cBlock() {
   i2c1.writeI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesWritten, buffer) {
     assert(!err, 'can\'t writeI2cBlock to tl');
     assert.strictEqual(bytesWritten, 2, 'expected writeI2cBlock to write 2 bytes');
-    assert.strictEqual(newtl, buffer, 'expected writeI2cBlock to to return buffer newtl');
+    assert.strictEqual(newtl, buffer, 'expected newtl to be passed to writeI2cBlock callback');
 
     waitForWrite(function () {
       i2c1.readI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, newtl, function (err, bytesRead, buffer) {
         assert(!err, 'can\'t readI2cBlock from tl');
         assert.strictEqual(bytesRead, 2, 'expected readI2cBlock to read 2 bytes');
         assert.strictEqual(buffer.readUInt16LE(0), 22, 'expected readI2cBlock to read value 22');
-        assert.strictEqual(newtl, buffer, 'expected readI2cBlock to to return buffer newtl');
+        assert.strictEqual(newtl, buffer, 'expected newtl to be passed to readI2cBlock callback');
 
         i2cPlainReadWrite();
       });
@@ -96,7 +96,7 @@ function readWriteWord() {
       i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function (err, newtl2) {
         assert(!err, 'can\'t read new word from tl');
         assert(typeof newtl2 === 'number' && newtl2 <= 0xffff, 'expeted readWord to read a word');
-        assert.strictEqual(newtl, newtl2, 'unexpected');
+        assert.strictEqual(newtl, newtl2, 'expected to read word written');
 
         readWriteI2cBlock();
       });
