@@ -3,22 +3,39 @@
 This guide assumes that release 2015-01-31 or later of the Raspbian Operating
 System is being used.
 
-An I2C bus is broken out to pins 3 (SDA) and 5 (SCL) on the P1 header. To
-use this I2C bus, the following steps need to be performed:
+An I2C bus is broken out to pins 3 (SDA) and 5 (SCL) on the P1 header. The
+number of steps that need to be performed to configure this I2C bus for usage
+by user `pi` on Raspbian without root privileges is highly dependent in the
+version of Raspbian being used.
+
+On Raspbian Jessie 2015-11-21 the complete configuration can be performed with
+the `raspi-config` software configuration tool which can be run from a terminal
+window as follows:
+
+```
+sudo raspi-config
+```
+
+In the `raspi-config` user interface navigate to `Advanced Options >> I2C` and
+answer both questions with `<Yes>`. After the next reboot user `pi` will be
+able to use the I2C bus without root privileges.
+
+On older versions of Raspbian (prior to Raspbian Jessie 2015-11-21) the
+`raspi-config` tool can still be used to configure the I2C bus, but additional
+steps typically need to be performed.
 
 #### Step 1 - Enable I2C
 
-To enable I2C add the following line to `/boot/config.txt`:
+To enable I2C ensure that `/boot/config.txt` contains the following line:
 
 ```
 dtparam=i2c_arm=on
 ```
 
-The raspi-config tool can also be used to enable I2C under "Advanced Options".
-
 #### Step 2 - Enable user space access to I2C
 
-To enable userspace access to I2C add the following line to `/etc/modules`:
+To enable userspace access to I2C ensure that `/etc/modules` contains the
+following line:
 
 ```
 i2c-dev
