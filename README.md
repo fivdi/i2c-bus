@@ -1,16 +1,16 @@
 ## i2c-bus
 
-I2C serial bus access with **io.js** or **Node.js** on Linux boards like the
-Raspberry Pi, Raspberry Pi 2, BeagleBone, BeagleBone Black, and Intel Edison.
-All methods have asynchronous and synchronous forms.
+I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi
+Zero, 1, 2, or 3, BeagleBone, BeagleBone Black, or Intel Edison. All methods
+have asynchronous and synchronous forms.
 
 ## Installation
 
     $ npm install i2c-bus
 
-If you're using io.js v3 or Node.js v4 or higher and seeing lots of compile
-errors when installing i2c-bus, it's very likely that gcc/g++ 4.8 or higher are
-not installed. See
+If you're using Node.js v4 or higher and seeing lots of compile errors when
+installing i2c-bus, it's very likely that gcc/g++ 4.8 or higher are not
+installed. See
 [Node.js v4 and native addons](https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons)
 for details.
 
