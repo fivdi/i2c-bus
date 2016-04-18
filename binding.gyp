@@ -22,7 +22,7 @@
           "./src/win/i2c.cc",
           "./src/win/i2c.h" 
         ],
-        'msvs_windows_target_platform_version': 'v10.0',
+        'msvs_windows_sdk_version': 'v10.0',
         'win_delay_load_hook': 'false',
         'msvs_onecore_vcpp_libs': 1,
         'msvs_settings': {
