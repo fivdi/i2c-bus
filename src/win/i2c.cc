@@ -59,7 +59,6 @@ NAN_METHOD(WinI2c::OpenSync) {
       "(string i2cControllerName)"));
   }
 
-  Nan::HandleScope scope;
   v8::String::Utf8Value str(info[0]->ToString());
   std::string stdStr = std::string(*str);
   std::wstring stdWStr;
@@ -69,7 +68,7 @@ NAN_METHOD(WinI2c::OpenSync) {
   DeviceInformationCollection^ i2cDeviceControllers = create_task(DeviceInformation::FindAllAsync(deviceSelector)).get();
 
   if (nullptr == i2cDeviceControllers) {
-    Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::OpenSync", "DeviceInformation::FindAllAsync failed to return controller(s)"));
+    return Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::OpenSync", "DeviceInformation::FindAllAsync failed to return controller(s)"));
   }
 
   WinI2c* obj = Nan::ObjectWrap::Unwrap<WinI2c>(info.This());
@@ -95,7 +94,7 @@ NAN_METHOD(WinI2c::SetDevice) {
     
     obj->_i2cDevice = create_task(I2cDevice::FromIdAsync(obj->_i2cDeviceId, settings)).get();
     if (nullptr == obj->_i2cDevice) {
-      Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::SetDevice", "I2cDevice::FromIdAsync failed to return an i2c device"));
+      return Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::SetDevice", "I2cDevice::FromIdAsync failed to return an i2c device"));
     }
   }
 }
@@ -111,7 +110,7 @@ NAN_METHOD(WinI2c::CloseSync) {
 }
 
 NAN_METHOD(WinI2c::Read) {
-  Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::Read", "Not Implemented"));
+  return Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::Read", "Not Implemented"));
 }
 
 NAN_METHOD(WinI2c::ReadPartial) {
@@ -123,7 +122,6 @@ NAN_METHOD(WinI2c::ReadPartial) {
       "(int length, Buffer buffer)"));
   }
 
-  Nan::HandleScope scope;
   uint32 length = info[0]->Uint32Value();
   v8::Local<v8::Object> bufferHandle = info[1].As<v8::Object>();
   int bytesRead = -1;
@@ -156,7 +154,7 @@ NAN_METHOD(WinI2c::ReadPartial) {
     }
   }
   catch (Exception^ e) {
-    Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::ReadPartial", ""));
+    return Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::ReadPartial", ""));
   }
 
   for (int i = 0; i < readBuf->Length; i++) {
@@ -176,7 +174,6 @@ NAN_METHOD(WinI2c::Write) {
       "incorrect arguments passed to WinI2c::Write"));
   }
 
-  Nan::HandleScope scope;
   std::vector<BYTE> bytes;
   v8::Handle<v8::Value> val;
   v8::Local<v8::Array> arr = Nan::New<v8::Array>();
@@ -192,7 +189,7 @@ NAN_METHOD(WinI2c::Write) {
   try {
     obj->_i2cDevice->Write(ArrayReference<BYTE>(bytes.data(), static_cast<unsigned int>(bytes.size())));
   } catch (Exception^ e) {
-    Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::Write", ""));
+    return Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::Write", ""));
   }
 }
 
@@ -204,8 +201,7 @@ NAN_METHOD(WinI2c::WritePartial) {
       "incorrect arguments passed to WinI2c::WritePartial"
       "(int length, Buffer buffer)"));
   }
-  
-  Nan::HandleScope scope;
+
   uint32 length = info[0]->Uint32Value();
   v8::Local<v8::Object> bufferHandle = info[1].As<v8::Object>();
   int bytesWritten = -1;
@@ -242,7 +238,7 @@ NAN_METHOD(WinI2c::WritePartial) {
     }
   }
   catch (Exception^ e) {
-    Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::WritePartial", ""));
+    return Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::WritePartial", ""));
   }
 
   if (bytesWritten == -1) {
@@ -253,7 +249,7 @@ NAN_METHOD(WinI2c::WritePartial) {
 }
 
 NAN_METHOD(WinI2c::WriteRead) {
-  Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::WriteRead", "Not Implemented"));
+  return Nan::ThrowError(Nan::ErrnoException(EPERM, "WinI2c::WriteRead", "Not Implemented"));
 }
 
 NAN_METHOD(WinI2c::WriteReadPartial) {
@@ -266,7 +262,6 @@ NAN_METHOD(WinI2c::WriteReadPartial) {
       "(int cmd, int length, Buffer buffer)"));
   }
 
-  Nan::HandleScope scope;
   uint32 length = info[1]->Uint32Value();
   v8::Local<v8::Object> bufferHandle = info[2].As<v8::Object>();
   int bytesRead = -1;
@@ -301,7 +296,7 @@ NAN_METHOD(WinI2c::WriteReadPartial) {
     }
   }
   catch (Exception^ e) {
-    Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::WriteReadPartial", ""));
+    return Nan::ThrowError(Nan::ErrnoException(e->HResult, "WinI2c::WriteReadPartial", ""));
   }
 
   for (int i = 0; i < readBuf->Length; i++) {
