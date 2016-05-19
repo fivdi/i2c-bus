@@ -19,6 +19,9 @@
       }],
       ["OS == \"win\"", {
         "sources": [
+          "./src/win/readPartial.cc",
+          "./src/win/writePartial.cc",
+          "./src/win/writeReadPartial.cc",
           "./src/win/i2c.cc",
           "./src/win/i2c.h" 
         ],

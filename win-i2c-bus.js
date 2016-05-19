@@ -10,7 +10,7 @@ function Bus(busNumber) {
     return new Bus(busNumber);
   }
 
-  this._busNumber = busNumber;
+  this._controllerName = busNumber;
   this._peripherals = [];
 }
 
@@ -21,21 +21,60 @@ function peripheralSync(bus, addr) {
 
   if (peripheral === undefined) {
     peripheral = new i2c.WinI2c();
-    peripheral.openSync(bus._busNumber);
-    peripheral.setDevice(addr);
+    peripheral.getControllerSync(bus._controllerName);
     bus._peripherals[addr] = peripheral;
+    peripheral.createDeviceSync(addr, 1, 0);
   }
   return peripheral;
 }
 
+function peripheral(bus, addr, cb) {
+  var device = bus._peripherals[addr];
+  if (device === undefined) {
+    device = new i2c.WinI2c();
+    device.getController(bus._controllerName, function (err) {
+      if (err) {
+        return cb(err);
+      }
+
+      bus._peripherals[addr] = device;
+
+      device.createDevice(addr, 1, 0, function (err) {
+        if (err) {
+          return cb(err);
+        }
+
+        cb(null, device);
+      });
+    });
+  } else {
+    setImmediate(cb, null, device);
+  }
+}
+
 Bus.prototype.close = function (cb) {
-  throw new Error("Not implemented");
+  var peripherals = this._peripherals.filter(function (peripheral) {
+    return peripheral !== undefined;
+  });
+
+  (function close() {
+    if (peripherals.length === 0) {
+      return setImmediate(cb, null);
+    }
+
+    peripherals.pop().closeDevice(function (err) {
+      if (err) {
+        return cb(err);
+      }
+      close();
+    });
+  }());
 };
 
 Bus.prototype.closeSync = function () {
   this._peripherals.forEach(function (peripheral) {
     if (peripheral !== undefined) {
-      peripheral.closeSync();
+      peripheral.closeDeviceSync();
     }
   });
   this._peripherals = [];
@@ -74,11 +113,17 @@ Bus.prototype.readBlockSync = function (addr, cmd, buffer) {
 };
 
 Bus.prototype.readI2cBlock = function (addr, cmd, length, buffer, cb) {
-  throw new Error("Not implemented");
+  peripheral(this, addr, function (err, device) {
+    if (err) {
+      return cb(err);
+    }
+
+    device.writeReadPartial(cmd, length, buffer, cb);
+  }.bind(this));
 };
 
 Bus.prototype.readI2cBlockSync = function (addr, cmd, length, buffer) {
-  return peripheralSync(this, addr).writeReadPartial(cmd, length, buffer);
+  return peripheralSync(this, addr).writeReadPartialSync(cmd, length, buffer);
 };
 
 Bus.prototype.receiveByte = function (addr, cb) {
@@ -134,19 +179,31 @@ Bus.prototype.writeI2cBlockSync = function (addr, cmd, length, buffer) {
 };
 
 Bus.prototype.i2cRead = function (addr, length, buffer, cb) {
-  throw new Error("Not implemented");
+  peripheral(this, addr, function (err, device) {
+    if (err) {
+      return cb(err);
+    }
+
+    device.readPartial(length, buffer, cb);
+  }.bind(this));
 };
 
 Bus.prototype.i2cReadSync = function (addr, length, buffer) {
-  return peripheralSync(this, addr).readPartial(length, buffer);
+  return peripheralSync(this, addr).readPartialSync(length, buffer);
 };
 
 Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
-  throw new Error("Not implemented");
+  peripheral(this, addr, function (err, device) {
+    if (err) {
+      return cb(err);
+    }
+
+    device.writePartial(length, buffer, cb);
+  }.bind(this));
 };
 
 Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
-  return peripheralSync(this, addr).writePartial(length, buffer);
+  return peripheralSync(this, addr).writePartialSync(length, buffer);
 };
 
 Bus.prototype.scan = function (cb) {
@@ -158,4 +215,3 @@ Bus.prototype.scanSync = function () {
 };
 
 module.exports.Bus = Bus;
-
