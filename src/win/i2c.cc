@@ -70,7 +70,9 @@ public:
     DeviceInformationCollection^ i2cDeviceControllers = create_task(DeviceInformation::FindAllAsync(deviceSelector)).get();
     
     if (nullptr == i2cDeviceControllers) {
-      return Nan::ThrowError(Nan::ErrnoException(EPERM, "getController", "DeviceInformation::FindAllAsync failed to return controller(s)"));
+      SetErrorNo(EPERM);
+      SetErrorSyscall("getController");
+      return;
     }
 
     obj->SetControllerId(i2cDeviceControllers->GetAt(0)->Id);
@@ -137,29 +139,30 @@ public:
         Nan::Callback *callback,
         WinI2c* obj,
         I2cConnectionSettings^ settings
-        ) : I2cAsyncWorker(callback), obj(obj), settings(settings) { }
+  ) : I2cAsyncWorker(callback), obj(obj), settings(settings) { }
 
-    ~CreateDeviceWorker() {}
+  ~CreateDeviceWorker() {}
 
-    void Execute() {
-      I2cDevice^ device = create_task(I2cDevice::FromIdAsync(obj->GetControllerId(), settings)).get();
-      if (nullptr == device) {
-        return Nan::ThrowError(Nan::ErrnoException(EPERM, "createDevice",
-          "I2cDevice::FromIdAsync failed to return an i2c device"));
-      } else {
-          obj->SetDevice(device);
-      }
+  void Execute() {
+    I2cDevice^ device = create_task(I2cDevice::FromIdAsync(obj->GetControllerId(), settings)).get();
+    if (nullptr == device) {
+      SetErrorNo(EPERM);
+      SetErrorSyscall("createDevice");
+      return;
+    } else {
+        obj->SetDevice(device);
     }
+  }
 
-    void HandleOKCallback() {
-        Nan::HandleScope scope;
-        v8::Local<v8::Value> argv[] = { Nan::Null() };
-        callback->Call(1, argv);
-    }
+  void HandleOKCallback() {
+      Nan::HandleScope scope;
+      v8::Local<v8::Value> argv[] = { Nan::Null() };
+      callback->Call(1, argv);
+  }
 
 private:
-    WinI2c* obj;
-    I2cConnectionSettings^ settings;
+  WinI2c* obj;
+  I2cConnectionSettings^ settings;
 };
 
 NAN_METHOD(WinI2c::CreateDevice) {

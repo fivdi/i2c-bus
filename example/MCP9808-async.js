@@ -119,9 +119,13 @@ function readTempC(callback) {
     function (cb) {
       setTimeout(function () {
         console.log("Shutdown MCP9808.... ");
-        shutdown_wake(1);
-        i2c1.close();
+        shutdown_wake(1, function () {
+          cb(null);
+        });
       }, 250);
+    },
+    function (cb) {
+      i2c1.close(cb);
     },
   ], function (err) {
     if (err) {
