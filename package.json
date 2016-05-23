@@ -1,6 +1,6 @@
 {
   "name": "i2c-bus",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "I2C serial bus access with JavaScript",
   "main": "i2c-bus.js",
   "directories": {
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "bindings": "~1.2.1",
-    "nan": "~2.3.2"
+    "nan": "~2.3.3"
   },
   "devDependencies": {
     "async": "~1.5.2",
