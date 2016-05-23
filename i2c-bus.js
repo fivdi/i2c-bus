@@ -398,3 +398,7 @@ Bus.prototype.scanSync = function () {
   return addresses;
 };
 
+if ("win32" == process.platform) {
+  Bus = require('./win-i2c-bus.js').Bus;
+}
+
