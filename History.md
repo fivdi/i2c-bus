@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * examples SI1145-sync.js and two-devices-win.js added
+
+
 1.1.0 / May 23 2016
 ===================
 
