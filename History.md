@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.1 / Jul 22 2016
+===================
 
   * examples SI1145-sync.js and two-devices-win.js added
   * nan 2.4.0, lodash 4.13.1, async 2.0.0
