@@ -10,9 +10,7 @@ var fs = require('fs'),
   i2c = require('../'),
   i2c1 = i2c.openSync(1);
 
-var EIO = 5,       /* I/O error */
-  EBUSY = 16,      /* Device or resource busy */
-  EREMOTEIO = 121; /* Remote I/O error */
+var EBUSY = 16; /* Device or resource busy */
 
 function scan(first, last) {
   var addr;
@@ -32,12 +30,10 @@ function scan(first, last) {
         i2c1.writeQuickSync(addr, 0);
         fs.writeSync(0, ' ' + addr.toString(16)); // device found, print addr
       } catch (e) {
-        if (e.errno === EREMOTEIO || e.errno === EIO) {
-          fs.writeSync(0, ' --');
-        } else if (e.errno === EBUSY) {
+        if (e.errno === EBUSY) {
           fs.writeSync(0, ' UU');
         } else {
-          throw e; // Oops, don't know what to do!
+          fs.writeSync(0, ' --');
         }
       }
     }

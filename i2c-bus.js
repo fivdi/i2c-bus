@@ -7,10 +7,6 @@ var DEVICE_PREFIX = '/dev/i2c-',
   FIRST_SCAN_ADDR = 0x03,
   LAST_SCAN_ADDR = 0x77;
 
-var EIO = 5,       /* I/O error */
-  EBUSY = 16,      /* Device or resource busy */
-  EREMOTEIO = 121; /* Remote I/O error */
-
 function Bus(busNumber) {
   if (!(this instanceof Bus)) {
     return new Bus(busNumber);
@@ -360,13 +356,7 @@ Bus.prototype.scan = function (cb) {
       }
 
       scanBus.receiveByte(addr, function (err) {
-        if (err) {
-          if (err.errno !== EIO &&
-              err.errno !== EREMOTEIO &&
-              err.errno !== EBUSY) {
-            return cb(err);
-          }
-        } else {
+        if (!err) {
           addresses.push(addr);
         }
 
@@ -385,12 +375,7 @@ Bus.prototype.scanSync = function () {
     try {
       scanBus.receiveByteSync(addr);
       addresses.push(addr);
-    } catch (e) {
-      if (e.errno !== EIO &&
-          e.errno !== EREMOTEIO &&
-          e.errno !== EBUSY) {
-        throw e;
-      }
+    } catch (ignore) {
     }
   }
 

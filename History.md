@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * allow scan and scanSync to continue scanning on all errors
+
 1.1.1 / Jul 22 2016
 ===================
 
