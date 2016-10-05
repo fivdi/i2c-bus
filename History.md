@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * allow scan and scanSync to continue scanning on all errors
+  * upgrade to lodash v4.16.3 and async v2.0.1
 
 1.1.1 / Jul 22 2016
 ===================
