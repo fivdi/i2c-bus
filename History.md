@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.1.2 / Oct 05 2016
+===================
 
   * allow scan and scanSync to continue scanning on all errors
   * upgrade to lodash v4.16.3 and async v2.0.1
