@@ -216,8 +216,8 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Methods
 
-- [open(busNumber, cb)](https://github.com/fivdi/i2c-bus#openbusnumber-cb)
-- [openSync(busNumber)](https://github.com/fivdi/i2c-bus#opensyncbusnumber)
+- [open(busNumber [, options], cb)](https://github.com/fivdi/i2c-bus#openbusnumber--options-cb)
+- [openSync(busNumber [, options])](https://github.com/fivdi/i2c-bus#opensyncbusnumber--options)
 
 ### Class Bus
 
@@ -277,16 +277,30 @@ use try/catch to handle exceptions or allow them to bubble up.
 - [funcs.smbusReadI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbusreadi2cblock---boolean)
 - [funcs.smbusWriteI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbuswritei2cblock---boolean)
 
-### open(busNumber, cb)
+### open(busNumber [, options], cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
+- options - an optional options object
 - cb - completion callback
 
 Asynchronous open. Returns a new Bus object. The callback gets one argument (err).
 
-### openSync(busNumber)
+The following options are supported:
+- forceAccess - A boolean value specifying whether access to devices on the
+I2C bus should be allowed even if they are already in use by a driver. The
+valid values for forceAccess are true and false. Optional, the default value
+is false.
+
+### openSync(busNumber [, options])
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
+- options - an optional options object
 
 Synchronous open. Returns a new Bus object.
+
+The following options are supported:
+- forceAccess - A boolean value specifying whether access to devices on the
+I2C bus should be allowed even if they are already in use by a driver. The
+valid values for forceAccess are true and false. Optional, the default value
+is false.
 
 ### bus.close(cb)
 - cb - completion callback

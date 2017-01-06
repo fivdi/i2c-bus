@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * added forceAccess option which allows access to devices even if they are already in use by a driver
+
 1.1.2 / Oct 05 2016
 ===================
 

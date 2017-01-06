@@ -5,18 +5,18 @@
 #include "./setaddr.h"
 #include "./util.h"
 
-static int SetAddr(int fd, int addr) {
-  return ioctl(fd, I2C_SLAVE, addr);
+static int SetAddr(int fd, int addr, bool forceAccess) {
+  return ioctl(fd, forceAccess ? I2C_SLAVE_FORCE : I2C_SLAVE, addr);
 }
 
 class SetAddrWorker : public I2cAsyncWorker {
 public:
-  SetAddrWorker(Nan::Callback *callback, int fd, int addr)
-    : I2cAsyncWorker(callback), fd(fd), addr(addr) {}
+  SetAddrWorker(Nan::Callback *callback, int fd, int addr, bool forceAccess)
+    : I2cAsyncWorker(callback), fd(fd), addr(addr), forceAccess(forceAccess) {}
   ~SetAddrWorker() {}
 
   void Execute() {
-    if (SetAddr(fd, addr) == -1) {
+    if (SetAddr(fd, addr, forceAccess) == -1) {
       SetErrorNo(errno);
       SetErrorSyscall("setAddr");
     }
@@ -35,31 +35,34 @@ public:
 private:
   int fd;
   int addr;
+  bool forceAccess;
 };
 
 NAN_METHOD(SetAddrAsync) {
-  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
+  if (info.Length() < 4 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsBoolean() || !info[3]->IsFunction()) {
     return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setAddr",
-      "incorrect arguments passed to setAddr(int fd, int addr, function cb)"));
+      "incorrect arguments passed to setAddr(int fd, int addr, bool forceAccess, function cb)"));
   }
 
   int fd = info[0]->Int32Value();
   int addr = info[1]->Int32Value();
-  Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
+  bool forceAccess = info[2]->BooleanValue();
+  Nan::Callback *callback = new Nan::Callback(info[3].As<v8::Function>());
 
-  Nan::AsyncQueueWorker(new SetAddrWorker(callback, fd, addr));
+  Nan::AsyncQueueWorker(new SetAddrWorker(callback, fd, addr, forceAccess));
 }
 
 NAN_METHOD(SetAddrSync) {
-  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
+  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsBoolean()) {
     return Nan::ThrowError(Nan::ErrnoException(EINVAL, "setAddrSync",
-      "incorrect arguments passed to setAddrSync(int fd, int addr)"));
+      "incorrect arguments passed to setAddrSync(int fd, int addr, bool forceAccess)"));
   }
 
   int fd = info[0]->Int32Value();
   int addr = info[1]->Int32Value();
+  bool forceAccess = info[2]->BooleanValue();
 
-  if (SetAddr(fd, addr) != 0) {
+  if (SetAddr(fd, addr, forceAccess) != 0) {
     return Nan::ThrowError(Nan::ErrnoException(errno, "setAddrSync", ""));
   }
 }

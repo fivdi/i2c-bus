@@ -7,12 +7,15 @@ var DEVICE_PREFIX = '/dev/i2c-',
   FIRST_SCAN_ADDR = 0x03,
   LAST_SCAN_ADDR = 0x77;
 
-function Bus(busNumber) {
+function Bus(busNumber, options) {
   if (!(this instanceof Bus)) {
-    return new Bus(busNumber);
+    return new Bus(busNumber, options);
   }
 
+  options = options || {};
+
   this._busNumber = busNumber;
+  this._forceAccess = !!options.forceAccess || false;
   this._peripherals = [];
 }
 
@@ -40,15 +43,24 @@ function I2cFuncs(i2cFuncBits) {
   this.smbusWriteI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_I2C_BLOCK;
 }
 
-function open(busNumber, cb) {
-  var bus = new Bus(busNumber);
+function open(busNumber, options, cb) {
+  var bus;
+
+  if (typeof options === 'function') {
+    cb = options;
+    options = undefined;
+  }
+
+  bus = new Bus(busNumber, options);
+
   setImmediate(cb, null);
+
   return bus;
 }
 module.exports.open = open;
 
-function openSync(busNumber) {
-  return new Bus(busNumber);
+function openSync(busNumber, options) {
+  return new Bus(busNumber, options);
 }
 module.exports.openSync = openSync;
 
@@ -63,7 +75,7 @@ function peripheral(bus, addr, cb) {
 
       bus._peripherals[addr] = device;
 
-      i2c.setAddrAsync(device, addr, function (err) {
+      i2c.setAddrAsync(device, addr, bus._forceAccess, function (err) {
         if (err) {
           return cb(err);
         }
@@ -82,7 +94,7 @@ function peripheralSync(bus, addr) {
   if (peripheral === undefined) {
     peripheral = fs.openSync(DEVICE_PREFIX + bus._busNumber, 'r+');
     bus._peripherals[addr] = peripheral;
-    i2c.setAddrSync(peripheral, addr);
+    i2c.setAddrSync(peripheral, addr, bus._forceAccess);
   }
 
   return peripheral;
@@ -340,7 +352,7 @@ Bus.prototype.scan = function (cb) {
   var scanBus,
     addresses = [];
 
-  scanBus = open(this._busNumber, function (err) {
+  scanBus = open(this._busNumber, {forceAccess: this._forceAccess}, function (err) {
     if (err) {
       return cb(err);
     }
@@ -367,7 +379,7 @@ Bus.prototype.scan = function (cb) {
 };
 
 Bus.prototype.scanSync = function () {
-  var scanBus = openSync(this._busNumber),
+  var scanBus = openSync(this._busNumber, {forceAccess: this._forceAccess}),
     addresses = [],
     addr;
 
