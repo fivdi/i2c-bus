@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.2.0 / Jan 06 2017
+===================
 
   * added forceAccess option which allows access to devices even if they are already in use by a driver
   * upgrade to nan v2.5.0, lodash v4.17.4 and async v2.1.4
