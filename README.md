@@ -286,9 +286,9 @@ Asynchronous open. Returns a new Bus object. The callback gets one argument (err
 
 The following options are supported:
 - forceAccess - A boolean value specifying whether access to devices on the
-I2C bus should be allowed even if they are already in use by a driver. The
-valid values for forceAccess are true and false. Optional, the default value
-is false.
+I2C bus should be allowed even if they are already in use by a kernel
+driver/module. The valid values for forceAccess are true and false. Optional,
+the default value is false.
 
 ### openSync(busNumber [, options])
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -298,9 +298,9 @@ Synchronous open. Returns a new Bus object.
 
 The following options are supported:
 - forceAccess - A boolean value specifying whether access to devices on the
-I2C bus should be allowed even if they are already in use by a driver. The
-valid values for forceAccess are true and false. Optional, the default value
-is false.
+I2C bus should be allowed even if they are already in use by a kernel
+driver/module. The valid values for forceAccess are true and false. Optional,
+the default value is false.
 
 ### bus.close(cb)
 - cb - completion callback

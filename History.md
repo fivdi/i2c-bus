@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * documentation for forceAccess option improved
+
 1.2.0 / Jan 06 2017
 ===================
 
