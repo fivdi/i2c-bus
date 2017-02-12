@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.2.1 / Feb 12 2017
+===================
 
   * documentation for forceAccess option improved
   * upgrade to nan v2.5.1
