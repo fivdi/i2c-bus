@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * documentation for forceAccess option improved
+  * upgrade to nan v2.5.1
 
 1.2.0 / Jan 06 2017
 ===================
