@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.2.2 / May 01 2017
+===================
 
   * update dependencies
   * document supported node versions
