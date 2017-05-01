@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * update dependencies
+  * document supported node versions
+
 1.2.1 / Feb 12 2017
 ===================
 
