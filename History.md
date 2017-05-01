@@ -3,6 +3,7 @@ Unpublished
 
   * update dependencies
   * document supported node versions
+  * fix writeQuick argument check
 
 1.2.1 / Feb 12 2017
 ===================

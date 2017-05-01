@@ -39,7 +39,7 @@ private:
 };
 
 NAN_METHOD(WriteQuickAsync) {
-  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[3]->IsFunction()) {
+  if (info.Length() < 3 || !info[0]->IsInt32() || !info[1]->IsInt32() || !info[2]->IsFunction()) {
     return Nan::ThrowError(Nan::ErrnoException(EINVAL, "writeQuick",
       "incorrect arguments passed to writeQuick(int fd, int bit, function cb)"));
   }
