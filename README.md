@@ -4,7 +4,7 @@ I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi,
 C.H.I.P., BeagleBone or Intel Edison. All methods have asynchronous and
 synchronous forms.
 
-i2c-bus supports Node.js v0.10, v0.12, v4, v5, v6 and v7.
+i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7 and 8.
 
 ## Installation
 
