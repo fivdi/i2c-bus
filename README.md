@@ -8,7 +8,9 @@ i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7 and 8.
 
 ## Installation
 
-    $ npm install i2c-bus
+```
+npm install i2c-bus
+```
 
 If you're using Node.js v4 or higher and seeing lots of compile errors when
 installing i2c-bus, it's very likely that gcc/g++ 4.8 or higher are not
