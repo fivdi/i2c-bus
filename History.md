@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * update dependencies (bindings v1.3.0, nan v2.7.0)
+
 1.2.2 / May 01 2017
 ===================
 
