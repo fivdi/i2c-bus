@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.2.3 / Oct 15 2017
+===================
 
   * update dependencies (bindings v1.3.0, nan v2.7.0)
 
