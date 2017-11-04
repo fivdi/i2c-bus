@@ -1,18 +1,15 @@
 {
   "targets": [{
     "target_name": "i2c",
-    "conditions": [[
-      "OS == \"linux\"", {
-        "cflags": [
-          "-Wno-unused-local-typedefs"
-        ]
-      }]
-    ],
     "include_dirs" : [
       "<!(node -e \"require('nan')\")"
     ],
     "conditions": [
       ["OS == \"linux\"", {
+        "cflags": [
+          "-Wno-unused-local-typedefs",
+          "-Wno-deprecated-declarations"
+        ],
         "sources": [
          "./src/i2c.cc"
         ]
