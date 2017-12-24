@@ -14,20 +14,6 @@ i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 npm install i2c-bus
 ```
 
-If you're using Node.js v4 or higher and seeing lots of compile errors when
-installing i2c-bus, it's very likely that gcc/g++ 4.8 or higher are not
-installed. See
-[Node.js v4 and native addons](https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons)
-for details.
-
-If you're using Node.js v0.10.29 on the Raspberry Pi and seeing a compile
-error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
-see [Node.js v0.10.29 and native addons on the Raspberry Pi](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-Raspberry-Pi).
-
-If you're using Node.js v0.10.29 on the BeagleBone Black and seeing a compile
-error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
-see [Node.js v0.10.29 and native addons on the BeagleBone Black](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-BeagleBone-Black).
-
 The way in which I2C is configured varies from board to board. Sometimes no
 configuraton is required, but sometimes it is:
 
