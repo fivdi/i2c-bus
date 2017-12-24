@@ -6,6 +6,8 @@ synchronous forms.
 
 i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
+[![Mentioned in Awesome Node.js](https://awesome.re/mentioned-badge.svg)](https://github.com/sindresorhus/awesome-nodejs)
+
 ## Installation
 
 ```
