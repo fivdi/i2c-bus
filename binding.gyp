@@ -7,8 +7,7 @@
     "conditions": [
       ["OS == \"linux\"", {
         "cflags": [
-          "-Wno-unused-local-typedefs",
-          "-Wno-deprecated-declarations"
+          "-Wno-unused-local-typedefs"
         ],
         "sources": [
          "./src/i2c.cc"

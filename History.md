@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * don't suppress deprecated-declaration warnings
+
+
 1.2.4 / Nov 04 2017
 ===================
 
