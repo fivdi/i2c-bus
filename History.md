@@ -2,7 +2,7 @@ Unpublished
 ===========
 
   * don't suppress deprecated-declaration warnings
-
+  * update dependencies
 
 1.2.4 / Nov 04 2017
 ===================
