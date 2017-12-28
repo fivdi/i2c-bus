@@ -1,4 +1,4 @@
-## i2c-bus
+# i2c-bus
 
 I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi,
 C.H.I.P., BeagleBone or Intel Edison. All methods have asynchronous and
