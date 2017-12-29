@@ -8,6 +8,12 @@ i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
 [![Mentioned in Awesome Node.js](https://awesome.re/mentioned-badge.svg)](https://github.com/sindresorhus/awesome-nodejs)
 
+## Contents
+
+ * [Installation](https://github.com/fivdi/i2c-bus#installation)
+ * [Usage](https://github.com/fivdi/i2c-bus#usage)
+ * [API](https://github.com/fivdi/i2c-bus#api)
+
 ## Installation
 
 ```
@@ -20,7 +26,9 @@ configuraton is required, but sometimes it is:
 * [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
 * [Configuring I2C on the Intel Edison Arduino Base Board](https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
-## Example Temperature Sensor Circuits
+## Usage
+
+### Example Temperature Sensor Circuits
 
 Some of the examples programs use a
 [DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
@@ -32,7 +40,7 @@ to show how the i2c-bus package functions.
 **DS1621 temperature sensor connected to a BeagleBone Black**
 <img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-bb.png">
 
-## Example 1 - Determine Temperature Synchronously
+### Example 1 - Determine Temperature Synchronously
 
 Determine the temperature with a DS1621 temperature sensor Synchronously.
 
@@ -80,7 +88,7 @@ function toCelsius(rawTemp) {
 }());
 ```
 
-## Example 2 - Determine Temperature Asynchronously
+### Example 2 - Determine Temperature Asynchronously
 
 Determine the temperature with a DS1621 temperature sensor Asynchronously.
 Example 2 does exactly the same thing as example 1, but uses the asynchronous
@@ -156,7 +164,7 @@ function toCelsius(rawTemp) {
 }());
 ```
 
-## Example 3 - Accessing Multiple Devices Asynchronously and Concurrently
+### Example 3 - Accessing Multiple Devices Asynchronously and Concurrently
 
 This example demonstrates concurrent asynchronous access to two devices on the
 same bus, a DS1621 temperature sensor and an
