@@ -10,9 +10,9 @@ i2c-bus supports Node.js versions 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 
 ## Contents
 
- * [Installation](https://github.com/fivdi/i2c-bus#installation)
- * [Usage](https://github.com/fivdi/i2c-bus#usage)
- * [API](https://github.com/fivdi/i2c-bus#api)
+ * [Installation](#installation)
+ * [Usage](#usage)
+ * [API](#api)
 
 ## Installation
 
@@ -216,66 +216,66 @@ use try/catch to handle exceptions or allow them to bubble up.
 
 ### Methods
 
-- [open(busNumber [, options], cb)](https://github.com/fivdi/i2c-bus#openbusnumber--options-cb)
-- [openSync(busNumber [, options])](https://github.com/fivdi/i2c-bus#opensyncbusnumber--options)
+- [open(busNumber [, options], cb)](#openbusnumber--options-cb)
+- [openSync(busNumber [, options])](#opensyncbusnumber--options)
 
 ### Class Bus
 
 - Free resources
-  - [bus.close(cb)](https://github.com/fivdi/i2c-bus#busclosecb)
-  - [bus.closeSync()](https://github.com/fivdi/i2c-bus#busclosesync)
+  - [bus.close(cb)](#busclosecb)
+  - [bus.closeSync()](#busclosesync)
 
 - Information
-  - [bus.i2cFuncs(cb)](https://github.com/fivdi/i2c-bus#busi2cfuncscb)
-  - [bus.i2cFuncsSync()](https://github.com/fivdi/i2c-bus#busi2cfuncssync)
-  - [bus.scan(cb)](https://github.com/fivdi/i2c-bus#busscancb)
-  - [bus.scanSync()](https://github.com/fivdi/i2c-bus#busscansync)
+  - [bus.i2cFuncs(cb)](#busi2cfuncscb)
+  - [bus.i2cFuncsSync()](#busi2cfuncssync)
+  - [bus.scan(cb)](#busscancb)
+  - [bus.scanSync()](#busscansync)
 
 - Plain I2C
-  - [bus.i2cRead(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2creadaddr-length-buffer-cb)
-  - [bus.i2cReadSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2creadsyncaddr-length-buffer)
-  - [bus.i2cWrite(addr, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busi2cwriteaddr-length-buffer-cb)
-  - [bus.i2cWriteSync(addr, length, buffer)](https://github.com/fivdi/i2c-bus#busi2cwritesyncaddr-length-buffer)
+  - [bus.i2cRead(addr, length, buffer, cb)](#busi2creadaddr-length-buffer-cb)
+  - [bus.i2cReadSync(addr, length, buffer)](#busi2creadsyncaddr-length-buffer)
+  - [bus.i2cWrite(addr, length, buffer, cb)](#busi2cwriteaddr-length-buffer-cb)
+  - [bus.i2cWriteSync(addr, length, buffer)](#busi2cwritesyncaddr-length-buffer)
 
 - SMBus
-  - [bus.readByte(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadbyteaddr-cmd-cb)
-  - [bus.readByteSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadbytesyncaddr-cmd)
-  - [bus.readWord(addr, cmd, cb)](https://github.com/fivdi/i2c-bus#busreadwordaddr-cmd-cb)
-  - [bus.readWordSync(addr, cmd)](https://github.com/fivdi/i2c-bus#busreadwordsyncaddr-cmd)
-  - [bus.readI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#busreadi2cblockaddr-cmd-length-buffer-cb)
-  - [bus.readI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#busreadi2cblocksyncaddr-cmd-length-buffer)
-  - [bus.receiveByte(addr, cb)](https://github.com/fivdi/i2c-bus#busreceivebyteaddr-cb)
-  - [bus.receiveByteSync(addr)](https://github.com/fivdi/i2c-bus#busreceivebytesyncaddr)
-  - [bus.sendByte(addr, byte, cb)](https://github.com/fivdi/i2c-bus#bussendbyteaddr-byte-cb)
-  - [bus.sendByteSync(addr, byte)](https://github.com/fivdi/i2c-bus#bussendbytesyncaddr-byte)
-  - [bus.writeByte(addr, cmd, byte, cb)](https://github.com/fivdi/i2c-bus#buswritebyteaddr-cmd-byte-cb)
-  - [bus.writeByteSync(addr, cmd, byte)](https://github.com/fivdi/i2c-bus#buswritebytesyncaddr-cmd-byte)
-  - [bus.writeWord(addr, cmd, word, cb)](https://github.com/fivdi/i2c-bus#buswritewordaddr-cmd-word-cb)
-  - [bus.writeWordSync(addr, cmd, word)](https://github.com/fivdi/i2c-bus#buswritewordsyncaddr-cmd-word)
-  - [bus.writeQuick(addr, bit, cb)](https://github.com/fivdi/i2c-bus#buswritequickaddr-bit-cb)
-  - [bus.writeQuickSync(addr, bit)](https://github.com/fivdi/i2c-bus#buswritequicksyncaddr-bit)
-  - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](https://github.com/fivdi/i2c-bus#buswritei2cblockaddr-cmd-length-buffer-cb)
-  - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](https://github.com/fivdi/i2c-bus#buswritei2cblocksyncaddr-cmd-length-buffer)
+  - [bus.readByte(addr, cmd, cb)](#busreadbyteaddr-cmd-cb)
+  - [bus.readByteSync(addr, cmd)](#busreadbytesyncaddr-cmd)
+  - [bus.readWord(addr, cmd, cb)](#busreadwordaddr-cmd-cb)
+  - [bus.readWordSync(addr, cmd)](#busreadwordsyncaddr-cmd)
+  - [bus.readI2cBlock(addr, cmd, length, buffer, cb)](#busreadi2cblockaddr-cmd-length-buffer-cb)
+  - [bus.readI2cBlockSync(addr, cmd, length, buffer)](#busreadi2cblocksyncaddr-cmd-length-buffer)
+  - [bus.receiveByte(addr, cb)](#busreceivebyteaddr-cb)
+  - [bus.receiveByteSync(addr)](#busreceivebytesyncaddr)
+  - [bus.sendByte(addr, byte, cb)](#bussendbyteaddr-byte-cb)
+  - [bus.sendByteSync(addr, byte)](#bussendbytesyncaddr-byte)
+  - [bus.writeByte(addr, cmd, byte, cb)](#buswritebyteaddr-cmd-byte-cb)
+  - [bus.writeByteSync(addr, cmd, byte)](#buswritebytesyncaddr-cmd-byte)
+  - [bus.writeWord(addr, cmd, word, cb)](#buswritewordaddr-cmd-word-cb)
+  - [bus.writeWordSync(addr, cmd, word)](#buswritewordsyncaddr-cmd-word)
+  - [bus.writeQuick(addr, bit, cb)](#buswritequickaddr-bit-cb)
+  - [bus.writeQuickSync(addr, bit)](#buswritequicksyncaddr-bit)
+  - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](#buswritei2cblockaddr-cmd-length-buffer-cb)
+  - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](#buswritei2cblocksyncaddr-cmd-length-buffer)
 
 ### Class I2cFuncs
 
-- [funcs.i2c](https://github.com/fivdi/i2c-bus#funcsi2c---boolean)
-- [funcs.tenBitAddr](https://github.com/fivdi/i2c-bus#funcstenbitaddr---boolean)
-- [funcs.protocolMangling](https://github.com/fivdi/i2c-bus#funcsprotocolmangling---boolean)
-- [funcs.smbusPec](https://github.com/fivdi/i2c-bus#funcssmbuspec---boolean)
-- [funcs.smbusBlockProcCall](https://github.com/fivdi/i2c-bus#funcssmbusblockproccall---boolean)
-- [funcs.smbusQuick](https://github.com/fivdi/i2c-bus#funcssmbusquick---boolean)
-- [funcs.smbusReceiveByte](https://github.com/fivdi/i2c-bus#funcssmbusreceivebyte---boolean)
-- [funcs.smbusSendByte](https://github.com/fivdi/i2c-bus#funcssmbussendbyte---boolean)
-- [funcs.smbusReadByte](https://github.com/fivdi/i2c-bus#funcssmbusreadbyte---boolean)
-- [funcs.smbusWriteByte](https://github.com/fivdi/i2c-bus#funcssmbuswritebyte---boolean)
-- [funcs.smbusReadWord](https://github.com/fivdi/i2c-bus#funcssmbusreadword---boolean)
-- [funcs.smbusWriteWord](https://github.com/fivdi/i2c-bus#funcssmbuswriteword---boolean)
-- [funcs.smbusProcCall](https://github.com/fivdi/i2c-bus#funcssmbusproccall---boolean)
-- [funcs.smbusReadBlock](https://github.com/fivdi/i2c-bus#funcssmbusreadblock---boolean)
-- [funcs.smbusWriteBlock](https://github.com/fivdi/i2c-bus#funcssmbuswriteblock---boolean)
-- [funcs.smbusReadI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbusreadi2cblock---boolean)
-- [funcs.smbusWriteI2cBlock](https://github.com/fivdi/i2c-bus#funcssmbuswritei2cblock---boolean)
+- [funcs.i2c](#funcsi2c---boolean)
+- [funcs.tenBitAddr](#funcstenbitaddr---boolean)
+- [funcs.protocolMangling](#funcsprotocolmangling---boolean)
+- [funcs.smbusPec](#funcssmbuspec---boolean)
+- [funcs.smbusBlockProcCall](#funcssmbusblockproccall---boolean)
+- [funcs.smbusQuick](#funcssmbusquick---boolean)
+- [funcs.smbusReceiveByte](#funcssmbusreceivebyte---boolean)
+- [funcs.smbusSendByte](#funcssmbussendbyte---boolean)
+- [funcs.smbusReadByte](#funcssmbusreadbyte---boolean)
+- [funcs.smbusWriteByte](#funcssmbuswritebyte---boolean)
+- [funcs.smbusReadWord](#funcssmbusreadword---boolean)
+- [funcs.smbusWriteWord](#funcssmbuswriteword---boolean)
+- [funcs.smbusProcCall](#funcssmbusproccall---boolean)
+- [funcs.smbusReadBlock](#funcssmbusreadblock---boolean)
+- [funcs.smbusWriteBlock](#funcssmbuswriteblock---boolean)
+- [funcs.smbusReadI2cBlock](#funcssmbusreadi2cblock---boolean)
+- [funcs.smbusWriteI2cBlock](#funcssmbuswritei2cblock---boolean)
 
 ### open(busNumber [, options], cb)
 - busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
@@ -316,14 +316,14 @@ Synchronous close.
 
 Determine functionality of the bus/adapter asynchronously. The callback gets
 two argument (err, funcs). funcs is a frozen
-[I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
+[I2cFuncs](#class-i2cfuncs)
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
 ### bus.i2cFuncsSync()
 
 Determine functionality of the bus/adapter Synchronously. Returns a frozen
-[I2cFuncs](https://github.com/fivdi/i2c-bus#class-i2cfuncs)
+[I2cFuncs](#class-i2cfuncs)
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
