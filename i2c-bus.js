@@ -3,7 +3,7 @@
 var fs = require('fs'),
   i2c = require('bindings')('i2c.node');
 
-var DEVICE_PREFIX = '/dev/i2c-',
+var BUS_FILE_PREFIX = '/dev/i2c-',
   FIRST_SCAN_ADDR = 0x03,
   LAST_SCAN_ADDR = 0x77;
 
@@ -68,7 +68,7 @@ function peripheral(bus, addr, cb) {
   var device = bus._peripherals[addr];
 
   if (device === undefined) {
-    fs.open(DEVICE_PREFIX + bus._busNumber, 'r+', function (err, device) {
+    fs.open(BUS_FILE_PREFIX + bus._busNumber, 'r+', function (err, device) {
       if (err) {
         return cb(err);
       }
@@ -92,7 +92,7 @@ function peripheralSync(bus, addr) {
   var peripheral = bus._peripherals[addr];
 
   if (peripheral === undefined) {
-    peripheral = fs.openSync(DEVICE_PREFIX + bus._busNumber, 'r+');
+    peripheral = fs.openSync(BUS_FILE_PREFIX + bus._busNumber, 'r+');
     bus._peripherals[addr] = peripheral;
     i2c.setAddrSync(peripheral, addr, bus._forceAccess);
   }
