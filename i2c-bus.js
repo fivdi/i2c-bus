@@ -7,6 +7,69 @@ var BUS_FILE_PREFIX = '/dev/i2c-',
   FIRST_SCAN_ADDR = 0x03,
   LAST_SCAN_ADDR = 0x77;
 
+function checkBusNumber(busNumber) {
+  if (process.platform === 'linux' &&
+      (!Number.isInteger(busNumber) || busNumber < 0)) {
+    throw new Error('Invalid I2C bus number ' + busNumber);
+  }
+}
+
+function checkAddress(addr) {
+  if (!Number.isInteger(addr) || addr < 0  || addr > 0x7f) {
+    throw new Error('Invalid I2C address ' + addr);
+  }
+}
+
+function checkCommand(cmd) {
+  if (!Number.isInteger(cmd) || cmd < 0  || cmd > 0xff) {
+    throw new Error('Invalid I2C command ' + cmd);
+  }
+}
+
+function checkCallback(cb) {
+  if (typeof cb !== 'function') {
+    throw new Error('Invalid callback ' + cb);
+  }
+}
+
+function checkBuffer(buffer) {
+  if (!Buffer.isBuffer(buffer)) {
+    throw new Error('Invalid buffer ' + buffer);
+  }
+}
+
+function checkBufferAndLength(length, buffer, maxLength) {
+  if (!Number.isInteger(length) ||
+      length < 0 ||
+      (maxLength !== undefined && length > maxLength)) {
+    throw new Error('Invalid buffer length ' + length);
+  }
+
+  checkBuffer(buffer);
+
+  if (buffer.length < length) {
+    throw new Error('Buffer must contain at least ' + length + ' bytes');
+  }
+}
+
+function checkByte(byte) {
+  if (!Number.isInteger(byte) || byte < 0  || byte > 0xff) {
+    throw new Error('Invalid byte ' + byte);
+  }
+}
+
+function checkWord(word) {
+  if (!Number.isInteger(word) || word < 0  || word > 0xffff) {
+    throw new Error('Invalid word ' + word);
+  }
+}
+
+function checkBit(bit) {
+  if (!Number.isInteger(bit) || bit < 0  || bit > 1) {
+    throw new Error('Invalid bit ' + bit);
+  }
+}
+
 function Bus(busNumber, options) {
   if (!(this instanceof Bus)) {
     return new Bus(busNumber, options);
@@ -51,6 +114,9 @@ function open(busNumber, options, cb) {
     options = undefined;
   }
 
+  checkBusNumber(busNumber);
+  checkCallback(cb);
+
   bus = new Bus(busNumber, options);
 
   setImmediate(cb, null);
@@ -60,6 +126,8 @@ function open(busNumber, options, cb) {
 module.exports.open = open;
 
 function openSync(busNumber, options) {
+  checkBusNumber(busNumber);
+
   return new Bus(busNumber, options);
 }
 module.exports.openSync = openSync;
@@ -101,7 +169,11 @@ function peripheralSync(bus, addr) {
 }
 
 Bus.prototype.close = function (cb) {
-  var peripherals = this._peripherals.filter(function (peripheral) {
+  var peripherals;
+
+  checkCallback(cb);
+
+  peripherals = this._peripherals.filter(function (peripheral) {
     return peripheral !== undefined;
   });
 
@@ -125,10 +197,13 @@ Bus.prototype.closeSync = function () {
       fs.closeSync(peripheral);
     }
   });
+
   this._peripherals = [];
 };
 
 Bus.prototype.i2cFuncs = function (cb) {
+  checkCallback(cb);
+
   if (!this.funcs) {
     peripheral(this, 0, function (err, device) {
       if (err) {
@@ -157,6 +232,10 @@ Bus.prototype.i2cFuncsSync = function () {
 };
 
 Bus.prototype.readByte = function (addr, cmd, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -167,10 +246,17 @@ Bus.prototype.readByte = function (addr, cmd, cb) {
 };
 
 Bus.prototype.readByteSync = function (addr, cmd) {
+  checkAddress(addr);
+  checkCommand(cmd);
+
   return i2c.readByteSync(peripheralSync(this, addr), cmd);
 };
 
 Bus.prototype.readWord = function (addr, cmd, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -181,11 +267,19 @@ Bus.prototype.readWord = function (addr, cmd, cb) {
 };
 
 Bus.prototype.readWordSync = function (addr, cmd) {
+  checkAddress(addr);
+  checkCommand(cmd);
+
   return i2c.readWordSync(peripheralSync(this, addr), cmd);
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.readBlock = function (addr, cmd, buffer, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBuffer(buffer);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -197,10 +291,19 @@ Bus.prototype.readBlock = function (addr, cmd, buffer, cb) {
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.readBlockSync = function (addr, cmd, buffer) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBuffer(buffer);
+
   return i2c.readBlockSync(peripheralSync(this, addr), cmd, buffer);
 };
 
 Bus.prototype.readI2cBlock = function (addr, cmd, length, buffer, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer, 32);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -211,10 +314,17 @@ Bus.prototype.readI2cBlock = function (addr, cmd, length, buffer, cb) {
 };
 
 Bus.prototype.readI2cBlockSync = function (addr, cmd, length, buffer) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer, 32);
+
   return i2c.readI2cBlockSync(peripheralSync(this, addr), cmd, length, buffer);
 };
 
 Bus.prototype.receiveByte = function (addr, cb) {
+  checkAddress(addr);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -225,10 +335,16 @@ Bus.prototype.receiveByte = function (addr, cb) {
 };
 
 Bus.prototype.receiveByteSync = function (addr) {
+  checkAddress(addr);
+
   return i2c.receiveByteSync(peripheralSync(this, addr));
 };
 
 Bus.prototype.sendByte = function (addr, byte, cb) {
+  checkAddress(addr);
+  checkByte(byte);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -239,11 +355,20 @@ Bus.prototype.sendByte = function (addr, byte, cb) {
 };
 
 Bus.prototype.sendByteSync = function (addr, byte) {
+  checkAddress(addr);
+  checkByte(byte);
+
   i2c.sendByteSync(peripheralSync(this, addr), byte);
+
   return this;
 };
 
 Bus.prototype.writeByte = function (addr, cmd, byte, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkByte(byte);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -254,11 +379,21 @@ Bus.prototype.writeByte = function (addr, cmd, byte, cb) {
 };
 
 Bus.prototype.writeByteSync = function (addr, cmd, byte) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkByte(byte);
+
   i2c.writeByteSync(peripheralSync(this, addr), cmd, byte);
+
   return this;
 };
 
 Bus.prototype.writeWord = function (addr, cmd, word, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkWord(word);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -269,11 +404,20 @@ Bus.prototype.writeWord = function (addr, cmd, word, cb) {
 };
 
 Bus.prototype.writeWordSync = function (addr, cmd, word) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkWord(word);
+
   i2c.writeWordSync(peripheralSync(this, addr), cmd, word);
+
   return this;
 };
 
 Bus.prototype.writeQuick = function (addr, bit, cb) {
+  checkAddress(addr);
+  checkBit(bit);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -284,12 +428,21 @@ Bus.prototype.writeQuick = function (addr, bit, cb) {
 };
 
 Bus.prototype.writeQuickSync = function (addr, bit) {
+  checkAddress(addr);
+  checkBit(bit);
+
   i2c.writeQuickSync(peripheralSync(this, addr), bit);
+
   return this;
 };
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.writeBlock = function (addr, cmd, length, buffer, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -301,11 +454,21 @@ Bus.prototype.writeBlock = function (addr, cmd, length, buffer, cb) {
 
 // UNTESTED and undocumented due to lack of supporting hardware
 Bus.prototype.writeBlockSync = function (addr, cmd, length, buffer) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer);
+
   i2c.writeBlockSync(peripheralSync(this, addr), cmd, length, buffer);
+
   return this;
 };
 
 Bus.prototype.writeI2cBlock = function (addr, cmd, length, buffer, cb) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer, 32);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -316,11 +479,20 @@ Bus.prototype.writeI2cBlock = function (addr, cmd, length, buffer, cb) {
 };
 
 Bus.prototype.writeI2cBlockSync = function (addr, cmd, length, buffer) {
+  checkAddress(addr);
+  checkCommand(cmd);
+  checkBufferAndLength(length, buffer, 32);
+
   i2c.writeI2cBlockSync(peripheralSync(this, addr), cmd, length, buffer);
+
   return this;
 };
 
 Bus.prototype.i2cRead = function (addr, length, buffer, cb) {
+  checkAddress(addr);
+  checkBufferAndLength(length, buffer);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -331,10 +503,17 @@ Bus.prototype.i2cRead = function (addr, length, buffer, cb) {
 };
 
 Bus.prototype.i2cReadSync = function (addr, length, buffer) {
+  checkAddress(addr);
+  checkBufferAndLength(length, buffer);
+
   return fs.readSync(peripheralSync(this, addr), buffer, 0, length, 0);
 };
 
 Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
+  checkAddress(addr);
+  checkBufferAndLength(length, buffer);
+  checkCallback(cb);
+
   peripheral(this, addr, function (err, device) {
     if (err) {
       return cb(err);
@@ -345,12 +524,17 @@ Bus.prototype.i2cWrite = function (addr, length, buffer, cb) {
 };
 
 Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
+  checkAddress(addr);
+  checkBufferAndLength(length, buffer);
+
   return fs.writeSync(peripheralSync(this, addr), buffer, 0, length, 0);
 };
 
 Bus.prototype.scan = function (cb) {
   var scanBus,
     addresses = [];
+
+  checkCallback(cb);
 
   scanBus = open(this._busNumber, {forceAccess: this._forceAccess}, function (err) {
     if (err) {

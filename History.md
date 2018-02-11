@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * check parameters passed to api at api surface [#42](https://github.com/fivdi/i2c-bus/issues/42)
+
 1.2.5 / Dec 24 2017
 ===================
 
