@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.0 / Feb 11 2018
+===================
 
   * check parameters passed to api at api surface [#42](https://github.com/fivdi/i2c-bus/issues/42)
   * update dependencies (async v2.6.0, lodash 4.17.5)
