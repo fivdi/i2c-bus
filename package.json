@@ -23,8 +23,8 @@
     "nan": "~2.8.0"
   },
   "devDependencies": {
-    "async": "~2.1.4",
-    "lodash": "~4.17.4"
+    "async": "~2.6.0",
+    "lodash": "~4.17.5"
   },
   "keywords": [
     "i2c",
