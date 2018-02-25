@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * update dependencies (nan v2.9.2)
+
 2.0.0 / Feb 11 2018
 ===================
 
