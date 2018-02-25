@@ -31,7 +31,7 @@ public:
       Nan::New<v8::Uint32>(static_cast<unsigned int>(i2cfuncs))
     };
 
-    callback->Call(2, argv);
+    callback->Call(2, argv, async_resource);
   }
 
 private:

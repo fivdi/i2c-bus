@@ -29,7 +29,7 @@ public:
       Nan::Null()
     };
 
-    callback->Call(1, argv);
+    callback->Call(1, argv, async_resource);
   }
 
 private:
