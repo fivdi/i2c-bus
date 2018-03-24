@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * allow scan address range to be specified
+
 3.0.0 / Feb 25 2018
 ===================
 

@@ -228,8 +228,8 @@ use try/catch to handle exceptions or allow them to bubble up.
 - Information
   - [bus.i2cFuncs(cb)](#busi2cfuncscb)
   - [bus.i2cFuncsSync()](#busi2cfuncssync)
-  - [bus.scan(cb)](#busscancb)
-  - [bus.scanSync()](#busscansync)
+  - [bus.scan([startAddr,] [endAddr,] cb)](#busscanstartaddr-endaddr-cb)
+  - [bus.scanSync([startAddr,] [endAddr])](#busscansyncstartaddr-endaddr)
 
 - Plain I2C
   - [bus.i2cRead(addr, length, buffer, cb)](#busi2creadaddr-length-buffer-cb)
@@ -327,19 +327,33 @@ Determine functionality of the bus/adapter Synchronously. Returns a frozen
 object describing the functionality available.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
-### bus.scan(cb)
+### bus.scan([startAddr,] [endAddr,] cb)
+- startAddr - an integer specifying the start address of the scan range, optional
+- endAddr - an integer specifying the end addrerss of the scan range, optional
 - cb - completion callback
 
-Scans the I2C bus asynchronously for devices the same way `i2cdetect -y -r`
-would. The callback gets two arguments (err, devices). devices is an array of
-numbers where each number represents the I2C address of a device which was
-detected.
+bus.scan(cb) - scan for I2C devices in address range 0x03 through 0x77 <br/>
+bus.scan(addr, cb) - scan for an I2C device at address addr <br/>
+bus.scan(startAddr, endAddr, cb) - scan for I2C devices in address range startAddr through endAddr <br/>
 
-### bus.scanSync()
+Scans the I2C bus asynchronously for devices. The default address range 0x03
+through 0x77 is the same as the default address range used by the `i2cdetect`
+command line tool. The callback gets two arguments (err, devices). devices is
+an array of numbers where each number represents the I2C address of a device
+which was detected.
 
-Scans the I2C bus synchronously for devices the same way `i2cdetect -y -r`
-would. Returns an array of numbers where each number represents the I2C address
-of a device which was detected.
+### bus.scanSync([startAddr,] [endAddr])
+- startAddr - an integer specifying the start address of the scan range, optional
+- endAddr - an integer specifying the end addrerss of the scan range, optional
+
+bus.scan() - scan for I2C devices in address range 0x03 through 0x77 <br/>
+bus.scan(addr) - scan for an I2C device at address addr <br/>
+bus.scan(startAddr, endAddr) - scan for I2C devices in address range startAddr through endAddr <br/>
+
+Scans the I2C bus synchronously for devices. The default address range 0x03
+through 0x77 is the same as the default address range used by the `i2cdetect`
+command line tool. Returns an array of numbers where each number represents
+the I2C address of a device which was detected.
 
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address

@@ -32,6 +32,27 @@ assert.throws(() => {i2c1.i2cFuncs('not a cb')}, /Invalid callback/, 'i2cFuncs')
 
 // scan(cb)
 assert.throws(() => {i2c1.scan('not a cb')}, /Invalid callback/, 'scan');
+assert.throws(() => {i2c1.scan(0, 'not a cb')}, /Invalid callback/, 'scan');
+assert.throws(() => {i2c1.scan(0, 0, 'not a cb')}, /Invalid callback/, 'scan');
+assert.throws(() => {i2c1.scan('not an addr', 'not a cb')}, /Invalid callback/, 'scan');
+assert.throws(() => {i2c1.scan('not an addr', 'not an addr', 'not a cb')}, /Invalid callback/, 'scan');
+
+assert.throws(() => {i2c1.scan('not an addr', () => {})}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scan(-1, () => {})}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scan(128, () => {})}, /Invalid I2C address/, 'scan');
+
+assert.throws(() => {i2c1.scan(0, 'not an addr', () => {})}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scan(0, -1, () => {})}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scan(0, 128, () => {})}, /Invalid I2C address/, 'scan');
+
+// scanSync(cb)
+assert.throws(() => {i2c1.scanSync('not an addr')}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scanSync(-1)}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scanSync(128)}, /Invalid I2C address/, 'scan');
+
+assert.throws(() => {i2c1.scanSync(0, 'not an addr')}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scanSync(0, -1)}, /Invalid I2C address/, 'scan');
+assert.throws(() => {i2c1.scanSync(0, 128)}, /Invalid I2C address/, 'scan');
 
 //----------------------------------------------------------------------------
 // Plain I2C

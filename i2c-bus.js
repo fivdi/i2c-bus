@@ -530,11 +530,22 @@ Bus.prototype.i2cWriteSync = function (addr, length, buffer) {
   return fs.writeSync(peripheralSync(this, addr), buffer, 0, length, 0);
 };
 
-Bus.prototype.scan = function (cb) {
+Bus.prototype.scan = function (startAddr, endAddr, cb) {
   var scanBus,
     addresses = [];
 
+  if (typeof startAddr === 'function') {
+    cb = startAddr;
+    startAddr = FIRST_SCAN_ADDR;
+    endAddr = LAST_SCAN_ADDR;
+  } else if (typeof endAddr === 'function') {
+    cb = endAddr;
+    endAddr = startAddr;
+  }
+
   checkCallback(cb);
+  checkAddress(startAddr);
+  checkAddress(endAddr);
 
   scanBus = open(this._busNumber, {forceAccess: this._forceAccess}, function (err) {
     if (err) {
@@ -542,7 +553,7 @@ Bus.prototype.scan = function (cb) {
     }
 
     (function next(addr) {
-      if (addr > LAST_SCAN_ADDR) {
+      if (addr > endAddr) {
         return scanBus.close(function (err) {
           if (err) {
             return cb(err);
@@ -558,16 +569,26 @@ Bus.prototype.scan = function (cb) {
 
         next(addr + 1);
       });
-    }(FIRST_SCAN_ADDR));
+    }(startAddr));
   });
 };
 
-Bus.prototype.scanSync = function () {
+Bus.prototype.scanSync = function (startAddr, endAddr) {
   var scanBus = openSync(this._busNumber, {forceAccess: this._forceAccess}),
     addresses = [],
     addr;
 
-  for (addr = FIRST_SCAN_ADDR; addr <= LAST_SCAN_ADDR; addr += 1) {
+  if (typeof startAddr === 'undefined') {
+    startAddr = FIRST_SCAN_ADDR;
+    endAddr = LAST_SCAN_ADDR;
+  } else if (typeof endAddr === 'undefined') {
+    endAddr = startAddr;
+  }
+
+  checkAddress(startAddr);
+  checkAddress(endAddr);
+
+  for (addr = startAddr; addr <= endAddr; addr += 1) {
     try {
       scanBus.receiveByteSync(addr);
       addresses.push(addr);
