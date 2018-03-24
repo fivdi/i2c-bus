@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * allow scan address range to be specified
+  * update dependencies (nan v2.10.0)
 
 3.0.0 / Feb 25 2018
 ===================
