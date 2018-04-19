@@ -7,6 +7,40 @@ var BUS_FILE_PREFIX = '/dev/i2c-',
   FIRST_SCAN_ADDR = 0x03,
   LAST_SCAN_ADDR = 0x77;
 
+// Table 4.
+// https://www.nxp.com/docs/en/user-guide/UM10204.pdf
+const knownManufacturers = [
+  { value: 0x000, name: 'NXP Semiconductors' },
+  { value: 0x001, name: 'NXP Semiconductors (reserved)' },
+  { value: 0x002, name: 'NXP Semiconductors (reserved)' },
+  { value: 0x003, name: 'NXP Semiconductors (reserved)' },
+  { value: 0x004, name: 'Ramtron International' },
+  { value: 0x005, name: 'Analog Devices' },
+  { value: 0x006, name: 'STMicroelectronics' },
+  { value: 0x007, name: 'ON Semiconductor' },
+  { value: 0x008, name: 'Sprintek Corporation' },
+  { value: 0x009, name: 'ESPROS Photonics AG' },
+  { value: 0x00A, name: 'Fujitsu Semiconductor' },
+  { value: 0x00B, name: 'Flir' },
+  { value: 0x00C, name: 'O\u2082Micro' },
+  { value: 0x00D, name: 'Atmel' }
+];
+
+function parseId(id) {
+  // Figure 20. UM10204
+  const manufacturer = id >> 12 & 0x0FFF; // high 12bit
+  const product = id & 0x0FFF; // low 12bit
+
+  const known = knownManufacturers.find(man => man.value === manufacturer);
+  const name = known !== undefined ? known.name : ('<' + manufacturer.toString(16) + '>');
+
+  return {
+    manufacturer: manufacturer,
+    product: product,
+    name: name
+  };
+}
+
 function checkBusNumber(busNumber) {
   if (process.platform === 'linux' &&
       (!Number.isInteger(busNumber) || busNumber < 0)) {
@@ -609,8 +643,19 @@ Bus.prototype.deviceId = function(addr, cb) {
       return cb(err);
     }
 
-    i2c.deviceIdAsync(device, addr, cb);
+    i2c.deviceIdAsync(device, addr, (err, id) => {
+      if(err) { return cb(err); }
+
+      cb(null, parseId(id));
+    });
   }.bind(this));
+}
+
+Bus.prototype.deviceIdSync = function(addr) {
+  checkAddress(addr);
+
+  const mp = i2c.deviceIdSync(peripheralSync(this, addr), addr);
+  return parseId(mp);
 }
 
 if ("win32" == process.platform) {

@@ -56,7 +56,7 @@ NAN_METHOD(DeviceIdAsync) {
 NAN_METHOD(DeviceIdSync) {
   if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsInt32()) {
     return Nan::ThrowError(Nan::ErrnoException(EINVAL, "deviceIdSync",
-      "incorrect arguments passed to deviceIdSync(int fd, int byte)"));
+      "incorrect arguments passed to deviceIdSync(int fd, int address)"));
   }
 
   int fd = info[0]->Int32Value();
