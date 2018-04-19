@@ -361,7 +361,7 @@ the I2C address of a device which was detected.
 - addr - I2C device address
 - cb - completion callback
 
-Asynchronous I2C device Id.  the callback gets three arguments (err, id).
+Asynchronous I2C device Id.  the callback gets two arguments (err, id).
 Id is an object with `manufacturer`, `product` and if applicable a human
 readable `name` for the associated manufacturer.
 
