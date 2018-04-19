@@ -166,6 +166,40 @@ static inline __s32 i2c_smbus_access(int file, char read_write, __u8 command,
 }
 
 
+
+static inline __s32 i2c_smbus_deviceid(int file, __u16 address)
+{
+	char out[3];
+
+	struct i2c_msg parts[2];
+
+	char addr = address << 1;
+
+	parts[0].addr = 0xF8 >> 1;
+	parts[0].flags = 0;
+	parts[0].len = 1;
+	parts[0].buf = &addr;
+
+	parts[1].addr = 0xF9 >> 1;
+	parts[1].flags = I2C_M_RD;
+	parts[1].len = 3;
+	parts[1].buf = out;
+
+	struct i2c_rdwr_ioctl_data rdwr_data;
+	rdwr_data.msgs = parts;
+	rdwr_data.nmsgs = 2;
+
+	__s32 ret = ioctl(file,I2C_RDWR,&rdwr_data);
+	if(ret <= 0) {
+		return ret;
+	} else {
+		return out[0] << 16 | out[1] << 8 | out[2];
+	}
+}
+
+
+
+
 static inline __s32 i2c_smbus_write_quick(int file, __u8 value)
 {
 	return i2c_smbus_access(file,value,0,I2C_SMBUS_QUICK,NULL);

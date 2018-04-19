@@ -600,6 +600,19 @@ Bus.prototype.scanSync = function (startAddr, endAddr) {
   return addresses;
 };
 
+Bus.prototype.deviceId = function(addr, cb) {
+  checkAddress(addr);
+  checkCallback(cb);
+
+  peripheral(this, addr, function (err, device) {
+    if (err) {
+      return cb(err);
+    }
+
+    i2c.deviceIdAsync(device, addr, cb);
+  }.bind(this));
+}
+
 if ("win32" == process.platform) {
   Bus = require('./win-i2c-bus.js').Bus;
 }
