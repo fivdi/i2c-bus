@@ -230,6 +230,8 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.i2cFuncsSync()](#busi2cfuncssync)
   - [bus.scan([startAddr,] [endAddr,] cb)](#busscanstartaddr-endaddr-cb)
   - [bus.scanSync([startAddr,] [endAddr])](#busscansyncstartaddr-endaddr)
+  - [bus.deviceId(addr, cb)](#busdeviceidaddr-cb)
+  - [bus.deviceIdSync(addr)](#busdeviceidsyncaddr)
 
 - Plain I2C
   - [bus.i2cRead(addr, length, buffer, cb)](#busi2creadaddr-length-buffer-cb)
@@ -354,6 +356,20 @@ Scans the I2C bus synchronously for devices. The default address range 0x03
 through 0x77 is the same as the default address range used by the `i2cdetect`
 command line tool. Returns an array of numbers where each number represents
 the I2C address of a device which was detected.
+
+### bus.deviceId(addr, cb)
+- addr - I2C device address
+- cb - completion callback
+
+Asynchronous I2C device Id.  the callback gets two arguments (err, id).
+Id is an object with `manufacturer`, `product` and if applicable a human
+readable `name` for the associated manufacturer.
+
+### bus.deviceIdSync(addr)
+- addr - I2C device address
+
+Synchronous I2C device Id.  Returns object containing `manufacturer` and `product`,
+as well as manufacturer `name` if found.
 
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address

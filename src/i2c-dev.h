@@ -165,6 +165,40 @@ static inline __s32 i2c_smbus_access(int file, char read_write, __u8 command,
 	return ioctl(file,I2C_SMBUS,&args);
 }
 
+#define I2C_RESERVED_DEVICE_ID_ADDRESS 0x7C
+#define I2C_DEVICE_ID_LENGTH 3
+
+static inline __s32 i2c_smbus_deviceid(int file, __u16 address)
+{
+	struct i2c_rdwr_ioctl_data rdwr_data;
+	char out[I2C_DEVICE_ID_LENGTH];
+	struct i2c_msg parts[2];
+
+	// dump into char and shift up to account for R/W bit
+	char addr = address << 1;
+
+	// pack messages parts
+	parts[0].addr = I2C_RESERVED_DEVICE_ID_ADDRESS;
+	parts[0].flags = 0;
+	parts[0].len = 1;
+	parts[0].buf = &addr;
+
+	parts[1].addr = I2C_RESERVED_DEVICE_ID_ADDRESS;
+	parts[1].flags = I2C_M_RD;
+	parts[1].len = I2C_DEVICE_ID_LENGTH;
+	parts[1].buf = out;
+
+	rdwr_data.msgs = parts;
+	rdwr_data.nmsgs = 2;
+
+	__s32 ret = ioctl(file,I2C_RDWR,&rdwr_data);
+	if(ret < 0) {
+		return -1;
+	} else {
+		// shift bytes into single 24bit int
+		return out[0] << 16 | out[1] << 8 | out[2];
+	}
+}
 
 static inline __s32 i2c_smbus_write_quick(int file, __u8 value)
 {

@@ -1,6 +1,7 @@
 #include <node.h>
 #include <nan.h>
 #include "./i2cfuncs.h"
+#include "./deviceid.h"
 #include "./readbyte.h"
 #include "./readword.h"
 #include "./readblock.h"
@@ -29,6 +30,9 @@ static void ExportInt(
 NAN_MODULE_INIT(InitAll) {
   Nan::Export(target, "i2cFuncsAsync", I2cFuncsAsync);
   Nan::Export(target, "i2cFuncsSync", I2cFuncsSync);
+
+  Nan::Export(target, "deviceIdAsync", DeviceIdAsync);
+  Nan::Export(target, "deviceIdSync", DeviceIdSync);
 
   Nan::Export(target, "readByteAsync", ReadByteAsync);
   Nan::Export(target, "readByteSync", ReadByteSync);
@@ -93,6 +97,7 @@ NODE_MODULE(i2c, InitAll)
 // individually, which is what happens if they're listed in binding.gyp,
 // reduces the build time from 36s to 15s on a BBB.
 #include "./i2cfuncs.cc"
+#include "./deviceid.cc"
 #include "./readbyte.cc"
 #include "./readword.cc"
 #include "./readblock.cc"
