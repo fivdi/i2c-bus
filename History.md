@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * add deviceId and deviceIdSync methods
+
 3.1.0 / Mar 24 2018
 ===================
 
