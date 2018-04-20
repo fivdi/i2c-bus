@@ -20,19 +20,19 @@ const knownManufacturers = [
   { value: 0x007, name: 'ON Semiconductor' },
   { value: 0x008, name: 'Sprintek Corporation' },
   { value: 0x009, name: 'ESPROS Photonics AG' },
-  { value: 0x00A, name: 'Fujitsu Semiconductor' },
-  { value: 0x00B, name: 'Flir' },
-  { value: 0x00C, name: 'O\u2082Micro' },
-  { value: 0x00D, name: 'Atmel' }
+  { value: 0x00a, name: 'Fujitsu Semiconductor' },
+  { value: 0x00b, name: 'Flir' },
+  { value: 0x00c, name: 'O\u2082Micro' },
+  { value: 0x00d, name: 'Atmel' }
 ];
 
 function parseId(id) {
   // Figure 20. UM10204
-  const manufacturer = id >> 12 & 0x0FFF; // high 12bit
-  const product = id & 0x0FFF; // low 12bit
+  const manufacturer = id >> 12 & 0x0fff; // high 12bit
+  const product = id & 0x0fff; // low 12bit
 
   const known = knownManufacturers.find(man => man.value === manufacturer);
-  const name = known !== undefined ? known.name : ('<' + manufacturer.toString(16) + '>');
+  const name = known !== undefined ? known.name : ('<0x' + manufacturer.toString(16) + '>');
 
   return {
     manufacturer: manufacturer,

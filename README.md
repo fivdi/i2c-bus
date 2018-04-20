@@ -361,15 +361,18 @@ the I2C address of a device which was detected.
 - addr - I2C device address
 - cb - completion callback
 
-Asynchronous I2C device Id.  the callback gets two arguments (err, id).
-Id is an object with `manufacturer`, `product` and if applicable a human
-readable `name` for the associated manufacturer.
+Asynchronous I2C device Id.  The callback gets two arguments (err, id). id is
+an object with the properties `manufacturer`, `product` and if known a human
+readable `name` for the associated manufacturer. `manufacturer` and `product`
+are numbers, `name` is a string.
 
 ### bus.deviceIdSync(addr)
 - addr - I2C device address
 
-Synchronous I2C device Id.  Returns object containing `manufacturer` and `product`,
-as well as manufacturer `name` if found.
+Synchronous I2C device Id. Returns an object with the properties 
+`manufacturer`, `product` and if known a human readable `name` for the
+associated manufacturer. `manufacturer` and `product` are numbers, `name` is a
+string.
 
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address
