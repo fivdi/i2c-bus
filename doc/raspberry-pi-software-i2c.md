@@ -27,5 +27,5 @@ Another typical use case for software I2C is communication with AVR
 microcontrollers, for example, the ATmega328P microcontroller on an Arduino
 UNO. AVR microcontrollers are not particularly fast and it's relatively easy
 to implement AVR code that relies on I2C clock stretching. Using software I2C
-to communicate with the AVR will resolve this issue.
+to communicate with the AVR will resolve I2C clock stretching issues.
 
