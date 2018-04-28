@@ -24,6 +24,8 @@ The way in which I2C is configured varies from board to board. Sometimes no
 configuraton is required, but sometimes it is:
 
 * [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+* [Configuring Software I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-software-i2c.md)
+  * Consider software I2C when there are issues communicating with a device on a Raspberry Pi
 * [Configuring I2C on the Intel Edison Arduino Base Board](https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
 ## Usage
