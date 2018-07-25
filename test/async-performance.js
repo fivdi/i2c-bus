@@ -1,20 +1,20 @@
 'use strict';
 
-var i2c = require('../'),
-  i2c1,
-  iterations = 5000,
-  time,
-  readsPerSec;
+const i2c = require('../');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_TL = 0xa2;
+const ITERATIONS = 5000;
 
-function performanceTest(testRuns) {
-  i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, function () {
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_TL = 0xa2;
+
+let time;
+
+const performanceTest = (testRuns) => {
+  i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL, () => {
     testRuns -= 1;
     if (testRuns === 0) {
       time = process.hrtime(time);
-      readsPerSec = Math.floor(iterations / (time[0] + time[1] / 1E9));
+      const readsPerSec = Math.floor(ITERATIONS / (time[0] + time[1] / 1E9));
       i2c1.closeSync();
       console.log('ok - async-performance - ' + readsPerSec + ' reads per second');
     } else {
@@ -23,8 +23,8 @@ function performanceTest(testRuns) {
   });
 }
 
-i2c1 = i2c.open(1, function () {
+const i2c1 = i2c.open(1, () => {
   time = process.hrtime();
-  performanceTest(iterations);
+  performanceTest(ITERATIONS);
 });
 

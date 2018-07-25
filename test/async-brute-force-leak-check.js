@@ -1,16 +1,15 @@
 'use strict';
 
-var assert = require('assert'),
-  i2c = require('../'),
-  i2c1;
+const assert = require('assert');
+const i2c = require('../');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_TL = 0xa2;
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_TL = 0xa2;
 
-function leakTest(testRuns) {
-  var tlbuf = new Buffer(1000000);
+const leakTest = (testRuns) => {
+  const tlbuf = Buffer.alloc(1000000);
 
-  i2c1.readI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf, function (err, bytesRead, buffer) {
+  i2c1.readI2cBlock(DS1621_ADDR, CMD_ACCESS_TL, 2, tlbuf, (err, bytesRead, buffer) => {
     assert(!err, 'can\'t read block data from tl');
     assert.strictEqual(bytesRead, 2, 'expected readI2cBlock to read 2 bytes');
 
@@ -25,9 +24,9 @@ function leakTest(testRuns) {
       leakTest(testRuns);
     }
   });
-}
+};
 
-i2c1 = i2c.open(1, function (err) {
+const i2c1 = i2c.open(1, (err) => {
   assert(!err, 'can\'t open i2c bus');
   leakTest(1000000);
 });

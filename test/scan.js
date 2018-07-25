@@ -1,14 +1,16 @@
 'use strict';
 
-var _ = require('lodash'),
-  assert = require('assert'),
-  bus = require('../').openSync(1);
+const _ = require('lodash');
+const assert = require('assert');
+const i2c = require('../');
 
-var TSL2561_ADDR = 0x39,
-  DS1621_ADDR = 0x48;
+const TSL2561_ADDR = 0x39;
+const DS1621_ADDR = 0x48;
 
-function scanSyncRange() {
-  var devices = bus.scanSync(TSL2561_ADDR, DS1621_ADDR);
+const bus = i2c.openSync(1);
+
+const scanSyncRange = () => {
+  const devices = bus.scanSync(TSL2561_ADDR, DS1621_ADDR);
 
   assert(devices.length === 2, 'expected 2 devices');
   assert(
@@ -21,10 +23,10 @@ function scanSyncRange() {
   );
 
   console.log('ok - scan');
-}
+};
 
-function scanSyncForSingleDevice() {
-  var devices = bus.scanSync(DS1621_ADDR);
+const scanSyncForSingleDevice = () => {
+  const devices = bus.scanSync(DS1621_ADDR);
 
   assert(devices.length === 1, 'expected 1 device');
   assert(
@@ -33,10 +35,10 @@ function scanSyncForSingleDevice() {
   );
 
   scanSyncRange();
-}
+};
 
-function scanRange() {
-  bus.scan(TSL2561_ADDR, DS1621_ADDR, function (err, devices) {
+const scanRange = () => {
+  bus.scan(TSL2561_ADDR, DS1621_ADDR, (err, devices) => {
     assert(!err, 'can\'t scan range');
     assert(devices.length === 2, 'expected 2 devices');
     assert(
@@ -50,10 +52,10 @@ function scanRange() {
 
     scanSyncForSingleDevice();
   });
-}
+};
 
-function scanForSingleDevice() {
-  bus.scan(DS1621_ADDR, function (err, devices) {
+const scanForSingleDevice = () => {
+  bus.scan(DS1621_ADDR, (err, devices) => {
     assert(!err, 'can\'t scan for single device');
     assert(devices.length === 1, 'expected 1 device');
     assert(
@@ -63,12 +65,12 @@ function scanForSingleDevice() {
 
     scanRange();
   });
-}
+};
 
-function scanDefaultRange() {
-  var addresses = bus.scanSync();
+const scanDefaultRange = () => {
+  const addresses = bus.scanSync();
 
-  bus.scan(function (err, devices) {
+  bus.scan((err, devices) => {
     assert(!err, 'can\'t scan default range');
     assert(_.isEqual(addresses, devices), 'sync and async scan differ');
 

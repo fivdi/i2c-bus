@@ -1,8 +1,8 @@
 'use strict';
 
-var assert = require('assert'),
-  i2c = require('../'),
-  i2c1 = i2c.openSync(1);
+const assert = require('assert');
+const i2c = require('../');
+const i2c1 = i2c.openSync(1);
 
 //----------------------------------------------------------------------------
 // Methods
@@ -59,56 +59,56 @@ assert.throws(() => {i2c1.scanSync(0, 128)}, /Invalid I2C address/, 'scan');
 //----------------------------------------------------------------------------
 
 // i2cRead(addr, length, buffer, cb)
-assert.throws(() => {i2c1.i2cRead('not an addr', 100, new Buffer(100), () => {})}, /Invalid I2C address/, 'i2cRead');
-assert.throws(() => {i2c1.i2cRead(-1, 100, new Buffer(100), () => {})}, /Invalid I2C address/, 'i2cRead');
-assert.throws(() => {i2c1.i2cRead(128, 100, new Buffer(100), () => {})}, /Invalid I2C address/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead('not an addr', 100, Buffer.alloc(100), () => {})}, /Invalid I2C address/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(-1, 100, Buffer.alloc(100), () => {})}, /Invalid I2C address/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(128, 100, Buffer.alloc(100), () => {})}, /Invalid I2C address/, 'i2cRead');
 
-assert.throws(() => {i2c1.i2cRead(0, 'not a length', new Buffer(100), () => {})}, /Invalid buffer length/, 'i2cRead');
-assert.throws(() => {i2c1.i2cRead(0, -1, new Buffer(100), () => {})}, /Invalid buffer length/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(0, 'not a length', Buffer.alloc(100), () => {})}, /Invalid buffer length/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(0, -1, Buffer.alloc(100), () => {})}, /Invalid buffer length/, 'i2cRead');
 
 assert.throws(() => {i2c1.i2cRead(0, 100, 'not a buffer', () => {})}, /Invalid buffer/, 'i2cRead');
 
-assert.throws(() => {i2c1.i2cRead(0, 101, new Buffer(100), () => {})}, /Buffer must contain at least/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(0, 101, Buffer.alloc(100), () => {})}, /Buffer must contain at least/, 'i2cRead');
 
-assert.throws(() => {i2c1.i2cRead(0, 100, new Buffer(100), 'not a cb')}, /Invalid callback/, 'i2cRead');
+assert.throws(() => {i2c1.i2cRead(0, 100, Buffer.alloc(100), 'not a cb')}, /Invalid callback/, 'i2cRead');
 
 // i2cReadSync(addr, length, buffer)
 assert.throws(() => {i2c1.i2cReadSync('not an addr', 0)}, /Invalid I2C address/, 'i2cReadSync');
 assert.throws(() => {i2c1.i2cReadSync(-1, 0)}, /Invalid I2C address/, 'i2cReadSync');
 assert.throws(() => {i2c1.i2cReadSync(128, 0)}, /Invalid I2C address/, 'i2cReadSync');
 
-assert.throws(() => {i2c1.i2cReadSync(0, 'not a length', new Buffer(100))}, /Invalid buffer length/, 'i2cReadSync');
-assert.throws(() => {i2c1.i2cReadSync(0, -1, new Buffer(100))}, /Invalid buffer length/, 'i2cReadSync');
+assert.throws(() => {i2c1.i2cReadSync(0, 'not a length', Buffer.alloc(100))}, /Invalid buffer length/, 'i2cReadSync');
+assert.throws(() => {i2c1.i2cReadSync(0, -1, Buffer.alloc(100))}, /Invalid buffer length/, 'i2cReadSync');
 
 assert.throws(() => {i2c1.i2cReadSync(0, 100, 'not a buffer')}, /Invalid buffer/, 'i2cReadSync');
 
-assert.throws(() => {i2c1.i2cReadSync(0, 101, new Buffer(100))}, /Buffer must contain at least/, 'i2cReadSync');
+assert.throws(() => {i2c1.i2cReadSync(0, 101, Buffer.alloc(100))}, /Buffer must contain at least/, 'i2cReadSync');
 
 // i2cWrite(addr, length, buffer, cb)
 assert.throws(() => {i2c1.i2cWrite('not an addr', 0, () => {})}, /Invalid I2C address/, 'i2cWrite');
 assert.throws(() => {i2c1.i2cWrite(-1, 0, () => {})}, /Invalid I2C address/, 'i2cWrite');
 assert.throws(() => {i2c1.i2cWrite(128, 0, () => {})}, /Invalid I2C address/, 'i2cWrite');
 
-assert.throws(() => {i2c1.i2cWrite(0, 'not a length', new Buffer(100), () => {})}, /Invalid buffer length/, 'i2cWrite');
-assert.throws(() => {i2c1.i2cWrite(0, -1, new Buffer(100), () => {})}, /Invalid buffer length/, 'i2cWrite');
+assert.throws(() => {i2c1.i2cWrite(0, 'not a length', Buffer.alloc(100), () => {})}, /Invalid buffer length/, 'i2cWrite');
+assert.throws(() => {i2c1.i2cWrite(0, -1, Buffer.alloc(100), () => {})}, /Invalid buffer length/, 'i2cWrite');
 
 assert.throws(() => {i2c1.i2cWrite(0, 100, 'not a buffer', () => {})}, /Invalid buffer/, 'i2cWrite');
 
-assert.throws(() => {i2c1.i2cWrite(0, 101, new Buffer(100), () => {})}, /Buffer must contain at least/, 'i2cWrite');
+assert.throws(() => {i2c1.i2cWrite(0, 101, Buffer.alloc(100), () => {})}, /Buffer must contain at least/, 'i2cWrite');
 
-assert.throws(() => {i2c1.i2cWrite(0, 100, new Buffer(100), 'not a cb')}, /Invalid callback/, 'i2cWrite');
+assert.throws(() => {i2c1.i2cWrite(0, 100, Buffer.alloc(100), 'not a cb')}, /Invalid callback/, 'i2cWrite');
 
 // i2cWriteSync(addr, length, buffer)
 assert.throws(() => {i2c1.i2cWriteSync('not an addr', 0)}, /Invalid I2C address/, 'i2cWriteSync');
 assert.throws(() => {i2c1.i2cWriteSync(-1, 0)}, /Invalid I2C address/, 'i2cWriteSync');
 assert.throws(() => {i2c1.i2cWriteSync(128, 0)}, /Invalid I2C address/, 'i2cWriteSync');
 
-assert.throws(() => {i2c1.i2cWriteSync(0, 'not a length', new Buffer(100))}, /Invalid buffer length/, 'i2cWriteSync');
-assert.throws(() => {i2c1.i2cWriteSync(0, -1, new Buffer(100))}, /Invalid buffer length/, 'i2cWriteSync');
+assert.throws(() => {i2c1.i2cWriteSync(0, 'not a length', Buffer.alloc(100))}, /Invalid buffer length/, 'i2cWriteSync');
+assert.throws(() => {i2c1.i2cWriteSync(0, -1, Buffer.alloc(100))}, /Invalid buffer length/, 'i2cWriteSync');
 
 assert.throws(() => {i2c1.i2cWriteSync(0, 100, 'not a buffer')}, /Invalid buffer/, 'i2cWriteSync');
 
-assert.throws(() => {i2c1.i2cWriteSync(0, 101, new Buffer(100))}, /Buffer must contain at least/, 'i2cWriteSync');
+assert.throws(() => {i2c1.i2cWriteSync(0, 101, Buffer.alloc(100))}, /Buffer must contain at least/, 'i2cWriteSync');
 
 //----------------------------------------------------------------------------
 // SMBus
@@ -155,40 +155,40 @@ assert.throws(() => {i2c1.readWordSync(0, -1)}, /Invalid I2C command/, 'readWord
 assert.throws(() => {i2c1.readWordSync(0, 256)}, /Invalid I2C command/, 'readWordSync');
 
 // readI2cBlock(addr, cmd, length, buffer, cb)
-assert.throws(() => {i2c1.readI2cBlock('not an addr', 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(-1, 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(128, 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock('not an addr', 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(-1, 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(128, 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'readI2cBlock');
 
-assert.throws(() => {i2c1.readI2cBlock(0, 'not a command', 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(0, -1, 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(0, 256, 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 'not a command', 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, -1, 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 256, 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'readI2cBlock');
 
-assert.throws(() => {i2c1.readI2cBlock(0, 0, 'not a length', new Buffer(10), () => {})}, /Invalid buffer length/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(0, 0, -1, new Buffer(10), () => {})}, /Invalid buffer length/, 'readI2cBlock');
-assert.throws(() => {i2c1.readI2cBlock(0, 0, 33, new Buffer(33), () => {})}, /Invalid buffer length/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 0, 'not a length', Buffer.alloc(10), () => {})}, /Invalid buffer length/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 0, -1, Buffer.alloc(10), () => {})}, /Invalid buffer length/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 0, 33, Buffer.alloc(33), () => {})}, /Invalid buffer length/, 'readI2cBlock');
 
 assert.throws(() => {i2c1.readI2cBlock(0, 0, 10, 'not a buffer', () => {})}, /Invalid buffer/, 'readI2cBlock');
 
-assert.throws(() => {i2c1.readI2cBlock(0, 0, 11, new Buffer(10), () => {})}, /Buffer must contain at least/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 0, 11, Buffer.alloc(10), () => {})}, /Buffer must contain at least/, 'readI2cBlock');
 
-assert.throws(() => {i2c1.readI2cBlock(0, 0, 10, new Buffer(10), 'not a cb')}, /Invalid callback/, 'readI2cBlock');
+assert.throws(() => {i2c1.readI2cBlock(0, 0, 10, Buffer.alloc(10), 'not a cb')}, /Invalid callback/, 'readI2cBlock');
 
 // readI2cBlockSync(addr, cmd, length, buffer)
-assert.throws(() => {i2c1.readI2cBlockSync('not an addr', 0, 10, new Buffer(10))}, /Invalid I2C address/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(-1, 0, 10, new Buffer(10))}, /Invalid I2C address/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(128, 0, 10, new Buffer(10))}, /Invalid I2C address/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync('not an addr', 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(-1, 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(128, 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'readI2cBlockSync');
 
-assert.throws(() => {i2c1.readI2cBlockSync(0, 'not a command', 10, new Buffer(10))}, /Invalid I2C command/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(0, -1, 10, new Buffer(10))}, /Invalid I2C command/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(0, 256, 10, new Buffer(10))}, /Invalid I2C command/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 'not a command', 10, Buffer.alloc(10))}, /Invalid I2C command/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, -1, 10, Buffer.alloc(10))}, /Invalid I2C command/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 256, 10, Buffer.alloc(10))}, /Invalid I2C command/, 'readI2cBlockSync');
 
-assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 'not a length', new Buffer(10))}, /Invalid buffer length/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(0, 0, -1, new Buffer(10))}, /Invalid buffer length/, 'readI2cBlockSync');
-assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 33, new Buffer(33))}, /Invalid buffer length/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 'not a length', Buffer.alloc(10))}, /Invalid buffer length/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 0, -1, Buffer.alloc(10))}, /Invalid buffer length/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 33, Buffer.alloc(33))}, /Invalid buffer length/, 'readI2cBlockSync');
 
 assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 10, 'not a buffer')}, /Invalid buffer/, 'readI2cBlockSync');
 
-assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 11, new Buffer(10))}, /Buffer must contain at least/, 'readI2cBlockSync');
+assert.throws(() => {i2c1.readI2cBlockSync(0, 0, 11, Buffer.alloc(10))}, /Buffer must contain at least/, 'readI2cBlockSync');
 
 // receiveByte(addr, cb)
 assert.throws(() => {i2c1.receiveByte('not an addr', () => {})}, /Invalid I2C address/, 'receiveByte');
@@ -299,40 +299,40 @@ assert.throws(() => {i2c1.writeQuickSync(0, -1)}, /Invalid bit/, 'writeQuickSync
 assert.throws(() => {i2c1.writeQuickSync(0, 2)}, /Invalid bit/, 'writeQuickSync');
 
 // writeI2cBlock(addr, cmd, length, buffer, cb)
-assert.throws(() => {i2c1.writeI2cBlock('not an addr', 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(-1, 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(128, 0, 10, new Buffer(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock('not an addr', 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(-1, 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(128, 0, 10, Buffer.alloc(10), () => {})}, /Invalid I2C address/, 'writeI2cBlock');
 
-assert.throws(() => {i2c1.writeI2cBlock(0, 'not a command', 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(0, -1, 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(0, 256, 10, new Buffer(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 'not a command', 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, -1, 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 256, 10, Buffer.alloc(10), () => {})}, /Invalid I2C command/, 'writeI2cBlock');
 
-assert.throws(() => {i2c1.writeI2cBlock(0, 0, 'not a length', new Buffer(10), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(0, 0, -1, new Buffer(10), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
-assert.throws(() => {i2c1.writeI2cBlock(0, 0, 33, new Buffer(33), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 0, 'not a length', Buffer.alloc(10), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 0, -1, Buffer.alloc(10), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 0, 33, Buffer.alloc(33), () => {})}, /Invalid buffer length/, 'writeI2cBlock');
 
 assert.throws(() => {i2c1.writeI2cBlock(0, 0, 10, 'not a buffer', () => {})}, /Invalid buffer/, 'writeI2cBlock');
 
-assert.throws(() => {i2c1.writeI2cBlock(0, 0, 11, new Buffer(10), () => {})}, /Buffer must contain at least/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 0, 11, Buffer.alloc(10), () => {})}, /Buffer must contain at least/, 'writeI2cBlock');
 
-assert.throws(() => {i2c1.writeI2cBlock(0, 0, 10, new Buffer(10), 'not a cb')}, /Invalid callback/, 'writeI2cBlock');
+assert.throws(() => {i2c1.writeI2cBlock(0, 0, 10, Buffer.alloc(10), 'not a cb')}, /Invalid callback/, 'writeI2cBlock');
 
 // writeI2cBlockSync(addr, cmd, length, buffer)
-assert.throws(() => {i2c1.writeI2cBlockSync('not an addr', 0, 10, new Buffer(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(-1, 0, 10, new Buffer(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(128, 0, 10, new Buffer(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync('not an addr', 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(-1, 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(128, 0, 10, Buffer.alloc(10))}, /Invalid I2C address/, 'writeI2cBlockSync');
 
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 'not a command', 10, new Buffer(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(0, -1, 10, new Buffer(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 256, 10, new Buffer(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 'not a command', 10, Buffer.alloc(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, -1, 10, Buffer.alloc(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 256, 10, Buffer.alloc(10))}, /Invalid I2C command/, 'writeI2cBlockSync');
 
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 'not a length', new Buffer(10))}, /Invalid buffer length/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, -1, new Buffer(10))}, /Invalid buffer length/, 'writeI2cBlockSync');
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 33, new Buffer(33))}, /Invalid buffer length/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 'not a length', Buffer.alloc(10))}, /Invalid buffer length/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, -1, Buffer.alloc(10))}, /Invalid buffer length/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 33, Buffer.alloc(33))}, /Invalid buffer length/, 'writeI2cBlockSync');
 
 assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 10, 'not a buffer')}, /Invalid buffer/, 'writeI2cBlockSync');
 
-assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 11, new Buffer(10))}, /Buffer must contain at least/, 'writeI2cBlockSync');
+assert.throws(() => {i2c1.writeI2cBlockSync(0, 0, 11, Buffer.alloc(10))}, /Buffer must contain at least/, 'writeI2cBlockSync');
 
 console.log('ok - errors');
 
