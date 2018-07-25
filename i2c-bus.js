@@ -655,7 +655,3 @@ class Bus {
   }
 }
 
-if ("win32" == process.platform) {
-  Bus = require('./win-i2c-bus.js').Bus;
-}
-
