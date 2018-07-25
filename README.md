@@ -47,26 +47,25 @@ to show how the i2c-bus package functions.
 Determine the temperature with a DS1621 temperature sensor Synchronously.
 
 ```js
-var i2c = require('i2c-bus'),
-  i2c1 = i2c.openSync(1);
+const i2c = require('i2c-bus');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_CONFIG = 0xac,
-  CMD_READ_TEMP = 0xaa,
-  CMD_START_CONVERT = 0xee;
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_CONFIG = 0xac;
+const CMD_READ_TEMP = 0xaa;
+const CMD_START_CONVERT = 0xee;
 
-function toCelsius(rawTemp) {
-  var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
+const toCelsius = (rawTemp) => {
+  const halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
   if ((halfDegrees & 0x100) === 0) {
     return halfDegrees / 2; // Temp +ve
   }
 
   return -((~halfDegrees & 0xff) / 2); // Temp -ve
-}
+};
 
-(function () {
-  var rawTemp;
+const displayTemperature = () => {
+  const i2c1 = i2c.openSync(1);
 
   // Enter one shot mode (this is a non volatile setting)
   i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
@@ -83,11 +82,13 @@ function toCelsius(rawTemp) {
   }
 
   // Display temperature
-  rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
+  const rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
   console.log('temp: ' + toCelsius(rawTemp));
 
   i2c1.closeSync();
-}());
+};
+
+displayTemperature();
 ```
 
 ### Example 2 - Determine Temperature Asynchronously
@@ -97,73 +98,78 @@ Example 2 does exactly the same thing as example 1, but uses the asynchronous
 rather than the synchronous API.
 
 ```js
-var async = require('async'),
-  i2c = require('i2c-bus'),
-  i2c1;
+const async = require('async');
+const i2c = require('i2c-bus');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_CONFIG = 0xac,
-  CMD_READ_TEMP = 0xaa,
-  CMD_START_CONVERT = 0xee;
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_CONFIG = 0xac;
+const CMD_READ_TEMP = 0xaa;
+const CMD_START_CONVERT = 0xee;
 
-function toCelsius(rawTemp) {
-  var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
+const toCelsius = (rawTemp) => {
+  const halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
   if ((halfDegrees & 0x100) === 0) {
     return halfDegrees / 2; // Temp +ve
   }
 
   return -((~halfDegrees & 0xff) / 2); // Temp -ve
-}
+};
 
-(function () {
+const displayTemperature = () => {
+  let i2c1;
+
   async.series([
-    function (cb) {
-      i2c1 = i2c.open(1, cb);
-    },
-    function (cb) {
-      // Enter one shot mode (this is a non volatile setting)
-      i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, cb);
-    },
-    function (cb) {
-      // Wait while non volatile memory busy
-      (function read() {
-        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+    (cb) => i2c1 = i2c.open(1, cb),
+
+    // Enter one shot mode (this is a non volatile setting)
+    (cb) => i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, cb),
+
+    // Wait while non volatile memory busy
+    (cb) => {
+      const wait = () => {
+        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
           if (err) return cb(err);
-          if (config & 0x10) return read();
+          if (config & 0x10) return wait();
           cb(null);
         });
-      }());
+      };
+
+      wait();
     },
-    function (cb) {
-      // Start temperature conversion
-      i2c1.sendByte(DS1621_ADDR, CMD_START_CONVERT, cb);
-    },
-    function (cb) {
-      // Wait for temperature conversion to complete
-      (function read() {
-        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+
+    // Start temperature conversion
+    (cb) => i2c1.sendByte(DS1621_ADDR, CMD_START_CONVERT, cb),
+
+    // Wait for temperature conversion to complete
+    (cb) => {
+      const wait = () => {
+        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
           if (err) return cb(err);
-          if ((config & 0x80) === 0) return read();
+          if ((config & 0x80) === 0) return wait();
           cb(null);
         });
-      }());
+      };
+
+      wait();
     },
-    function (cb) {
-      // Display temperature
-      i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, function (err, rawTemp) {
+
+    // Display temperature
+    (cb) => {
+      i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, (err, rawTemp) => {
         if (err) return cb(err);
         console.log('temp: ' + toCelsius(rawTemp));
         cb(null);
       });
     },
-    function (cb) {
-      i2c1.close(cb);
-    }
-  ], function (err) {
+
+    (cb) => i2c1.close(cb)
+  ], (err) => {
     if (err) throw err;
   });
-}());
+};
+
+displayTemperature();
 ```
 
 ### Example 3 - Accessing Multiple Devices Asynchronously and Concurrently
@@ -173,34 +179,36 @@ same bus, a DS1621 temperature sensor and an
 [Adafruit TSL2561 digital luminosity/lux/light sensor](http://www.adafruit.com/products/439).
 
 ```js
-var i2c = require('i2c-bus'),
-  i2c1;
+const i2c = require('i2c-bus');
 
-var DS1621_ADDR = 0x48,
-  DS1621_CMD_ACCESS_TH = 0xa1;
+const DS1621_ADDR = 0x48;
+const DS1621_CMD_ACCESS_TH = 0xa1;
 
-var TSL2561_ADDR = 0x39,
-  TSL2561_CMD = 0x80,
-  TSL2561_REG_ID = 0x0a;
+const TSL2561_ADDR = 0x39;
+const TSL2561_CMD = 0x80;
+const TSL2561_REG_ID = 0x0a;
 
-i2c1 = i2c.open(1, function (err) {
+const i2c1 = i2c.open(1, (err) => {
   if (err) throw err;
 
-  (function readTempHigh() {
-    i2c1.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, function (err, tempHigh) {
+  const readDs1621TempHigh = () => {
+    i2c1.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, (err, tempHigh) => {
       if (err) throw err;
       console.log(tempHigh);
-      readTempHigh();
+      readDs1621TempHigh();
     });
-  }());
+  };
 
-  (function readId() {
-    i2c1.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, function (err, id) {
+  const readTsl2561Id = () => {
+    i2c1.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, (err, id) => {
       if (err) throw err;
       console.log(id);
-      readId();
+      readTsl2561Id();
     });
-  }());
+  };
+
+  readDs1621TempHigh();
+  readTsl2561Id();
 });
 ```
 

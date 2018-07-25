@@ -1,25 +1,24 @@
 'use strict';
 
-var i2c = require('../'),
-  i2c1 = i2c.openSync(1);
+const i2c = require('../');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_CONFIG = 0xac,
-  CMD_READ_TEMP = 0xaa,
-  CMD_START_CONVERT = 0xee;
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_CONFIG = 0xac;
+const CMD_READ_TEMP = 0xaa;
+const CMD_START_CONVERT = 0xee;
 
-function toCelsius(rawTemp) {
-  var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
+const toCelsius = (rawTemp) => {
+  const halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
   if ((halfDegrees & 0x100) === 0) {
     return halfDegrees / 2; // Temp +ve
   }
 
   return -((~halfDegrees & 0xff) / 2); // Temp -ve
-}
+};
 
-(function () {
-  var rawTemp;
+const displayTemperature = () => {
+  const i2c1 = i2c.openSync(1);
 
   // Enter one shot mode (this is a non volatile setting)
   i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
@@ -36,9 +35,11 @@ function toCelsius(rawTemp) {
   }
 
   // Display temperature
-  rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
+  const rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
   console.log('temp: ' + toCelsius(rawTemp));
 
   i2c1.closeSync();
-}());
+};
+
+displayTemperature();
 

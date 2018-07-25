@@ -1,25 +1,24 @@
 'use strict';
 
-var i2c = require('../'),
-  i2c1 = i2c.openSync(1);
+const i2c = require('../');
 
-var DS1621_ADDR = 0x48,
-  CMD_ACCESS_TL = 0xa2;
+const ITERATIONS = 5000;
 
-(function () {
-  var time, reads, readsPerSec;
+const DS1621_ADDR = 0x48;
+const CMD_ACCESS_TL = 0xa2;
 
-  time = process.hrtime();
+const i2c1 = i2c.openSync(1);
 
-  for (reads = 1; reads <= 5000; reads += 1) {
-    i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
-  }
+let time = process.hrtime();
 
-  time = process.hrtime(time);
-  readsPerSec = Math.floor(reads / (time[0] + time[1] / 1E9));
+for (let reads = 1; reads <= ITERATIONS; reads += 1) {
+  i2c1.readWordSync(DS1621_ADDR, CMD_ACCESS_TL);
+}
 
-  i2c1.closeSync();
+time = process.hrtime(time);
+const readsPerSec = Math.floor(ITERATIONS / (time[0] + time[1] / 1E9));
 
-  console.log('ok - sync-performance - ' + readsPerSec + ' reads per second');
-}());
+i2c1.closeSync();
+
+console.log('ok - sync-performance - ' + readsPerSec + ' reads per second');
 

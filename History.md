@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * modernize codebase
+  * drop initial windows support as i can't extend and maintain it
+
 3.2.0 / Apr 21 2018
 ===================
 
