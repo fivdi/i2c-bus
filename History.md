@@ -1,5 +1,5 @@
-Unpublished
-===========
+4.0.0 / Jul 25 2018
+===================
 
   * modernize codebase
   * drop initial windows support as i can't extend and maintain it
