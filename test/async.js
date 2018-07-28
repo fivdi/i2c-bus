@@ -18,11 +18,7 @@ const waitForWrite = (cb) => {
   });
 };
 
-const finished = () => {
-  i2c1.close(() => {
-    console.log('ok - async');
-  });
-};
+const finished = () => i2c1.close(() => console.log('ok - async'));
 
 const i2cPlainReadWrite = () => {
   // Test i2cWrite & i2cRead
