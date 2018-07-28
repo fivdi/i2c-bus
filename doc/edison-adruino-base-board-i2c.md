@@ -6,7 +6,7 @@ Edison Arduino base board. The
 package can be used to configure this I2C bus:
 
 ```js
-let i2cConfig = require('edison-i2c-config');
+const i2cConfig = require('edison-i2c-config');
 
 i2cConfig((err) => {
   if (err) {
