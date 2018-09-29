@@ -1,5 +1,5 @@
-Unpublished
-===========
+4.0.2 / Sep 30 2018
+===================
 
   * update dependencies (nan v2.11.1, async v2.6.1, lodash v4.17.11)
   * adapt to V8 7.0: replace v8Value->Int32Value() with Nan::To<int32_t>(v8Value).FromJust()
