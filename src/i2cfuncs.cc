@@ -45,7 +45,7 @@ NAN_METHOD(I2cFuncsAsync) {
       "incorrect arguments passed to i2cFuncs(int fd, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[1].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new I2cFuncsWorker(callback, fd));
@@ -57,7 +57,7 @@ NAN_METHOD(I2cFuncsSync) {
       "incorrect arguments passed to i2cFuncsSync(int fd)"));
   }
 
-  int fd = info[0]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
 
   unsigned long i2cfuncs;
   __s32 ret = I2cFuncs(fd, &i2cfuncs);

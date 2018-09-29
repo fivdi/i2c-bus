@@ -63,8 +63,8 @@ NAN_METHOD(ReadBlockAsync) {
       "(int fd, int cmd, Buffer buffer, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
   v8::Local<v8::Object> bufferHandle = info[2].As<v8::Object>();
   Nan::Callback *callback = new Nan::Callback(info[3].As<v8::Function>());
 
@@ -95,8 +95,8 @@ NAN_METHOD(ReadBlockSync) {
       "(int fd, int cmd, Buffer buffer)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
   v8::Local<v8::Object> bufferHandle = info[2].As<v8::Object>();
 
   __u8* bufferData = (__u8*) node::Buffer::Data(bufferHandle);

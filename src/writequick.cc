@@ -44,8 +44,8 @@ NAN_METHOD(WriteQuickAsync) {
       "incorrect arguments passed to writeQuick(int fd, int bit, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 bit = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 bit = Nan::To<int32_t>(info[1]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new WriteQuickWorker(callback, fd, bit));
@@ -57,8 +57,8 @@ NAN_METHOD(WriteQuickSync) {
       "incorrect arguments passed to writeQuickSync(int fd, int bit)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 bit = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 bit = Nan::To<int32_t>(info[1]).FromJust();
 
   __s32 ret = WriteQuick(fd, bit);
   if (ret == -1) {

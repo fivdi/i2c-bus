@@ -65,9 +65,9 @@ NAN_METHOD(WriteI2cBlockAsync) {
       "(int fd, int cmd, int length, Buffer buffer, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u32 length = info[2]->Uint32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u32 length = Nan::To<uint32_t>(info[2]).FromJust();
   v8::Local<v8::Object> bufferHandle = info[3].As<v8::Object>();
   Nan::Callback *callback = new Nan::Callback(info[4].As<v8::Function>());
 
@@ -105,9 +105,9 @@ NAN_METHOD(WriteI2cBlockSync) {
       "(int fd, int cmd, int length, Buffer buffer)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u32 length = info[2]->Uint32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u32 length = Nan::To<uint32_t>(info[2]).FromJust();
   v8::Local<v8::Object> bufferHandle = info[3].As<v8::Object>();
 
   const __u8* bufferData = (const __u8*) node::Buffer::Data(bufferHandle);

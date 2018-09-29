@@ -45,7 +45,7 @@ NAN_METHOD(ReceiveByteAsync) {
       "incorrect arguments passed to receiveByte(int fd, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[1].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new ReceiveByteWorker(callback, fd));
@@ -57,7 +57,7 @@ NAN_METHOD(ReceiveByteSync) {
       "incorrect arguments passed to receiveByteSync(int fd)"));
   }
 
-  int fd = info[0]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
 
   __s32 byte = ReceiveByte(fd);
   if (byte == -1) {

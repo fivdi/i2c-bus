@@ -46,8 +46,8 @@ NAN_METHOD(DeviceIdAsync) {
       "incorrect arguments passed to deviceId(int fd, int address, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u16 address = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u16 address = Nan::To<int32_t>(info[1]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new DeviceIdWorker(callback, fd, address));
@@ -59,8 +59,8 @@ NAN_METHOD(DeviceIdSync) {
       "incorrect arguments passed to deviceIdSync(int fd, int address)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u16 address = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u16 address = Nan::To<int32_t>(info[1]).FromJust();
 
   __s32 ret = DeviceId(fd, address);
   if (ret == -1) {

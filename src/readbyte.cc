@@ -46,8 +46,8 @@ NAN_METHOD(ReadByteAsync) {
       "incorrect arguments passed to readByte(int fd, int cmd, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new ReadByteWorker(callback, fd, cmd));
@@ -59,8 +59,8 @@ NAN_METHOD(ReadByteSync) {
       "incorrect arguments passed to readByteSync(int fd, int cmd)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
 
   __s32 byte = ReadByte(fd, cmd);
   if (byte == -1) {

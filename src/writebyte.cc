@@ -46,9 +46,9 @@ NAN_METHOD(WriteByteAsync) {
       "(int fd, int cmd, int byte, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u8 byte = info[2]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u8 byte = Nan::To<int32_t>(info[2]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[3].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new WriteByteWorker(callback, fd, cmd, byte));
@@ -60,9 +60,9 @@ NAN_METHOD(WriteByteSync) {
       "incorrect arguments passed to writeByteSync(int fd, int cmd, int byte)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u8 byte = info[2]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u8 byte = Nan::To<int32_t>(info[2]).FromJust();
 
   __s32 ret = WriteByte(fd, cmd, byte);
   if (ret == -1) {

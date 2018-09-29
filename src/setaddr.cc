@@ -44,9 +44,9 @@ NAN_METHOD(SetAddrAsync) {
       "incorrect arguments passed to setAddr(int fd, int addr, bool forceAccess, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  int addr = info[1]->Int32Value();
-  bool forceAccess = info[2]->BooleanValue();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  int addr = Nan::To<int32_t>(info[1]).FromJust();
+  bool forceAccess = Nan::To<bool>(info[2]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[3].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new SetAddrWorker(callback, fd, addr, forceAccess));
@@ -58,9 +58,9 @@ NAN_METHOD(SetAddrSync) {
       "incorrect arguments passed to setAddrSync(int fd, int addr, bool forceAccess)"));
   }
 
-  int fd = info[0]->Int32Value();
-  int addr = info[1]->Int32Value();
-  bool forceAccess = info[2]->BooleanValue();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  int addr = Nan::To<int32_t>(info[1]).FromJust();
+  bool forceAccess = Nan::To<bool>(info[2]).FromJust();
 
   if (SetAddr(fd, addr, forceAccess) != 0) {
     return Nan::ThrowError(Nan::ErrnoException(errno, "setAddrSync", ""));

@@ -44,8 +44,8 @@ NAN_METHOD(SendByteAsync) {
       "incorrect arguments passed to sendByte(int fd, int byte, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 byte = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 byte = Nan::To<int32_t>(info[1]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new SendByteWorker(callback, fd, byte));
@@ -57,8 +57,8 @@ NAN_METHOD(SendByteSync) {
       "incorrect arguments passed to sendByteSync(int fd, int byte)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 byte = info[1]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 byte = Nan::To<int32_t>(info[1]).FromJust();
 
   __s32 ret = SendByte(fd, byte);
   if (ret == -1) {

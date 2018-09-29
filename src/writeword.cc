@@ -46,9 +46,9 @@ NAN_METHOD(WriteWordAsync) {
       "(int fd, int cmd, int word, function cb)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u16 word = info[2]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u16 word = Nan::To<int32_t>(info[2]).FromJust();
   Nan::Callback *callback = new Nan::Callback(info[3].As<v8::Function>());
 
   Nan::AsyncQueueWorker(new WriteWordWorker(callback, fd, cmd, word));
@@ -61,9 +61,9 @@ NAN_METHOD(WriteWordSync) {
       "(int fd, int cmd, int word)"));
   }
 
-  int fd = info[0]->Int32Value();
-  __u8 cmd = info[1]->Int32Value();
-  __u16 word = info[2]->Int32Value();
+  int fd = Nan::To<int32_t>(info[0]).FromJust();
+  __u8 cmd = Nan::To<int32_t>(info[1]).FromJust();
+  __u16 word = Nan::To<int32_t>(info[2]).FromJust();
 
   __s32 ret = WriteWord(fd, cmd, word);
   if (ret == -1) {

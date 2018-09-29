@@ -1,3 +1,11 @@
+Unpublished
+===========
+
+  * update dependencies (nan v2.11.1, async v2.6.1, lodash v4.17.11)
+  * adapt to V8 7.0: replace v8Value->Int32Value() with Nan::To<int32_t>(v8Value).FromJust()
+  * adapt to V8 7.0: replace v8Value->Uint32Value() with Nan::To<uint32_t>(v8Value).FromJust()
+  * adapt to V8 7.0: replace v8Value->BooleanValue() with Nan::To<bool>(v8Value).FromJust()
+
 4.0.1 / Jul 28 2018
 ===================
 
