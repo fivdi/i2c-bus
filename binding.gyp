@@ -8,11 +8,11 @@
       '"<!(echo $V)" != "1"', {
         "cflags": [
           "-Wno-deprecated-declarations"
-        ],
-        "sources": [
-         "./src/i2c.cc"
         ]
       }]
+    ],
+    "sources": [
+      "./src/i2c.cc"
     ]
   }]
 }
