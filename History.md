@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * fix deprecation warnings on node.js v10.12 (see https://github.com/nodejs/nan/pull/811)
+
 4.0.2 / Sep 30 2018
 ===================
 
