@@ -1,5 +1,5 @@
-Unpublished
-===========
+4.0.4 / Oct 13 2018
+===================
 
   * always compile c++ code
 
