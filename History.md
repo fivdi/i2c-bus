@@ -1,7 +1,7 @@
-Unpublished
-===========
+4.0.5 / Oct 14 2018
+===================
 
-  * supress warnings complaining about casting between incompatible function types (see https://github.com/nodejs/nan/issues/807)
+  * suppress warnings complaining about casting between incompatible function types (see https://github.com/nodejs/nan/issues/807)
 
 4.0.4 / Oct 13 2018
 ===================
