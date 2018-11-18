@@ -5,15 +5,19 @@
       "<!(node -e \"require('nan')\")"
     ],
     "conditions": [[
-      '"<!(echo $V)" != "1"', {
-        "cflags": [
-          "-Wno-deprecated-declarations",
-          "-Wno-cast-function-type"
+      'OS == "linux"', {
+        "sources": [
+         "./src/i2c.cc"
+        ],
+        "conditions": [[
+          '"<!(echo $V)" != "1"', {
+            "cflags": [
+              "-Wno-deprecated-declarations",
+              "-Wno-cast-function-type"
+            ]
+          }]
         ]
       }]
-    ],
-    "sources": [
-      "./src/i2c.cc"
     ]
   }]
 }
