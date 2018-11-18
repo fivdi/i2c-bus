@@ -1,5 +1,6 @@
-Unpublished
-===========
+4.0.6 / Nov 18 2018
+===================
+
   * fix macOS installation
 
 4.0.5 / Oct 14 2018
