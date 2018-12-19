@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * update dependencies (nan v2.12.1, bindings v1.3.1)
+
 4.0.6 / Nov 18 2018
 ===================
 
