@@ -1,5 +1,5 @@
-Unpublished
-===========
+4.0.8 / Mar 01 2019
+===================
 
   * add travis build
   * lint with jshint
