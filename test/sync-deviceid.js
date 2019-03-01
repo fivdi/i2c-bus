@@ -7,7 +7,7 @@ const invalid = 0x42;
 
 const readDeviceId = () => {
   const i2c1 = i2c.openSync(42);
-  const id = i2c1.deviceIdSync(address)
+  const id = i2c1.deviceIdSync(address);
 
   console.log('id for address', '0x' + address.toString(16), id);
 

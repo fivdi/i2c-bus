@@ -1,12 +1,15 @@
+[![Build Status](https://travis-ci.org/fivdi/i2c-bus.svg?branch=master)](https://travis-ci.org/fivdi/i2c-bus)
+[![npm Version](http://img.shields.io/npm/v/i2c-bus.svg)](https://www.npmjs.com/package/i2c-bus)
+[![Downloads Per Month](http://img.shields.io/npm/dm/i2c-bus.svg)](https://www.npmjs.com/package/i2c-bus)
+[![Mentioned in Awesome Node.js](https://awesome.re/mentioned-badge.svg)](https://github.com/sindresorhus/awesome-nodejs#hardware)
+
 # i2c-bus
 
 I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi,
 C.H.I.P., BeagleBone or Intel Edison. All methods have asynchronous and
 synchronous forms.
 
-i2c-bus supports Node.js versions 4, 6, 8 and 10.
-
-[![Mentioned in Awesome Node.js](https://awesome.re/mentioned-badge.svg)](https://github.com/sindresorhus/awesome-nodejs)
+i2c-bus supports Node.js versions 4, 6, 8, 10 and 11.
 
 ## Contents
 

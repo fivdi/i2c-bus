@@ -19,7 +19,7 @@ const useBusMoreThanMaxFdTimes = () => {
     i2c1.readWordSync(DS1621_ADDR, DS1621_CMD_ACCESS_TL);
     i2c1.closeSync();
   }
-}
+};
 
 const useMultipleObjectsForSameBusConcurrently = () => {
   const buses = [];
@@ -31,7 +31,7 @@ const useMultipleObjectsForSameBusConcurrently = () => {
   }
   buses.forEach((bus) => bus.readWordSync(DS1621_ADDR, DS1621_CMD_ACCESS_TL));
   buses.forEach((bus) => bus.closeSync());
-}
+};
 
 const useTwoObjectsForSameBusConcurrently = () => {
   const ds1621 = i2c.openSync(1);
@@ -41,7 +41,7 @@ const useTwoObjectsForSameBusConcurrently = () => {
 
   console.log("  ds1621TempHigh: " + ds1621TempHigh);
   console.log("  tsl2561Id: " + tsl2561Id);
-}
+};
 
 useBusMoreThanMaxFdTimes();
 useMultipleObjectsForSameBusConcurrently();

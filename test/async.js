@@ -73,7 +73,7 @@ const readWriteI2cBlock = () => {
       });
     });
   });
-}
+};
 
 const readWriteWord = () => {
   // Test writeWord & readWord
@@ -95,7 +95,7 @@ const readWriteWord = () => {
       });
     });
   });
-}
+};
 
 const sendReceiveByte = (epectedConfig) => {
   // Test sendByte & receiveByte
@@ -111,7 +111,7 @@ const sendReceiveByte = (epectedConfig) => {
       readWriteWord();
     });
   });
-}
+};
 
 const readWriteByte = () => {
   // Test writeByte & readByte
@@ -129,7 +129,7 @@ const readWriteByte = () => {
       });
     });
   });
-}
+};
 
 const i2c1 = i2c.open(1, (err) => {
   assert(!err, 'can\'t open i2c bus');
