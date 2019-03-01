@@ -21,7 +21,7 @@ const performanceTest = (testRuns) => {
       performanceTest(testRuns);
     }
   });
-}
+};
 
 const i2c1 = i2c.open(1, () => {
   time = process.hrtime();

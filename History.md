@@ -1,3 +1,12 @@
+Unpublished
+===========
+
+  * add travis build
+  * lint with jshint
+  * update dependencies (bindings v1.5.0, async v2.6.2)
+  * document node 11 support
+  * add .npmignore and .npmrc
+
 4.0.7 / Dec 19 2018
 ===================
 
