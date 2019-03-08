@@ -51,8 +51,7 @@ const openSync = (busNumber, options) => {
 module.exports.openSync = openSync;
 
 const checkBusNumber = (busNumber) => {
-  if (process.platform === 'linux' &&
-      (!Number.isInteger(busNumber) || busNumber < 0)) {
+  if (!Number.isInteger(busNumber) || busNumber < 0) {
     throw new Error('Invalid I2C bus number ' + busNumber);
   }
 };
