@@ -1,7 +1,7 @@
 Unpublished
 ===========
 
-  * add unittests
+  * add unit tests
 
 4.0.8 / Mar 01 2019
 ===================

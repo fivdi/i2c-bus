@@ -107,7 +107,7 @@ describe('i2cFuncs', () => {
       (device, cb) => {
         setImmediate(
           cb,
-          new Error('i2cFuncsAsync Error'),
+          new Error('i2cFuncsAsync Error')
         );
       }
     );
