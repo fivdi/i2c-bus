@@ -103,7 +103,7 @@ describe('i2cFuncs', () => {
   it('fails if i2cFuncsAsync detects an error', (done) => {
     mockI2c.i2cFuncsAsync.restore();
 
-    sinon.stub(mockI2c, "i2cFuncsAsync").callsFake(
+    sinon.stub(mockI2c, 'i2cFuncsAsync').callsFake(
       (device, cb) => {
         setImmediate(
           cb,
@@ -118,6 +118,7 @@ describe('i2cFuncs', () => {
       done();
     });
   });
+
 
   afterEach(() => {
     mockI2c.setAddrAsync.restore();
