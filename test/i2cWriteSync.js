@@ -5,7 +5,7 @@ const mockRequire = require('mock-require');
 const mockBindings = require('./mocks/bindings');
 const mockLinux = require('./mocks/linux');
 const mockI2c = require('./mocks/i2c.node');
-const sinon = require("sinon");
+const sinon = require('sinon');
 
 mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');

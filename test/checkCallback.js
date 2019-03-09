@@ -18,7 +18,7 @@ describe('checkCallback', () => {
   it('fails if callback is a string', () => {
     const busNumber = 1;
     const options = {};
-    const callback = "string";
+    const callback = 'string';
 
     const expectedErrorMessage = 'Invalid callback string';
     let actualErrorMessage;

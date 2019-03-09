@@ -5,7 +5,7 @@ const mockRequire = require('mock-require');
 const mockBindings = require('./mocks/bindings');
 const mockLinux = require('./mocks/linux');
 const mockI2c = require('./mocks/i2c.node');
-const sinon = require("sinon");
+const sinon = require('sinon');
 
 mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');
@@ -22,14 +22,14 @@ describe('scan', () => {
     const setUpStubs = () => {
       let currentAddr;
 
-      sinon.stub(mockI2c, "setAddrAsync").callsFake(
+      sinon.stub(mockI2c, 'setAddrAsync').callsFake(
         (device, addr, forceAccess, cb) => {
           currentAddr = addr;
           setImmediate(cb, null);
         }
       );
 
-      sinon.stub(mockI2c, "receiveByteAsync").callsFake(
+      sinon.stub(mockI2c, 'receiveByteAsync').callsFake(
         (device, cb) => {
           if (currentAddr >= 10 && currentAddr <= 20) {
             return setImmediate(cb, null, 0x55);

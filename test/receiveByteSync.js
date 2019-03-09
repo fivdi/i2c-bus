@@ -5,7 +5,7 @@ const mockRequire = require('mock-require');
 const mockBindings = require('./mocks/bindings');
 const mockLinux = require('./mocks/linux');
 const mockI2c = require('./mocks/i2c.node');
-const sinon = require("sinon");
+const sinon = require('sinon');
 
 mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');
@@ -19,9 +19,9 @@ describe('receiveByteSync', () => {
 
     i2c1 = i2c.openSync(1);
 
-    sinon.stub(mockI2c, "setAddrSync").callsFake(() => {});
+    sinon.stub(mockI2c, 'setAddrSync').callsFake(() => {});
 
-    sinon.stub(mockI2c, "receiveByteSync").callsFake(
+    sinon.stub(mockI2c, 'receiveByteSync').callsFake(
       (device) => {
         return 0x55;
       }
