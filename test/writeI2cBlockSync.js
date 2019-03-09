@@ -11,7 +11,7 @@ mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');
 
 
-describe('writeWordSync', () => {
+describe('writeI2cBlockSync', () => {
   let i2c1;
 
   beforeEach(() => {
@@ -19,43 +19,47 @@ describe('writeWordSync', () => {
 
     i2c1 = i2c.openSync(1);
 
-    sinon.stub(mockI2c, "setAddrSync").callsFake(() => {});
-    sinon.stub(mockI2c, "writeWordSync").callsFake(() => {});
+    sinon.stub(mockI2c, 'setAddrSync').callsFake(() => {});
+    sinon.stub(mockI2c, 'writeI2cBlockSync').callsFake(() => {});
   });
 
 
-  it('writes word to register', () => {
+  it('writes block to register', () => {
     const addr = 0x1;
     const cmd = 0x2;
-    const word = 0xaa55;
+    const length = 5;
+    const buffer = Buffer.from('0123456789');
 
-    i2c1.writeWordSync(addr, cmd, word);
+    i2c1.writeI2cBlockSync(addr, cmd, length, buffer);
 
     assert(mockI2c.setAddrSync.calledOnce);
     assert.strictEqual(mockI2c.setAddrSync.firstCall.args.length, 3);
     const actualAddr = mockI2c.setAddrSync.firstCall.args[1];
     assert.strictEqual(addr, actualAddr);
 
-    assert(mockI2c.writeWordSync.calledOnce);
-    assert.strictEqual(mockI2c.writeWordSync.firstCall.args.length, 3);
-    const actualCmd = mockI2c.writeWordSync.firstCall.args[1];
-    const actualWord = mockI2c.writeWordSync.firstCall.args[2];
+    assert(mockI2c.writeI2cBlockSync.calledOnce);
+    assert.strictEqual(mockI2c.writeI2cBlockSync.firstCall.args.length, 4);
+    const actualCmd = mockI2c.writeI2cBlockSync.firstCall.args[1];
     assert.strictEqual(cmd, actualCmd);
-    assert.strictEqual(word, actualWord);
+    const actualLength = mockI2c.writeI2cBlockSync.firstCall.args[2];
+    assert.strictEqual(length, actualLength);
+    const actualBuffer = mockI2c.writeI2cBlockSync.firstCall.args[3];
+    assert.strictEqual(buffer, actualBuffer);
   });
 
   it('returns this', () => {
     const addr = 0x1;
     const cmd = 0x2;
-    const word = 0xaa55;
+    const length = 5;
+    const buffer = Buffer.from('0123456789');
 
-    assert.strictEqual(i2c1, i2c1.writeWordSync(addr, cmd, word));
+    assert.strictEqual(i2c1, i2c1.writeI2cBlockSync(addr, cmd, length, buffer));
   });
 
 
   afterEach(() => {
     mockI2c.setAddrSync.restore();
-    mockI2c.writeWordSync.restore();
+    mockI2c.writeI2cBlockSync.restore();
 
     i2c1.closeSync();
 

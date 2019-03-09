@@ -11,7 +11,7 @@ mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');
 
 
-describe('readI2cBlock', () => {
+describe('writeI2cBlock', () => {
   let i2c1;
 
   beforeEach(() => {
@@ -25,38 +25,36 @@ describe('readI2cBlock', () => {
       }
     );
 
-    sinon.stub(mockI2c, "readI2cBlockAsync").callsFake(
+    sinon.stub(mockI2c, "writeI2cBlockAsync").callsFake(
       (device, cmd, length, buffer, cb) => {
-        buffer.fill('a', 0, length);
         setImmediate(cb, null, length, buffer);
       }
     );
   });
 
 
-  it('reads block from register', (done) => {
+  it('writes block to register', (done) => {
     const addr = 0x1;
     const cmd = 0x2;
-    const length = 10;
-    const buffer = Buffer.alloc(1024);
+    const length = 5;
+    const buffer = Buffer.from('0123456789');
 
-    i2c1.readI2cBlock(addr, cmd, length, buffer, (err, bytesRead, buf) => {
-      assert.strictEqual(bytesRead, length);
+    i2c1.writeI2cBlock(addr, cmd, length, buffer, (err, bytesWritten, buf) => {
+      assert.strictEqual(length, bytesWritten);
       assert.strictEqual(buffer, buf);
-      assert.strictEqual(buffer.slice(0, length).toString(), 'aaaaaaaaaa');
 
       assert(mockI2c.setAddrAsync.calledOnce);
       assert.strictEqual(mockI2c.setAddrAsync.firstCall.args.length, 4);
       const actualAddr = mockI2c.setAddrAsync.firstCall.args[1];
       assert.strictEqual(addr, actualAddr);
 
-      assert(mockI2c.readI2cBlockAsync.calledOnce);
-      assert.strictEqual(mockI2c.readI2cBlockAsync.firstCall.args.length, 5);
-      const actualCmd = mockI2c.readI2cBlockAsync.firstCall.args[1];
+      assert(mockI2c.writeI2cBlockAsync.calledOnce);
+      assert.strictEqual(mockI2c.writeI2cBlockAsync.firstCall.args.length, 5);
+      const actualCmd = mockI2c.writeI2cBlockAsync.firstCall.args[1];
       assert.strictEqual(cmd, actualCmd);
-      const actualLength = mockI2c.readI2cBlockAsync.firstCall.args[2];
+      const actualLength = mockI2c.writeI2cBlockAsync.firstCall.args[2];
       assert.strictEqual(length, actualLength);
-      const actualBuffer = mockI2c.readI2cBlockAsync.firstCall.args[3];
+      const actualBuffer = mockI2c.writeI2cBlockAsync.firstCall.args[3];
       assert.strictEqual(buffer, actualBuffer);
 
       done();
@@ -66,15 +64,15 @@ describe('readI2cBlock', () => {
   it('fails if /dev/i2c-<busNumber> not found', (done) => {
     const addr = 0x1;
     const cmd = 0x2;
-    const length = 10;
-    const buffer = Buffer.alloc(10);
+    const length = 5;
+    const buffer = Buffer.from('0123456789');
 
     const busNumber = i2c1._busNumber;
     i2c1._busNumber = 1e6;
 
-    i2c1.readI2cBlock(addr, cmd, length, buffer, (err, bytesRead, buf) => {
+    i2c1.writeI2cBlock(addr, cmd, length, buffer, (err, bytesWritten, buf) => {
       i2c1._busNumber = busNumber;
-
+      
       assert.strictEqual(err.code, 'ENOENT');
 
       done();
@@ -84,7 +82,7 @@ describe('readI2cBlock', () => {
 
   afterEach(() => {
     mockI2c.setAddrAsync.restore();
-    mockI2c.readI2cBlockAsync.restore();
+    mockI2c.writeI2cBlockAsync.restore();
 
     i2c1.closeSync();
 

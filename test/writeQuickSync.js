@@ -11,7 +11,7 @@ mockRequire('bindings', mockBindings);
 const i2c = require('../i2c-bus');
 
 
-describe('writeWordSync', () => {
+describe('writeQuickSync', () => {
   let i2c1;
 
   beforeEach(() => {
@@ -20,42 +20,38 @@ describe('writeWordSync', () => {
     i2c1 = i2c.openSync(1);
 
     sinon.stub(mockI2c, "setAddrSync").callsFake(() => {});
-    sinon.stub(mockI2c, "writeWordSync").callsFake(() => {});
+    sinon.stub(mockI2c, "writeQuickSync").callsFake(() => {});
   });
 
 
-  it('writes word to register', () => {
+  it('writes bit to device', () => {
     const addr = 0x1;
-    const cmd = 0x2;
-    const word = 0xaa55;
+    const bit = 0x1;
 
-    i2c1.writeWordSync(addr, cmd, word);
+    i2c1.writeQuickSync(addr, bit);
 
     assert(mockI2c.setAddrSync.calledOnce);
     assert.strictEqual(mockI2c.setAddrSync.firstCall.args.length, 3);
     const actualAddr = mockI2c.setAddrSync.firstCall.args[1];
     assert.strictEqual(addr, actualAddr);
 
-    assert(mockI2c.writeWordSync.calledOnce);
-    assert.strictEqual(mockI2c.writeWordSync.firstCall.args.length, 3);
-    const actualCmd = mockI2c.writeWordSync.firstCall.args[1];
-    const actualWord = mockI2c.writeWordSync.firstCall.args[2];
-    assert.strictEqual(cmd, actualCmd);
-    assert.strictEqual(word, actualWord);
+    assert(mockI2c.writeQuickSync.calledOnce);
+    assert.strictEqual(mockI2c.writeQuickSync.firstCall.args.length, 2);
+    const actualBit = mockI2c.writeQuickSync.firstCall.args[1];
+    assert.strictEqual(bit, actualBit);
   });
 
   it('returns this', () => {
     const addr = 0x1;
-    const cmd = 0x2;
-    const word = 0xaa55;
+    const bit = 0x1;
 
-    assert.strictEqual(i2c1, i2c1.writeWordSync(addr, cmd, word));
+    assert.strictEqual(i2c1, i2c1.writeQuickSync(addr, bit));
   });
 
 
   afterEach(() => {
     mockI2c.setAddrSync.restore();
-    mockI2c.writeWordSync.restore();
+    mockI2c.writeQuickSync.restore();
 
     i2c1.closeSync();
 

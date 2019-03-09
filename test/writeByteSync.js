@@ -37,7 +37,7 @@ describe('writeByteSync', () => {
     assert.strictEqual(addr, actualAddr);
 
     assert(mockI2c.writeByteSync.calledOnce);
-    assert.strictEqual(mockI2c.setAddrSync.firstCall.args.length, 3);
+    assert.strictEqual(mockI2c.writeByteSync.firstCall.args.length, 3);
     const actualCmd = mockI2c.writeByteSync.firstCall.args[1];
     const actualByte = mockI2c.writeByteSync.firstCall.args[2];
     assert.strictEqual(cmd, actualCmd);
