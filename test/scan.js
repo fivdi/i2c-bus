@@ -1,82 +1,91 @@
 'use strict';
 
-const _ = require('lodash');
 const assert = require('assert');
-const i2c = require('../');
+const mockRequire = require('mock-require');
+const mockBindings = require('./mocks/bindings');
+const mockLinux = require('./mocks/linux');
+const mockI2c = require('./mocks/i2c.node');
+const sinon = require('sinon');
 
-const TSL2561_ADDR = 0x39;
-const DS1621_ADDR = 0x48;
+mockRequire('bindings', mockBindings);
+const i2c = require('../i2c-bus');
 
-const bus = i2c.openSync(1);
 
-const scanSyncRange = () => {
-  const devices = bus.scanSync(TSL2561_ADDR, DS1621_ADDR);
+describe('scan', () => {
+  let i2c1;
 
-  assert(devices.length === 2, 'expected 2 devices');
-  assert(
-    devices[0] === TSL2561_ADDR,
-    'expected device at address 0x' + TSL2561_ADDR.toString(16)
-  );
-  assert(
-    devices[1] === DS1621_ADDR,
-    'expected device at address 0x' + DS1621_ADDR.toString(16)
-  );
+  beforeEach(() => {
+    mockLinux.mockI2c1();
 
-  console.log('ok - scan');
-};
+    i2c1 = i2c.openSync(1);
 
-const scanSyncForSingleDevice = () => {
-  const devices = bus.scanSync(DS1621_ADDR);
+    const setUpStubs = () => {
+      let currentAddr;
 
-  assert(devices.length === 1, 'expected 1 device');
-  assert(
-    devices[0] === DS1621_ADDR,
-    'expected device at address 0x' + DS1621_ADDR.toString(16)
-  );
+      sinon.stub(mockI2c, 'setAddrAsync').callsFake(
+        (device, addr, forceAccess, cb) => {
+          currentAddr = addr;
+          setImmediate(cb, null);
+        }
+      );
 
-  scanSyncRange();
-};
+      sinon.stub(mockI2c, 'receiveByteAsync').callsFake(
+        (device, cb) => {
+          if (currentAddr >= 10 && currentAddr <= 20) {
+            return setImmediate(cb, null, 0x55);
+          }
 
-const scanRange = () => {
-  bus.scan(TSL2561_ADDR, DS1621_ADDR, (err, devices) => {
-    assert(!err, 'can\'t scan range');
-    assert(devices.length === 2, 'expected 2 devices');
-    assert(
-      devices[0] === TSL2561_ADDR,
-      'expected device at address 0x' + TSL2561_ADDR.toString(16)
-    );
-    assert(
-      devices[1] === DS1621_ADDR,
-      'expected device at address 0x' + DS1621_ADDR.toString(16)
-    );
+          setImmediate(cb, new Error('No device at ' + currentAddr));
+        }
+      );
+    };
 
-    scanSyncForSingleDevice();
+    setUpStubs();
   });
-};
 
-const scanForSingleDevice = () => {
-  bus.scan(DS1621_ADDR, (err, devices) => {
-    assert(!err, 'can\'t scan for single device');
-    assert(devices.length === 1, 'expected 1 device');
-    assert(
-      devices[0] === DS1621_ADDR,
-      'expected device at address 0x' + DS1621_ADDR.toString(16)
-    );
 
-    scanRange();
+  it('scans all addresses for devices', (done) => {
+    i2c1.scan((err, addresses) => {
+      assert.deepEqual(
+        addresses, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      );
+
+      done();
+    });
   });
-};
 
-const scanDefaultRange = () => {
-  const addresses = bus.scanSync();
+  it('scans single address for device', (done) => {
+    i2c1.scan(15, (err, addresses) => {
+      assert.deepEqual(addresses, [15]);
 
-  bus.scan((err, devices) => {
-    assert(!err, 'can\'t scan default range');
-    assert(_.isEqual(addresses, devices), 'sync and async scan differ');
-
-    scanForSingleDevice();
+      done();
+    });
   });
-};
 
-scanDefaultRange();
+  it('scans address range for devices', (done) => {
+    i2c1.scan(0, 15, (err, addresses) => {
+      assert.deepEqual(addresses, [10, 11, 12, 13, 14, 15]);
+
+      done();
+    });
+  });
+
+  it('scans another address range for devices', (done) => {
+    i2c1.scan(12, 17, (err, addresses) => {
+      assert.deepEqual(addresses, [12, 13, 14, 15, 16, 17]);
+
+      done();
+    });
+  });
+
+
+  afterEach(() => {
+    mockI2c.setAddrAsync.restore();
+    mockI2c.receiveByteAsync.restore();
+
+    i2c1.closeSync();
+
+    mockLinux.restore();
+  });
+});
 

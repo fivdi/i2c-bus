@@ -8,9 +8,12 @@
     "test": "test"
   },
   "scripts": {
-    "lint": "jshint i2c-bus.js example/*.js test/*.js",
-    "test": "echo \"Tests can only be run manually from the command line.\" && exit 1",
-    "install": "node-gyp rebuild"
+    "coverage-report": "nyc report --reporter=html",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "install": "node-gyp rebuild",
+    "integration-test": "cd integration-test && ./run-tests && cd ..",
+    "lint": "jshint i2c-bus.js example/*.js integration-test/*.js",
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -25,8 +28,14 @@
   },
   "devDependencies": {
     "async": "^2.6.2",
+    "coveralls": "^3.0.3",
     "jshint": "^2.10.1",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "mocha": "^6.0.2",
+    "mock-fs": "^4.8.0",
+    "mock-require": "^3.0.3",
+    "nyc": "^13.3.0",
+    "sinon": "^7.2.7"
   },
   "keywords": [
     "i2c",
