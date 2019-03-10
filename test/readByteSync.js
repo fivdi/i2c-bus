@@ -123,14 +123,13 @@ describe('readByteSync', () => {
   });
 
   it('fails if no addr specified', () => {
-    const addr = undefined;
     const cmd = 0x2;
 
     const expectedErrorMessage = 'Invalid I2C address undefined';
     let actualErrorMessage;
 
     try {
-      i2c1.readByteSync(addr, cmd);
+      i2c1.readByteSync(undefined, cmd);
     } catch (err) {
       actualErrorMessage = err.message;
     }
@@ -140,13 +139,12 @@ describe('readByteSync', () => {
 
   it('fails if no cmd specified', () => {
     const addr = 0x1;
-    const cmd = undefined;
 
     const expectedErrorMessage = 'Invalid I2C command undefined';
     let actualErrorMessage;
 
     try {
-      i2c1.readByteSync(addr, cmd);
+      i2c1.readByteSync(addr, undefined);
     } catch (err) {
       actualErrorMessage = err.message;
     }
