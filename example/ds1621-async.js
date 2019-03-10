@@ -31,8 +31,12 @@ const displayTemperature = () => {
     (cb) => {
       const wait = () => {
         i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
-          if (err) return cb(err);
-          if (config & 0x10) return wait();
+          if (err) {
+            return cb(err);
+          }
+          if (config & 0x10) {
+            return wait();
+          }
           cb(null);
         });
       };
@@ -47,8 +51,12 @@ const displayTemperature = () => {
     (cb) => {
       const wait = () => {
         i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
-          if (err) return cb(err);
-          if ((config & 0x80) === 0) return wait();
+          if (err) {
+            return cb(err);
+          }
+          if ((config & 0x80) === 0) {
+            return wait();
+          }
           cb(null);
         });
       };
@@ -59,7 +67,9 @@ const displayTemperature = () => {
     // Display temperature
     (cb) => {
       i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, (err, rawTemp) => {
-        if (err) return cb(err);
+        if (err) {
+          return cb(err);
+        }
         console.log('temp: ' + toCelsius(rawTemp));
         cb(null);
       });
@@ -67,7 +77,9 @@ const displayTemperature = () => {
 
     (cb) => i2c1.close(cb)
   ], (err) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
   });
 };
 

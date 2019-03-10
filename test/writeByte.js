@@ -73,7 +73,6 @@ describe('writeByte', () => {
   });
 
   it('fails if no addr specified', () => {
-    const addr = undefined;
     const cmd = 0x2;
     const byte = 0x3;
 
@@ -81,7 +80,7 @@ describe('writeByte', () => {
     let actualErrorMessage;
 
     try {
-      i2c1.writeByte(addr, cmd, byte, () => {});
+      i2c1.writeByte(undefined, cmd, byte, () => {});
     } catch (err) {
       actualErrorMessage = err.message;
     }
@@ -91,14 +90,13 @@ describe('writeByte', () => {
 
   it('fails if no cmd specified', () => {
     const addr = 0x1;
-    const cmd = undefined;
     const byte = 0x3;
 
     const expectedErrorMessage = 'Invalid I2C command undefined';
     let actualErrorMessage;
 
     try {
-      i2c1.writeByte(addr, cmd, byte, () => {});
+      i2c1.writeByte(addr, undefined, byte, () => {});
     } catch (err) {
       actualErrorMessage = err.message;
     }
@@ -109,13 +107,12 @@ describe('writeByte', () => {
   it('fails if no byte specified', () => {
     const addr = 0x1;
     const cmd = 0x2;
-    const byte = undefined;
 
     const expectedErrorMessage = 'Invalid byte undefined';
     let actualErrorMessage;
 
     try {
-      i2c1.writeByte(addr, cmd, byte);
+      i2c1.writeByte(addr, cmd, undefined);
     } catch (err) {
       actualErrorMessage = err.message;
     }

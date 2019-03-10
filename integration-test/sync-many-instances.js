@@ -39,8 +39,8 @@ const useTwoObjectsForSameBusConcurrently = () => {
   const ds1621TempHigh = ds1621.readWordSync(DS1621_ADDR, DS1621_CMD_ACCESS_TH);
   const tsl2561Id = tsl2561.readByteSync(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID);
 
-  console.log("  ds1621TempHigh: " + ds1621TempHigh);
-  console.log("  tsl2561Id: " + tsl2561Id);
+  console.log('  ds1621TempHigh: ' + ds1621TempHigh);
+  console.log('  tsl2561Id: ' + tsl2561Id);
 };
 
 useBusMoreThanMaxFdTimes();

@@ -12,7 +12,7 @@
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "install": "node-gyp rebuild",
     "integration-test": "cd integration-test && ./run-tests && cd ..",
-    "lint": "jshint i2c-bus.js example/*.js integration-test/*.js",
+    "lint": "jshint i2c-bus.js example/*.js integration-test/*.js test/*.js test/*/*.js",
     "test": "nyc mocha"
   },
   "repository": {
