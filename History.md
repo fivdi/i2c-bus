@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * add unit tests
+  * update dependencies (nan v2.13.0, jshint v2.10.2, )
 
 4.0.8 / Mar 01 2019
 ===================
