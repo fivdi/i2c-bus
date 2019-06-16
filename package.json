@@ -39,11 +39,11 @@
   },
   "keywords": [
     "i2c",
+    "iot",
     "raspberry",
     "raspi",
     "rpi",
     "pi",
-    "edison",
     "beaglebone",
     "smbus",
     "linux"
