@@ -1,5 +1,5 @@
-Unpublished
-===========
+4.0.11 / Sep 07 2019
+====================
 
   * update dependencies (async v3.1.0, coveralls v3.0.6, lodash v4.17.15, mocha v6.2.0, sinon v7.4.2)
 
