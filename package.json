@@ -27,15 +27,15 @@
     "nan": "^2.14.0"
   },
   "devDependencies": {
-    "async": "^3.0.1",
-    "coveralls": "^3.0.4",
+    "async": "^3.1.0",
+    "coveralls": "^3.0.6",
     "jshint": "^2.10.2",
-    "lodash": "^4.17.11",
-    "mocha": "^6.1.4",
+    "lodash": "^4.17.15",
+    "mocha": "^6.2.0",
     "mock-fs": "^4.10.1",
     "mock-require": "^3.0.3",
     "nyc": "^14.1.1",
-    "sinon": "^7.3.2"
+    "sinon": "^7.4.2"
   },
   "keywords": [
     "i2c",
