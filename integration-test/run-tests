@@ -1,6 +1,8 @@
 #!/bin/sh
 node async
 node async-performance
+node async-promise
+node async-promise-performance
 node errors
 node i2c-functionality-available
 node scan
