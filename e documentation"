@@ -1,0 +1,36 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex a023781..ccf5fe1 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -12,10 +12,6 @@[m [mcallbacks and synchronous execution.[m
+ [m
+ i2c-bus supports Node.js versions 6, 8, 10 and 12.[m
+ [m
+[31m-[m
+[31m-The fs.promises API provides an alternative set of asynchronous file system methods that return Promise objects rather than using callbacks. The API is accessible via require('fs').promises.[m
+[31m-[m
+[31m-[m
+ ## Contents[m
+ [m
+  * [Installation](#installation)[m
+[36m@@ -222,7 +218,7 @@[m [mconst i2c1 = i2c.open(1, (err) => {[m
+ [m
+ ## API[m
+ [m
+[31m- * [Methods](#api)[m
+[32m+[m[32m * [Methods](#methods)[m
+  * [Class Bus](#class-bus)[m
+  * [Class PromisifiedBus](#class-promisifiedbus)[m
+  * [Class I2cFuncs](#class-i2cfuncs)[m
+[36m@@ -617,7 +613,10 @@[m [merror occurs while closing.[m
+ [m
+ ### promisifiedBus.i2cFuncs()[m
+ [m
+[31m-Determine functionality of the bus/adapter asynchronously.[m
+[32m+[m[32mDetermine functionality of the bus/adapter asynchronously. Returns a Promise[m
+[32m+[m[32mthat on success will be resolved with a frozen [I2cFuncs](#class-i2cfuncs)[m
+[32m+[m[32mobject describing the functionality available. The returned Promise will be[m
+[32m+[m[32mrejected if an error occurs.[m
+ See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).[m
+ [m
+ ### promisifiedBus.scan([startAddr,] [endAddr])[m

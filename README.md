@@ -12,10 +12,6 @@ callbacks and synchronous execution.
 
 i2c-bus supports Node.js versions 6, 8, 10 and 12.
 
-
-The fs.promises API provides an alternative set of asynchronous file system methods that return Promise objects rather than using callbacks. The API is accessible via require('fs').promises.
-
-
 ## Contents
 
  * [Installation](#installation)
@@ -222,7 +218,7 @@ const i2c1 = i2c.open(1, (err) => {
 
 ## API
 
- * [Methods](#api)
+ * [Methods](#methods)
  * [Class Bus](#class-bus)
  * [Class PromisifiedBus](#class-promisifiedbus)
  * [Class I2cFuncs](#class-i2cfuncs)
@@ -617,7 +613,10 @@ error occurs while closing.
 
 ### promisifiedBus.i2cFuncs()
 
-Determine functionality of the bus/adapter asynchronously.
+Determine functionality of the bus/adapter asynchronously. Returns a Promise
+that on success will be resolved with a frozen [I2cFuncs](#class-i2cfuncs)
+object describing the functionality available. The returned Promise will be
+rejected if an error occurs.
 See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
 
 ### promisifiedBus.scan([startAddr,] [endAddr])
