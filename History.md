@@ -1,3 +1,9 @@
+Unpublished
+===========
+
+  * drop support for node.js v4
+  * add promise support
+
 4.0.11 / Sep 07 2019
 ====================
 

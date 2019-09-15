@@ -50,6 +50,15 @@ const openSync = (busNumber, options) => {
 };
 module.exports.openSync = openSync;
 
+const openPromisified = (busNumber, options) => new Promise(
+  (resolve, reject) => {
+    const bus = open(busNumber, options,
+      (err) => err ? reject(err) : resolve(new PromisifiedBus(bus))
+    );
+  }
+);
+module.exports.openPromisified = openPromisified;
+
 const checkBusNumber = (busNumber) => {
   if (!Number.isInteger(busNumber) || busNumber < 0) {
     throw new Error('Invalid I2C bus number ' + busNumber);
@@ -651,6 +660,150 @@ class Bus {
     const mp = i2c.deviceIdSync(peripheralSync(this, addr), addr);
 
     return parseId(mp);
+  }
+}
+
+class PromisifiedBus {
+  constructor(bus) {
+    this._bus = bus;
+  }
+
+  close() {
+    return new Promise((resolve, reject) =>
+      this._bus.close(err => err ? reject(err) : resolve())
+    );
+  }
+
+  i2cFuncs() {
+    return new Promise((resolve, reject) =>
+      this._bus.i2cFuncs((err, funcs) => err ? reject(err) : resolve(funcs))
+    );
+  }
+
+  readByte(addr, cmd) {
+    return new Promise((resolve, reject) =>
+      this._bus.readByte(addr, cmd,
+        (err, byte) => err ? reject(err) : resolve(byte)
+      )
+    );
+  }
+
+  readWord(addr, cmd) {
+    return new Promise((resolve, reject) =>
+      this._bus.readWord(addr, cmd,
+        (err, word) => err ? reject(err) : resolve(word)
+      )
+    );
+  }
+
+  // UNTESTED and undocumented due to lack of supporting hardware
+  readBlock(addr, cmd, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.readBlock(addr, cmd, buffer,
+        (err, bytesRead, buffer) =>
+          err ? reject(err) : resolve({bytesRead: bytesRead, buffer: buffer})
+      )
+    );
+  }
+
+  readI2cBlock(addr, cmd, length, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.readI2cBlock(addr, cmd, length, buffer,
+        (err, bytesRead, buffer) =>
+          err ? reject(err) : resolve({bytesRead: bytesRead, buffer: buffer})
+      )
+    );
+  }
+
+  receiveByte(addr) {
+    return new Promise((resolve, reject) =>
+      this._bus.receiveByte(addr,
+        (err, byte) => err ? reject(err) : resolve(byte)
+      )
+    );
+  }
+
+  sendByte(addr, byte) {
+    return new Promise((resolve, reject) =>
+      this._bus.sendByte(addr, byte,
+        (err) => err ? reject(err) : resolve()
+      )
+    );
+  }
+
+  writeByte(addr, cmd, byte) {
+    return new Promise((resolve, reject) =>
+      this._bus.writeByte(addr, cmd, byte,
+        (err) => err ? reject(err) : resolve()
+      )
+    );
+  }
+
+  writeWord(addr, cmd, word) {
+    return new Promise((resolve, reject) =>
+      this._bus.writeWord(addr, cmd, word,
+        (err) => err ? reject(err) : resolve()
+      )
+    );
+  }
+
+  writeQuick(addr, bit) {
+    return new Promise((resolve, reject) =>
+      this._bus.writeQuick(addr, bit,
+        (err) => err ? reject(err) : resolve()
+      )
+    );
+  }
+
+  // UNTESTED and undocumented due to lack of supporting hardware
+  writeBlock(addr, cmd, length, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.writeBlock(addr, cmd, length, buffer,
+        (err, bytesWritten, buffer) =>
+          err ? reject(err) : resolve({bytesWritten: bytesWritten, buffer: buffer})
+      )
+    );
+  }
+
+  writeI2cBlock(addr, cmd, length, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.writeI2cBlock(addr, cmd, length, buffer,
+        (err, bytesWritten, buffer) =>
+          err ? reject(err) : resolve({bytesWritten: bytesWritten, buffer: buffer})
+      )
+    );
+  }
+
+  i2cRead(addr, length, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.i2cRead(addr, length, buffer,
+        (err, bytesRead, buffer) =>
+          err ? reject(err) : resolve({bytesRead: bytesRead, buffer: buffer})
+      )
+    );
+  }
+
+  i2cWrite(addr, length, buffer) {
+    return new Promise((resolve, reject) =>
+      this._bus.i2cWrite(addr, length, buffer,
+        (err, bytesWritten, buffer) =>
+          err ? reject(err) : resolve({bytesWritten: bytesWritten, buffer: buffer})
+      )
+    );
+  }
+
+  scan(...args) {
+    return new Promise((resolve, reject) =>
+      this._bus.scan(...args,
+        (err, devices) => err ? reject(err) : resolve(devices)
+      )
+    );
+  }
+
+  deviceId(addr) {
+    return new Promise((resolve, reject) =>
+      this._bus.deviceId(addr, (err, id) => err ? reject(err) : resolve(id))
+    );
   }
 }
 
