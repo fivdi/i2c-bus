@@ -34,186 +34,100 @@ configuraton is required, but sometimes it is:
 
 ## Usage
 
-### Example Temperature Sensor Circuits
+The example programs below show how to use a
+[MCP9808 I2C temperature sensor](https://www.adafruit.com/product/1782)
+to determine the temperature.
 
-Some of the examples programs use a
-[DS1621 temperature sensor](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/DS1621.html)
-to show how the i2c-bus package functions. 
+**MCP9808 I2C temperature sensor connected to a Raspberry Pi**
+<img src="https://github.com/fivdi/i2c-bus/raw/master/example/mcp9808-pi.png">
 
-**DS1621 temperature sensor connected to a Raspberry Pi**
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-pi.png">
+### Example 1 - Promises
 
-**DS1621 temperature sensor connected to a BeagleBone Black**
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/ds1621-bb.png">
-
-### Example 1 - Determine Temperature Synchronously
-
-Determine the temperature with a DS1621 temperature sensor Synchronously.
+Determine the temperature with a MCP9808 I2C temperature sensor using
+promises.
 
 ```js
 const i2c = require('i2c-bus');
 
-const DS1621_ADDR = 0x48;
-const CMD_ACCESS_CONFIG = 0xac;
-const CMD_READ_TEMP = 0xaa;
-const CMD_START_CONVERT = 0xee;
+const MCP9808_ADDR = 0x18;
+const TEMP_REG = 0x05;
 
-const toCelsius = (rawTemp) => {
-  const halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
-
-  if ((halfDegrees & 0x100) === 0) {
-    return halfDegrees / 2; // Temp +ve
+const toCelsius = (rawData) => {
+  rawData = (rawData >> 8) + ((rawData & 0xff) << 8);
+  let celsius = (rawData & 0x0fff) / 16;
+  if (rawData & 0x1000) {
+    celsius -= 256;
   }
-
-  return -((~halfDegrees & 0xff) / 2); // Temp -ve
+  return celsius;
 };
 
-const displayTemperature = () => {
-  const i2c1 = i2c.openSync(1);
-
-  // Enter one shot mode (this is a non volatile setting)
-  i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
-
-  // Wait while non volatile memory busy
-  while (i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x10) {
-  }
-
-  // Start temperature conversion
-  i2c1.sendByteSync(DS1621_ADDR, CMD_START_CONVERT);
-
-  // Wait for temperature conversion to complete
-  while ((i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
-  }
-
-  // Display temperature
-  const rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
-  console.log('temp: ' + toCelsius(rawTemp));
-
-  i2c1.closeSync();
-};
-
-displayTemperature();
+i2c.openPromisified(1).
+then(i2c1 => i2c1.readWord(MCP9808_ADDR, TEMP_REG).
+  then(rawData => console.log(toCelsius(rawData))).
+  then(_ => i2c1.close())
+).
+catch(console.log);
 ```
 
-### Example 2 - Determine Temperature Asynchronously
+### Example 2 - Asynchronous Callbacks
 
-Determine the temperature with a DS1621 temperature sensor Asynchronously.
-Example 2 does exactly the same thing as example 1, but uses the asynchronous
-rather than the synchronous API.
+Determine the temperature with a MCP9808 I2C temperature sensor using
+asynchronous callbacks.
 
 ```js
-const async = require('async');
 const i2c = require('i2c-bus');
 
-const DS1621_ADDR = 0x48;
-const CMD_ACCESS_CONFIG = 0xac;
-const CMD_READ_TEMP = 0xaa;
-const CMD_START_CONVERT = 0xee;
+const MCP9808_ADDR = 0x18;
+const TEMP_REG = 0x05;
 
-const toCelsius = (rawTemp) => {
-  const halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
-
-  if ((halfDegrees & 0x100) === 0) {
-    return halfDegrees / 2; // Temp +ve
+const toCelsius = (rawData) => {
+  rawData = (rawData >> 8) + ((rawData & 0xff) << 8);
+  let celsius = (rawData & 0x0fff) / 16;
+  if (rawData & 0x1000) {
+    celsius -= 256;
   }
-
-  return -((~halfDegrees & 0xff) / 2); // Temp -ve
+  return celsius;
 };
-
-const displayTemperature = () => {
-  let i2c1;
-
-  async.series([
-    (cb) => i2c1 = i2c.open(1, cb),
-
-    // Enter one shot mode (this is a non volatile setting)
-    (cb) => i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, cb),
-
-    // Wait while non volatile memory busy
-    (cb) => {
-      const wait = () => {
-        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
-          if (err) return cb(err);
-          if (config & 0x10) return wait();
-          cb(null);
-        });
-      };
-
-      wait();
-    },
-
-    // Start temperature conversion
-    (cb) => i2c1.sendByte(DS1621_ADDR, CMD_START_CONVERT, cb),
-
-    // Wait for temperature conversion to complete
-    (cb) => {
-      const wait = () => {
-        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, (err, config) => {
-          if (err) return cb(err);
-          if ((config & 0x80) === 0) return wait();
-          cb(null);
-        });
-      };
-
-      wait();
-    },
-
-    // Display temperature
-    (cb) => {
-      i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, (err, rawTemp) => {
-        if (err) return cb(err);
-        console.log('temp: ' + toCelsius(rawTemp));
-        cb(null);
-      });
-    },
-
-    (cb) => i2c1.close(cb)
-  ], (err) => {
-    if (err) throw err;
-  });
-};
-
-displayTemperature();
-```
-
-### Example 3 - Accessing Multiple Devices Asynchronously and Concurrently
-
-This example demonstrates concurrent asynchronous access to two devices on the
-same bus, a DS1621 temperature sensor and an
-[Adafruit TSL2561 digital luminosity/lux/light sensor](http://www.adafruit.com/products/439).
-
-```js
-const i2c = require('i2c-bus');
-
-const DS1621_ADDR = 0x48;
-const DS1621_CMD_ACCESS_TH = 0xa1;
-
-const TSL2561_ADDR = 0x39;
-const TSL2561_CMD = 0x80;
-const TSL2561_REG_ID = 0x0a;
 
 const i2c1 = i2c.open(1, (err) => {
   if (err) throw err;
 
-  const readDs1621TempHigh = () => {
-    i2c1.readWord(DS1621_ADDR, DS1621_CMD_ACCESS_TH, (err, tempHigh) => {
-      if (err) throw err;
-      console.log(tempHigh);
-      readDs1621TempHigh();
-    });
-  };
+  i2c1.readWord(MCP9808_ADDR, TEMP_REG, (err, rawData) => {
+    if (err) throw err;
 
-  const readTsl2561Id = () => {
-    i2c1.readByte(TSL2561_ADDR, TSL2561_CMD | TSL2561_REG_ID, (err, id) => {
-      if (err) throw err;
-      console.log(id);
-      readTsl2561Id();
-    });
-  };
+    console.log(toCelsius(rawData));
 
-  readDs1621TempHigh();
-  readTsl2561Id();
+    i2c1.close((err) => {
+      if (err) throw err;
+    });
+  });
 });
+```
+
+### Example 1 - Synchronous Methods
+
+Determine the temperature with a MCP9808 I2C temperature sensor using
+synchronous methods.
+
+```js
+const i2c = require('i2c-bus');
+
+const MCP9808_ADDR = 0x18;
+const TEMP_REG = 0x05;
+
+const toCelsius = (rawData) => {
+  rawData = (rawData >> 8) + ((rawData & 0xff) << 8);
+  let celsius = (rawData & 0x0fff) / 16;
+  if (rawData & 0x1000) {
+    celsius -= 256;
+  }
+  return celsius;
+};
+
+const i2c1 = i2c.openSync(1);
+const rawData = i2c1.readWordSync(MCP9808_ADDR, TEMP_REG);
+console.log(toCelsius(rawData));
+i2c1.closeSync();
 ```
 
 ## API
