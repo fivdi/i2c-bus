@@ -6,11 +6,15 @@
 
 # i2c-bus
 
-I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi,
-C.H.I.P., BeagleBone or Intel Edison. All methods have asynchronous and
-synchronous forms.
+I2C serial bus access with **Node.js** on Linux boards like the Raspberry Pi
+or BeagleBone. The i2c-bus API supports promises and async/await, asynchronous
+callbacks and synchronous execution.
 
 i2c-bus supports Node.js versions 6, 8, 10 and 12.
+
+
+The fs.promises API provides an alternative set of asynchronous file system methods that return Promise objects rather than using callbacks. The API is accessible via require('fs').promises.
+
 
 ## Contents
 
@@ -218,22 +222,30 @@ const i2c1 = i2c.open(1, (err) => {
 
 ## API
 
-All methods have asynchronous and synchronous forms.
-
-The asynchronous form always take a completion callback as its last argument.
-The arguments passed to the completion callback depend on the method, but the
-first argument is always reserved for an exception. If the operation was
-completed successfully, then the first argument will be null or undefined.
-
-When using the synchronous form any exceptions are immediately thrown. You can
-use try/catch to handle exceptions or allow them to bubble up. 
+ * [Methods](#api)
+ * [Class Bus](#class-bus)
+ * [Class PromisifiedBus](#class-promisifiedbus)
+ * [Class I2cFuncs](#class-i2cfuncs)
 
 ### Methods
 
 - [open(busNumber [, options], cb)](#openbusnumber--options-cb)
 - [openSync(busNumber [, options])](#opensyncbusnumber--options)
+- [openPromisified(busNumber [, options])](#openpromisifiedbusnumber--options)
 
 ### Class Bus
+
+All methods in class Bus have asynchronous callback and synchronous forms. For
+promise support see [class PromisifiedBus](#class-promisifiedbus).
+
+The asynchronous callback form always take a completion callback as its last
+argument. The arguments passed to the completion callback depend on the
+method, but the first argument is always reserved for an exception. If the
+operation was completed successfully, then the first argument will be null or
+undefined.
+
+When using the synchronous form any exceptions are immediately thrown. You can
+use try/catch to handle exceptions or allow them to bubble up.
 
 - Free resources
   - [bus.close(cb)](#busclosecb)
@@ -273,6 +285,34 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](#buswritei2cblockaddr-cmd-length-buffer-cb)
   - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](#buswritei2cblocksyncaddr-cmd-length-buffer)
 
+### Class PromisifiedBus
+
+All methods in class PromisifiedBus have the asynchronous promise form. For
+asynchronous callback and synchronous forms see [class Bus](#class-bus).
+
+- Free resources
+  - [promisifiedBus.close()](#promisifiedbusclose)
+
+- Information
+  - [promisifiedBus.i2cFuncs()](#promisifiedbusi2cfuncs)
+  - [promisifiedBus.scan([startAddr,] [endAddr])](#promisifiedbusscanstartaddr-endaddr)
+  - [promisifiedBus.deviceId(addr)](#promisifiedbusdeviceidaddr)
+
+- Plain I2C
+  - [promisifiedBus.i2cRead(addr, length, buffer)](#promisifiedbusi2creadaddr-length-buffer)
+  - [promisifiedBus.i2cWrite(addr, length, buffer)](#promisifiedbusi2cwriteaddr-length-buffer)
+
+- SMBus
+  - [promisifiedBus.readByte(addr, cmd)](#promisifiedbusreadbyteaddr-cmd)
+  - [promisifiedBus.readWord(addr, cmd)](#promisifiedbusreadwordaddr-cmd)
+  - [promisifiedBus.readI2cBlock(addr, cmd, length, buffer)](#promisifiedbusreadi2cblockaddr-cmd-length-buffer)
+  - [promisifiedBus.receiveByte(addr)](#promisifiedbusreceivebyteaddr)
+  - [promisifiedBus.sendByte(addr, byte)](#promisifiedbussendbyteaddr-byte)
+  - [promisifiedBus.writeByte(addr, cmd, byte)](#promisifiedbuswritebyteaddr-cmd-byte)
+  - [promisifiedBus.writeWord(addr, cmd, word)](#promisifiedbuswritewordaddr-cmd-word)
+  - [promisifiedBus.writeQuick(addr, bit)](#promisifiedbuswritequickaddr-bit)
+  - [promisifiedBus.writeI2cBlock(addr, cmd, length, buffer)](#promisifiedbuswritei2cblockaddr-cmd-length-buffer)
+
 ### Class I2cFuncs
 
 - [funcs.i2c](#funcsi2c---boolean)
@@ -311,6 +351,18 @@ forceAccess are true and false. Optional, the default value is false.
 - options - an optional options object
 
 Synchronous open. Returns a new Bus object.
+
+The following options are supported:
+- forceAccess - A boolean value specifying whether access to devices on the
+I2C bus should be allowed even if they are already in use by a kernel
+driver/module. Corresponds to I2C_SLAVE_FORCE on Linux. The valid values for
+forceAccess are true and false. Optional, the default value is false.
+
+### openPromisified(busNumber [, options])
+- busNumber - the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
+- options - an optional options object
+
+Asynchronous open. Returns a Promise that, when resolved, yields a PromisifiedBus object.
 
 The following options are supported:
 - forceAccess - A boolean value specifying whether access to devices on the
@@ -556,6 +608,140 @@ the number of bytes written.
 
 Synchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
+
+### promisifiedBus.close()
+
+Asynchronous close. Returns a Promise that will be resolved with no arguments
+once the underlying resources have been released, or will be rejected if an
+error occurs while closing.
+
+### promisifiedBus.i2cFuncs()
+
+Determine functionality of the bus/adapter asynchronously.
+See also [I2C functionality](https://www.kernel.org/doc/Documentation/i2c/functionality).
+
+### promisifiedBus.scan([startAddr,] [endAddr])
+- startAddr - an integer specifying the start address of the scan range, optional
+- endAddr - an integer specifying the end addrerss of the scan range, optional
+
+bus.scan() - scan for I2C devices in address range 0x03 through 0x77 <br/>
+bus.scan(addr) - scan for an I2C device at address addr <br/>
+bus.scan(startAddr, endAddr) - scan for I2C devices in address range startAddr through endAddr <br/>
+
+Scans the I2C bus asynchronously for devices. The default address range 0x03
+through 0x77 is the same as the default address range used by the `i2cdetect`
+command line tool. Returns a Promise that on success will be resolved with an
+array of numbers where each number represents the I2C address of a device
+which was detected. The returned Promise will be rejected if an error occurs.
+
+### promisifiedBus.deviceId(addr)
+- addr - I2C device address
+
+Asynchronous I2C device Id. Returns a Promise that will be resolved with an id
+object on success, or will be rejected if an error occurs. id is an object
+with the properties `manufacturer`, `product` and if known a human readable
+`name` for the associated manufacturer. `manufacturer` and `product` are
+numbers, `name` is a string.
+
+### promisifiedBus.i2cRead(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to read
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+
+Asynchronous plain I2C read. Returns a Promise that on success will be
+resolved with an object with a bytesRead property identifying the number of
+bytes read, and a buffer property that is a reference to the passed in buffer
+argument. The returned Promise will be rejected if an error occurs.
+
+### promisifiedBus.i2cWrite(addr, length, buffer)
+- addr - I2C device address
+- length - an integer specifying the number of bytes to write
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+
+Asynchronous plain I2C write. Returns a Promise that on success will be
+resolved with an object with a bytesWritten property identifying the number of
+bytes written, and a buffer property that is a reference to the passed in
+buffer argument. The returned promise will be rejected if an error occurs.
+
+### promisifiedBus.readByte(addr, cmd)
+- addr - I2C device address
+- cmd - command code
+
+Asynchronous SMBus read byte. Returns a Promise that will be resolved with a
+number representing the byte read on success, or will be rejected if an error
+occurs.
+
+### promisifiedBus.readWord(addr, cmd)
+- addr - I2C device address
+- cmd - command code
+
+Asynchronous SMBus read word. Returns a Promise that will be resolved with a
+number representing the word read on success, or will be rejected if an error
+occurs.
+
+### promisifiedBus.readI2cBlock(addr, cmd, length, buffer)
+- addr - I2C device address
+- cmd - command code
+- length - an integer specifying the number of bytes to read (max 32)
+- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+
+Asynchronous I2C block read (not defined by the SMBus specification). Reads a
+block of bytes from a device, from a designated register that is specified by
+cmd. Returns a Promise that on success will be resolved with an object with a
+bytesRead property identifying the number of bytes read, and a buffer property
+that is a reference to the passed in buffer argument. The returned Promise
+will be rejected if an error occurs.
+
+### promisifiedBus.receiveByte(addr)
+- addr - I2C device address
+
+Asynchronous SMBus receive byte. Returns a Promise that will be resolved with
+a number representing the byte received on success, or will be rejected if an
+error occurs.
+
+### promisifiedBus.sendByte(addr, byte)
+- addr - I2C device address
+- byte - data byte
+
+Asynchronous SMBus send byte. Returns a Promise that will be resolved with no
+arguments on success, or will be rejected if an error occurs.
+
+### promisifiedBus.writeByte(addr, cmd, byte)
+- addr - I2C device address
+- cmd - command code
+- byte - data byte
+
+Asynchronous SMBus write byte. Returns a Promise that will be resolved with no
+arguments on success, or will be rejected if an error occurs.
+
+### promisifiedBus.writeWord(addr, cmd, word)
+- addr - I2C device address
+- cmd - command code
+- word - data word
+
+Asynchronous SMBus write word. Returns a Promise that will be resolved with no
+arguments on success, or will be rejected if an error occurs.
+
+### promisifiedBus.writeQuick(addr, bit)
+- addr - I2C device address
+- bit - bit to write (0 or 1)
+
+Asynchronous SMBus quick command. Writes a single bit to the device. Returns a
+Promise that will be resolved with no arguments on success, or will be
+rejected if an error occurs.
+
+### promisifiedBus.writeI2cBlock(addr, cmd, length, buffer)
+- addr - I2C device address
+- cmd - command code
+- length - an integer specifying the number of bytes to write (max 32)
+- buffer - the buffer containing the data to write (must conatin at least length bytes)
+
+Asynchronous I2C block write (not defined by the SMBus specification). Writes a
+block of bytes to a device, to a designated register that is specified by cmd.
+Returns a Promise that on success will be resolved with an object with a
+bytesWritten property identifying the number of bytes written, and a buffer
+property that is a reference to the passed in buffer argument. The returned
+promise will be rejected if an error occurs.
 
 ### funcs.i2c - boolean
 Specifies whether or not the adapter handles plain I2C-level commands (Pure
