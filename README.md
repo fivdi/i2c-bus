@@ -27,8 +27,8 @@ npm install i2c-bus
 The way in which I2C is configured varies from board to board. Sometimes no
 configuraton is required, but sometimes it is:
 
-* [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
-* [Configuring Software I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-software-i2c.md)
+* [Configuring I2C on the Raspberry Pi](doc/raspberry-pi-i2c.md)
+* [Configuring Software I2C on the Raspberry Pi](doc/raspberry-pi-software-i2c.md)
   * Consider software I2C when there are issues communicating with a device on a Raspberry Pi
 
 ## Usage
@@ -38,7 +38,7 @@ The example programs below show how to use a
 to determine the temperature.
 
 **MCP9808 I2C temperature sensor connected to a Raspberry Pi**
-<img src="https://github.com/fivdi/i2c-bus/raw/master/example/mcp9808-pi.png">
+![](example/mcp9808-pi.png)
 
 ### Example 1 - Promises
 
