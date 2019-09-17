@@ -14,9 +14,18 @@ i2c-bus supports Node.js versions 6, 8, 10 and 12.
 
 ## Contents
 
+ * [News & Updates](#news--updates)
  * [Installation](#installation)
  * [Usage](#usage)
  * [API](#api)
+
+## News & Updates
+
+### September 2019: i2c-bus v5.0.0 released with the following changes
+
+ * Adds support for promises. This is a non-breaking change. See [openPromisified(busNumber [, options])](#openpromisifiedbusnumber--options) and [Class PromisifiedBus](#class-promisifiedbus).
+ * Drops support for Node.js v4.
+ * Fixes [#78](https://github.com/fivdi/i2c-bus/issues/78) to ensure that the properties of I2cFuncs objects are booleans rather than numbers. This is a potentially breaking change for code using the [bus.i2cFuncs(cb)](#busi2cfuncscb) or [bus.i2cFuncsSync()](#busi2cfuncssync) methods.
 
 ## Installation
 
