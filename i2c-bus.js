@@ -174,23 +174,23 @@ const peripheralSync = (bus, addr) => {
 
 class I2cFuncs {
   constructor(i2cFuncBits) {
-    this.i2c = i2cFuncBits & i2c.I2C_FUNC_I2C;
-    this.tenBitAddr = i2cFuncBits & i2c.I2C_FUNC_10BIT_ADDR;
-    this.protocolMangling = i2cFuncBits & i2c.I2C_FUNC_PROTOCOL_MANGLING;
-    this.smbusPec = i2cFuncBits & i2c.I2C_FUNC_SMBUS_PEC;
-    this.smbusBlockProcCall = i2cFuncBits & i2c.I2C_FUNC_SMBUS_BLOCK_PROC_CALL;
-    this.smbusQuick = i2cFuncBits & i2c.I2C_FUNC_SMBUS_QUICK;
-    this.smbusReceiveByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE;
-    this.smbusSendByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE;
-    this.smbusReadByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE_DATA;
-    this.smbusWriteByte = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE_DATA;
-    this.smbusReadWord = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_WORD_DATA;
-    this.smbusWriteWord = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_WORD_DATA;
-    this.smbusProcCall = i2cFuncBits & i2c.I2C_FUNC_SMBUS_PROC_CALL;
-    this.smbusReadBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BLOCK_DATA;
-    this.smbusWriteBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BLOCK_DATA;
-    this.smbusReadI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_I2C_BLOCK;
-    this.smbusWriteI2cBlock = i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_I2C_BLOCK;
+    this.i2c = !!(i2cFuncBits & i2c.I2C_FUNC_I2C);
+    this.tenBitAddr = !!(i2cFuncBits & i2c.I2C_FUNC_10BIT_ADDR);
+    this.protocolMangling = !!(i2cFuncBits & i2c.I2C_FUNC_PROTOCOL_MANGLING);
+    this.smbusPec = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_PEC);
+    this.smbusBlockProcCall = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_BLOCK_PROC_CALL);
+    this.smbusQuick = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_QUICK);
+    this.smbusReceiveByte = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE);
+    this.smbusSendByte = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE);
+    this.smbusReadByte = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BYTE_DATA);
+    this.smbusWriteByte = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BYTE_DATA);
+    this.smbusReadWord = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_WORD_DATA);
+    this.smbusWriteWord = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_WORD_DATA);
+    this.smbusProcCall = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_PROC_CALL);
+    this.smbusReadBlock = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_BLOCK_DATA);
+    this.smbusWriteBlock = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_BLOCK_DATA);
+    this.smbusReadI2cBlock = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_READ_I2C_BLOCK);
+    this.smbusWriteI2cBlock = !!(i2cFuncBits & i2c.I2C_FUNC_SMBUS_WRITE_I2C_BLOCK);
   }
 }
 

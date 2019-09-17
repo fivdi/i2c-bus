@@ -42,23 +42,23 @@ describe('i2cFuncsSync', () => {
     assert(mockI2c.i2cFuncsSync.calledOnce);
     assert.strictEqual(mockI2c.i2cFuncsSync.firstCall.args.length, 1);
 
-    assert(funcs.i2c);
-    assert(!funcs.tenBitAddr);
-    assert(!funcs.protocolMangling);
-    assert(!funcs.smbusPec);
-    assert(!funcs.smbusBlockProcCall);
-    assert(!funcs.smbusQuick);
-    assert(!funcs.smbusReceiveByte);
-    assert(!funcs.smbusSendByte);
-    assert(!funcs.smbusReadByte);
-    assert(!funcs.smbusWriteByte);
-    assert(!funcs.smbusReadWord);
-    assert(!funcs.smbusWriteWord);
-    assert(!funcs.smbusProcCall);
-    assert(!funcs.smbusReadBlock);
-    assert(!funcs.smbusWriteBlock);
-    assert(!funcs.smbusReadI2cBlock);
-    assert(funcs.smbusWriteI2cBlock);
+    assert(funcs.i2c === true);
+    assert(funcs.tenBitAddr === false);
+    assert(funcs.protocolMangling === false);
+    assert(funcs.smbusPec === false);
+    assert(funcs.smbusBlockProcCall === false);
+    assert(funcs.smbusQuick === false);
+    assert(funcs.smbusReceiveByte === false);
+    assert(funcs.smbusSendByte === false);
+    assert(funcs.smbusReadByte === false);
+    assert(funcs.smbusWriteByte === false);
+    assert(funcs.smbusReadWord === false);
+    assert(funcs.smbusWriteWord === false);
+    assert(funcs.smbusProcCall === false);
+    assert(funcs.smbusReadBlock === false);
+    assert(funcs.smbusWriteBlock === false);
+    assert(funcs.smbusReadI2cBlock === false);
+    assert(funcs.smbusWriteI2cBlock === true);
   });
 
   it('does not unnecessarily call setAddrSync or i2cFuncsSync', () => {
