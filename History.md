@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.0.0 / Sep 17 2019
+===================
 
   * drop support for node.js v4
   * add promise support
