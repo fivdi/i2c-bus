@@ -73,8 +73,7 @@ i2c.openPromisified(1).
 then(i2c1 => i2c1.readWord(MCP9808_ADDR, TEMP_REG).
   then(rawData => console.log(toCelsius(rawData))).
   then(_ => i2c1.close())
-).
-catch(console.log);
+).catch(console.log);
 ```
 
 ### Example 2 - Asynchronous Callbacks
