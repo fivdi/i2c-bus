@@ -8,9 +8,9 @@ const CMD_ACCESS_CONFIG = 0xac;
 const CMD_ACCESS_TL = 0xa2;
 
 // Wait while non volatile memory busy
-const waitForWrite = (i2c1) => {
+const waitForWrite = i2c1 => {
   return new Promise((resolve, reject) => {
-    const checkWriteFlag = () => {
+    const checkWriteFlag = _ => {
       i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG).
       then(config => {
         if (config & 0x10) {
@@ -30,11 +30,11 @@ const finished = i2c1 =>
   i2c1.close().
   then(_ => console.log('ok - async-promise'));
 
-const i2cFuncs = (i2c1) =>
+const i2cFuncs = i2c1 =>
   i2c1.i2cFuncs().
   then(i2cFuncs => assert(i2cFuncs.smbusReadByte, 'expected it to be possible to read a byte'));
 
-const scan = (i2c1) =>
+const scan = i2c1 =>
   i2c1.scan().
   then(devices => assert(
     devices.includes(DS1621_ADDR),
@@ -43,7 +43,7 @@ const scan = (i2c1) =>
 
 // Test i2cWrite & i2cRead
 // Change value of tl to 25 and verify that tl has been changed
-const i2cPlainReadWrite = (i2c1) => {
+const i2cPlainReadWrite = i2c1 => {
   const cmdSetTL = Buffer.from([CMD_ACCESS_TL, 25, 0]);
   const cmdGetTL = Buffer.from([CMD_ACCESS_TL]);
   const tl = Buffer.alloc(2);
@@ -69,7 +69,7 @@ const i2cPlainReadWrite = (i2c1) => {
 
 // Test writeI2cBlock & readI2cBlock
 // Change value of tl to 22 and verify that tl has been changed
-const readWriteI2cBlock = (i2c1) => {
+const readWriteI2cBlock = i2c1 => {
   const newtl = Buffer.alloc(10);
   newtl.writeUInt16LE(22, 0);
 
@@ -89,7 +89,7 @@ const readWriteI2cBlock = (i2c1) => {
 
 // Test writeWord & readWord
 // Change value of tl and verify that tl has been changed
-const readWriteWord = (i2c1) =>
+const readWriteWord = i2c1 =>
   i2c1.readWord(DS1621_ADDR, CMD_ACCESS_TL).
   then(oldtl => {
     assert(typeof oldtl === 'number' && oldtl <= 0xffff, 'expeted readWord to read a word');

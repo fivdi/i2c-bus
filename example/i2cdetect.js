@@ -4,13 +4,13 @@
 // command 'i2cdetect -F 1'
 const i2c = require('../');
 
-const i2c1 = i2c.open(1, (err) => {
+const i2c1 = i2c.open(1, err => {
   if (err) {
     throw err;
   }
 
   i2c1.i2cFuncs((err, i2cFuncs) => {
-    const boolToYesNo = (bool) => bool ? 'yes' : 'no';
+    const boolToYesNo = bool => bool ? 'yes' : 'no';
 
     if (err) {
       throw err;

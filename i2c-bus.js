@@ -53,37 +53,37 @@ module.exports.openSync = openSync;
 const openPromisified = (busNumber, options) => new Promise(
   (resolve, reject) => {
     const bus = open(busNumber, options,
-      (err) => err ? reject(err) : resolve(new PromisifiedBus(bus))
+      err => err ? reject(err) : resolve(new PromisifiedBus(bus))
     );
   }
 );
 module.exports.openPromisified = openPromisified;
 
-const checkBusNumber = (busNumber) => {
+const checkBusNumber = busNumber => {
   if (!Number.isInteger(busNumber) || busNumber < 0) {
     throw new Error('Invalid I2C bus number ' + busNumber);
   }
 };
 
-const checkAddress = (addr) => {
+const checkAddress = addr => {
   if (!Number.isInteger(addr) || addr < 0  || addr > 0x7f) {
     throw new Error('Invalid I2C address ' + addr);
   }
 };
 
-const checkCommand = (cmd) => {
+const checkCommand = cmd => {
   if (!Number.isInteger(cmd) || cmd < 0  || cmd > 0xff) {
     throw new Error('Invalid I2C command ' + cmd);
   }
 };
 
-const checkCallback = (cb) => {
+const checkCallback = cb => {
   if (typeof cb !== 'function') {
     throw new Error('Invalid callback ' + cb);
   }
 };
 
-const checkBuffer = (buffer) => {
+const checkBuffer = buffer => {
   if (!Buffer.isBuffer(buffer)) {
     throw new Error('Invalid buffer ' + buffer);
   }
@@ -103,25 +103,25 @@ const checkBufferAndLength = (length, buffer, maxLength) => {
   }
 };
 
-const checkByte = (byte) => {
+const checkByte = byte => {
   if (!Number.isInteger(byte) || byte < 0  || byte > 0xff) {
     throw new Error('Invalid byte ' + byte);
   }
 };
 
-const checkWord = (word) => {
+const checkWord = word => {
   if (!Number.isInteger(word) || word < 0  || word > 0xffff) {
     throw new Error('Invalid word ' + word);
   }
 };
 
-const checkBit = (bit) => {
+const checkBit = bit => {
   if (!Number.isInteger(bit) || bit < 0  || bit > 1) {
     throw new Error('Invalid bit ' + bit);
   }
 };
 
-const parseId = (id) => {
+const parseId = id => {
   // Figure 20. UM10204
   const manufacturer = id >> 12 & 0x0fff; // high 12bit
   const product = id & 0x0fff; // low 12bit
@@ -147,7 +147,7 @@ const peripheral = (bus, addr, cb) => {
 
       bus._peripherals[addr] = device;
 
-      i2c.setAddrAsync(device, addr, bus._forceAccess, (err) => {
+      i2c.setAddrAsync(device, addr, bus._forceAccess, err => {
         if (err) {
           return cb(err);
         }
@@ -206,16 +206,16 @@ class Bus {
   close(cb) {
     checkCallback(cb);
 
-    const peripherals = this._peripherals.filter((peripheral) => {
+    const peripherals = this._peripherals.filter(peripheral => {
       return peripheral !== undefined;
     });
 
-    const closePeripheral = () => {
+    const closePeripheral = _ => {
       if (peripherals.length === 0) {
         return setImmediate(cb, null);
       }
 
-      fs.close(peripherals.pop(), (err) => {
+      fs.close(peripherals.pop(), err => {
         if (err) {
           return cb(err);
         }
@@ -227,7 +227,7 @@ class Bus {
   }
 
   closeSync() {
-    this._peripherals.forEach((peripheral) => {
+    this._peripherals.forEach(peripheral => {
       if (peripheral !== undefined) {
         fs.closeSync(peripheral);
       }
@@ -579,15 +579,15 @@ class Bus {
     checkAddress(startAddr);
     checkAddress(endAddr);
 
-    const scanBus = open(this._busNumber, {forceAccess: this._forceAccess}, (err) => {
+    const scanBus = open(this._busNumber, {forceAccess: this._forceAccess}, err => {
       const addresses = [];
       if (err) {
         return cb(err);
       }
 
-      const next = (addr) => {
+      const next = addr => {
         if (addr > endAddr) {
-          return scanBus.close((err) => {
+          return scanBus.close(err => {
             if (err) {
               return cb(err);
             }
@@ -595,7 +595,7 @@ class Bus {
           });
         }
 
-        scanBus.receiveByte(addr, (err) => {
+        scanBus.receiveByte(addr, err => {
           if (!err) {
             addresses.push(addr);
           }
@@ -726,7 +726,7 @@ class PromisifiedBus {
   sendByte(addr, byte) {
     return new Promise((resolve, reject) =>
       this._bus.sendByte(addr, byte,
-        (err) => err ? reject(err) : resolve()
+        err => err ? reject(err) : resolve()
       )
     );
   }
@@ -734,7 +734,7 @@ class PromisifiedBus {
   writeByte(addr, cmd, byte) {
     return new Promise((resolve, reject) =>
       this._bus.writeByte(addr, cmd, byte,
-        (err) => err ? reject(err) : resolve()
+        err => err ? reject(err) : resolve()
       )
     );
   }
@@ -742,7 +742,7 @@ class PromisifiedBus {
   writeWord(addr, cmd, word) {
     return new Promise((resolve, reject) =>
       this._bus.writeWord(addr, cmd, word,
-        (err) => err ? reject(err) : resolve()
+        err => err ? reject(err) : resolve()
       )
     );
   }
@@ -750,7 +750,7 @@ class PromisifiedBus {
   writeQuick(addr, bit) {
     return new Promise((resolve, reject) =>
       this._bus.writeQuick(addr, bit,
-        (err) => err ? reject(err) : resolve()
+        err => err ? reject(err) : resolve()
       )
     );
   }
