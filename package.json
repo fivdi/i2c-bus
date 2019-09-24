@@ -3,10 +3,6 @@
   "version": "5.0.0",
   "description": "I2C serial bus access with Node.js",
   "main": "i2c-bus.js",
-  "directories": {
-    "example": "example",
-    "test": "test"
-  },
   "scripts": {
     "coverage-report": "nyc report --reporter=html",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
