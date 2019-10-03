@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.1.0 / Oct 03 2019
+===================
 
   * add bus.promisifiedBus and promisifiedBus.bus
 
