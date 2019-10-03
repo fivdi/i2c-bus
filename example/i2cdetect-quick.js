@@ -4,7 +4,7 @@
 // command 'i2cdetect -y -q 1'
 // An error message will be printed on the BeagleBone as it doesn't
 // support the SMBus quick command.
-// This program is similar to i2cscan, but it uses writeQuickSync
+// This program is similar to i2cdetect.js, but it uses writeQuickSync
 // rather than receiveByteSync to detect devices.
 const fs = require('fs');
 const i2c = require('../');
