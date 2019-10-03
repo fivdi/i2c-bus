@@ -139,12 +139,12 @@ i2c1.closeSync();
 
 ## API
 
- * [Methods](#methods)
+ * [Functions](#functions)
  * [Class Bus](#class-bus)
  * [Class PromisifiedBus](#class-promisifiedbus)
  * [Class I2cFuncs](#class-i2cfuncs)
 
-### Methods
+### Functions
 
 - [open(busNumber [, options], cb)](#openbusnumber--options-cb)
 - [openSync(busNumber [, options])](#opensyncbusnumber--options)
