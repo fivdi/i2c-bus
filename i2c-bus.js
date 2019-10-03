@@ -41,23 +41,20 @@ const open = (busNumber, options, cb) => {
 
   return bus;
 };
-module.exports.open = open;
 
 const openSync = (busNumber, options) => {
   checkBusNumber(busNumber);
 
   return new Bus(busNumber, options);
 };
-module.exports.openSync = openSync;
 
 const openPromisified = (busNumber, options) => new Promise(
   (resolve, reject) => {
     const bus = open(busNumber, options,
-      err => err ? reject(err) : resolve(new PromisifiedBus(bus))
+      err => err ? reject(err) : resolve(bus.promisifiedBus())
     );
   }
 );
-module.exports.openPromisified = openPromisified;
 
 const checkBusNumber = busNumber => {
   if (!Number.isInteger(busNumber) || busNumber < 0) {
@@ -201,6 +198,11 @@ class Bus {
     this._busNumber = busNumber;
     this._forceAccess = !!options.forceAccess || false;
     this._peripherals = [];
+    this._promisifiedBus = new PromisifiedBus(this);
+  }
+
+  promisifiedBus() {
+    return this._promisifiedBus;
   }
 
   close(cb) {
@@ -668,6 +670,10 @@ class PromisifiedBus {
     this._bus = bus;
   }
 
+  bus() {
+    return this._bus;
+  }
+
   close() {
     return new Promise((resolve, reject) =>
       this._bus.close(err => err ? reject(err) : resolve())
@@ -806,4 +812,10 @@ class PromisifiedBus {
     );
   }
 }
+
+module.exports = {
+  open: open,
+  openSync: openSync,
+  openPromisified: openPromisified
+};
 
