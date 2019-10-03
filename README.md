@@ -395,12 +395,14 @@ Synchronous plain I2C write. Returns the number of bytes written.
 - cb - completion callback
 
 Asynchronous SMBus read byte. The callback gets two arguments (err, byte).
+byte is an unsigned integer in the range 0 to 255.
 
 ### bus.readByteSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
-Synchronous SMBus read byte. Returns the byte read.
+Synchronous SMBus read byte. Returns the byte read. byte is an unsigned
+integer in the range 0 to 255.
 
 ### bus.readWord(addr, cmd, cb)
 - addr - I2C device address
@@ -442,29 +444,31 @@ cmd. Returns the number of bytes read.
 - cb - completion callback
 
 Asynchronous SMBus receive byte. The callback gets two arguments (err, byte).
+byte is an unsigned integer in the range 0 to 255.
 
 ### bus.receiveByteSync(addr)
 - addr - I2C device address
 
-Synchronous SMBus receive byte. Returns the byte received.
+Synchronous SMBus receive byte. Returns the byte received. byte is an unsigned
+integer in the range 0 to 255.
 
 ### bus.sendByte(addr, byte, cb)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 - cb - completion callback
 
 Asynchronous SMBus send byte. The callback gets one argument (err).
 
 ### bus.sendByteSync(addr, byte)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Synchronous SMBus send byte.
 
 ### bus.writeByte(addr, cmd, byte, cb)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 - cb - completion callback
 
 Asynchronous SMBus write byte. The callback gets one argument (err).
@@ -472,7 +476,7 @@ Asynchronous SMBus write byte. The callback gets one argument (err).
 ### bus.writeByteSync(addr, cmd, byte)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Synchronous SMBus write byte.
 
@@ -589,7 +593,7 @@ buffer argument. The returned promise will be rejected if an error occurs.
 
 Asynchronous SMBus read byte. Returns a Promise that will be resolved with a
 number representing the byte read on success, or will be rejected if an error
-occurs.
+occurs. byte is an unsigned integer in the range 0 to 255.
 
 ### promisifiedBus.readWord(addr, cmd)
 - addr - I2C device address
@@ -617,11 +621,11 @@ will be rejected if an error occurs.
 
 Asynchronous SMBus receive byte. Returns a Promise that will be resolved with
 a number representing the byte received on success, or will be rejected if an
-error occurs.
+error occurs. byte is an unsigned integer in the range 0 to 255.
 
 ### promisifiedBus.sendByte(addr, byte)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Asynchronous SMBus send byte. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
@@ -629,7 +633,7 @@ arguments on success, or will be rejected if an error occurs.
 ### promisifiedBus.writeByte(addr, cmd, byte)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Asynchronous SMBus write byte. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
