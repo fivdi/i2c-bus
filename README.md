@@ -76,7 +76,16 @@ then(i2c1 => i2c1.readWord(MCP9808_ADDR, TEMP_REG).
 ).catch(console.log);
 ```
 
-### Example 2 - Asynchronous Callbacks
+### Example 2 - Promises, Plain I2C and Buffers
+
+Determine the temperature with a MCP9808 I2C temperature sensor using
+promises, plain I2C and Buffer objects.
+
+```js
+const i2c = require('i2c-bus');
+```
+
+### Example 3 - Asynchronous Callbacks
 
 Determine the temperature with a MCP9808 I2C temperature sensor using
 asynchronous callbacks.
@@ -111,7 +120,7 @@ const i2c1 = i2c.open(1, err => {
 });
 ```
 
-### Example 1 - Synchronous Methods
+### Example 4 - Synchronous Methods
 
 Determine the temperature with a MCP9808 I2C temperature sensor using
 synchronous methods.
