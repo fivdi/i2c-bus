@@ -76,7 +76,37 @@ then(i2c1 => i2c1.readWord(MCP9808_ADDR, TEMP_REG).
 ).catch(console.log);
 ```
 
-### Example 2 - Asynchronous Callbacks
+### Example 2 - Promises, Plain I2C and Buffers
+
+Determine the temperature with a MCP9808 I2C temperature sensor using
+promises, plain I2C and Buffer objects.
+
+```js
+const i2c = require('i2c-bus');
+
+const MCP9808_ADDR = 0x18;
+const TEMP_REG = 0x05;
+
+const toCelsius = rawData => {
+  let celsius = (rawData & 0x0fff) / 16;
+  if (rawData & 0x1000) {
+    celsius -= 256;
+  }
+  return celsius;
+};
+
+const wbuf = Buffer.from([TEMP_REG]);
+const rbuf = Buffer.alloc(2);
+
+i2c.openPromisified(1).
+then(i2c1 => i2c1.i2cWrite(MCP9808_ADDR, wbuf.length, wbuf).
+  then(_ => i2c1.i2cRead(MCP9808_ADDR, rbuf.length, rbuf)).
+  then(data => console.log(toCelsius(data.buffer.readUInt16BE()))).
+  then(_ => i2c1.close())
+).catch(console.log);
+```
+
+### Example 3 - Asynchronous Callbacks
 
 Determine the temperature with a MCP9808 I2C temperature sensor using
 asynchronous callbacks.
@@ -111,7 +141,7 @@ const i2c1 = i2c.open(1, err => {
 });
 ```
 
-### Example 1 - Synchronous Methods
+### Example 4 - Synchronous Methods
 
 Determine the temperature with a MCP9808 I2C temperature sensor using
 synchronous methods.
@@ -139,12 +169,12 @@ i2c1.closeSync();
 
 ## API
 
- * [Methods](#methods)
+ * [Functions](#functions)
  * [Class Bus](#class-bus)
  * [Class PromisifiedBus](#class-promisifiedbus)
  * [Class I2cFuncs](#class-i2cfuncs)
 
-### Methods
+### Functions
 
 - [open(busNumber [, options], cb)](#openbusnumber--options-cb)
 - [openSync(busNumber [, options])](#opensyncbusnumber--options)
@@ -360,7 +390,8 @@ string.
 ### bus.i2cRead(addr, length, buffer, cb)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to read
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 - cb - completion callback
 
 Asynchronous plain I2C read. The callback gets three argument (err, bytesRead, buffer).
@@ -369,14 +400,16 @@ bytesRead is the number of bytes read.
 ### bus.i2cReadSync(addr, length, buffer)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to read
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 
 Synchronous plain I2C read. Returns the number of bytes read.
 
 ### bus.i2cWrite(addr, length, buffer, cb)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to write
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance containing the data to write (must conatin at least length bytes)
 - cb - completion callback
 
 Asynchronous plain I2C write. The callback gets three argument (err, bytesWritten, buffer).
@@ -385,7 +418,8 @@ bytesWritten is the number of bytes written.
 ### bus.i2cWriteSync(addr, length, buffer)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to write
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html) instance
+containing the data to write (must conatin at least length bytes)
 
 Synchronous plain I2C write. Returns the number of bytes written.
 
@@ -395,12 +429,14 @@ Synchronous plain I2C write. Returns the number of bytes written.
 - cb - completion callback
 
 Asynchronous SMBus read byte. The callback gets two arguments (err, byte).
+byte is an unsigned integer in the range 0 to 255.
 
 ### bus.readByteSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
-Synchronous SMBus read byte. Returns the byte read.
+Synchronous SMBus read byte. Returns the byte read. byte is an unsigned
+integer in the range 0 to 255.
 
 ### bus.readWord(addr, cmd, cb)
 - addr - I2C device address
@@ -408,18 +444,21 @@ Synchronous SMBus read byte. Returns the byte read.
 - cb - completion callback
 
 Asynchronous SMBus read word. The callback gets two arguments (err, word).
+word is an unsigned integer in the range 0 to 65535.
 
 ### bus.readWordSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
-Synchronous SMBus read word. Returns the word read.
+Synchronous SMBus read word. Returns the word read. word is an unsigned
+integer in the range 0 to 65535.
 
 ### bus.readI2cBlock(addr, cmd, length, buffer, cb)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 - cb - completion callback
 
 Asynchronous I2C block read (not defined by the SMBus specification). Reads a
@@ -431,7 +470,8 @@ the number of bytes read.
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 
 Synchronous I2C block read (not defined by the SMBus specification). Reads a
 block of bytes from a device, from a designated register that is specified by
@@ -442,29 +482,31 @@ cmd. Returns the number of bytes read.
 - cb - completion callback
 
 Asynchronous SMBus receive byte. The callback gets two arguments (err, byte).
+byte is an unsigned integer in the range 0 to 255.
 
 ### bus.receiveByteSync(addr)
 - addr - I2C device address
 
-Synchronous SMBus receive byte. Returns the byte received.
+Synchronous SMBus receive byte. Returns the byte received. byte is an unsigned
+integer in the range 0 to 255.
 
 ### bus.sendByte(addr, byte, cb)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 - cb - completion callback
 
 Asynchronous SMBus send byte. The callback gets one argument (err).
 
 ### bus.sendByteSync(addr, byte)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Synchronous SMBus send byte.
 
 ### bus.writeByte(addr, cmd, byte, cb)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 - cb - completion callback
 
 Asynchronous SMBus write byte. The callback gets one argument (err).
@@ -472,14 +514,14 @@ Asynchronous SMBus write byte. The callback gets one argument (err).
 ### bus.writeByteSync(addr, cmd, byte)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Synchronous SMBus write byte.
 
 ### bus.writeWord(addr, cmd, word, cb)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 - cb - completion callback
 
 Asynchronous SMBus write word. The callback gets one argument (err).
@@ -487,7 +529,7 @@ Asynchronous SMBus write word. The callback gets one argument (err).
 ### bus.writeWordSync(addr, cmd, word)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 
 Synchronous SMBus write word.
 
@@ -509,7 +551,8 @@ Synchronous SMBus quick command. Writes a single bit to the device.
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance containing the data to write (must conatin at least length bytes)
 - cb - completion callback
 
 Asynchronous I2C block write (not defined by the SMBus specification). Writes a
@@ -521,7 +564,8 @@ the number of bytes written.
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance containing the data to write (must conatin at least length bytes)
 
 Synchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
@@ -566,7 +610,8 @@ numbers, `name` is a string.
 ### promisifiedBus.i2cRead(addr, length, buffer)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to read
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 
 Asynchronous plain I2C read. Returns a Promise that on success will be
 resolved with an object with a bytesRead property identifying the number of
@@ -576,7 +621,8 @@ argument. The returned Promise will be rejected if an error occurs.
 ### promisifiedBus.i2cWrite(addr, length, buffer)
 - addr - I2C device address
 - length - an integer specifying the number of bytes to write
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance containing the data to write (must conatin at least length bytes)
 
 Asynchronous plain I2C write. Returns a Promise that on success will be
 resolved with an object with a bytesWritten property identifying the number of
@@ -589,7 +635,7 @@ buffer argument. The returned promise will be rejected if an error occurs.
 
 Asynchronous SMBus read byte. Returns a Promise that will be resolved with a
 number representing the byte read on success, or will be rejected if an error
-occurs.
+occurs. byte is an unsigned integer in the range 0 to 255.
 
 ### promisifiedBus.readWord(addr, cmd)
 - addr - I2C device address
@@ -597,13 +643,14 @@ occurs.
 
 Asynchronous SMBus read word. Returns a Promise that will be resolved with a
 number representing the word read on success, or will be rejected if an error
-occurs.
+occurs. word is an unsigned integer in the range 0 to 65535.
 
 ### promisifiedBus.readI2cBlock(addr, cmd, length, buffer)
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to read (max 32)
-- buffer - the buffer that the data will be written to (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance that the data will be written to (must conatin at least length bytes)
 
 Asynchronous I2C block read (not defined by the SMBus specification). Reads a
 block of bytes from a device, from a designated register that is specified by
@@ -617,11 +664,11 @@ will be rejected if an error occurs.
 
 Asynchronous SMBus receive byte. Returns a Promise that will be resolved with
 a number representing the byte received on success, or will be rejected if an
-error occurs.
+error occurs. byte is an unsigned integer in the range 0 to 255.
 
 ### promisifiedBus.sendByte(addr, byte)
 - addr - I2C device address
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Asynchronous SMBus send byte. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
@@ -629,7 +676,7 @@ arguments on success, or will be rejected if an error occurs.
 ### promisifiedBus.writeByte(addr, cmd, byte)
 - addr - I2C device address
 - cmd - command code
-- byte - data byte
+- byte - data byte. byte is an unsigned integer in the range 0 to 255.
 
 Asynchronous SMBus write byte. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
@@ -637,7 +684,7 @@ arguments on success, or will be rejected if an error occurs.
 ### promisifiedBus.writeWord(addr, cmd, word)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 
 Asynchronous SMBus write word. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
@@ -654,7 +701,8 @@ rejected if an error occurs.
 - addr - I2C device address
 - cmd - command code
 - length - an integer specifying the number of bytes to write (max 32)
-- buffer - the buffer containing the data to write (must conatin at least length bytes)
+- buffer - the [Buffer](https://nodejs.org/dist/latest/docs/api/buffer.html)
+instance containing the data to write (must conatin at least length bytes)
 
 Asynchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
