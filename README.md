@@ -21,6 +21,10 @@ i2c-bus supports Node.js versions 6, 8, 10 and 12.
 
 ## News & Updates
 
+### October 2019: i2c-bus v5.1.0 released with the following change
+
+ * Adds methods [bus.promisifiedBus()](#buspromisifiedbus) to class Bus and [promisifiedBus.bus()](#promisifiedbusbus) to class PromisifiedBus.
+
 ### September 2019: i2c-bus v5.0.0 released with the following changes
 
  * Adds support for promises. This is a non-breaking change. See [openPromisified(busNumber [, options])](#openpromisifiedbusnumber--options) and [Class PromisifiedBus](#class-promisifiedbus).
@@ -232,6 +236,9 @@ use try/catch to handle exceptions or allow them to bubble up.
   - [bus.writeI2cBlock(addr, cmd, length, buffer, cb)](#buswritei2cblockaddr-cmd-length-buffer-cb)
   - [bus.writeI2cBlockSync(addr, cmd, length, buffer)](#buswritei2cblocksyncaddr-cmd-length-buffer)
 
+- Promises
+  - [bus.promisifiedBus()](#buspromisifiedbus)
+
 ### Class PromisifiedBus
 
 All methods in class PromisifiedBus have the asynchronous promise form. For
@@ -259,6 +266,9 @@ asynchronous callback and synchronous forms see [class Bus](#class-bus).
   - [promisifiedBus.writeWord(addr, cmd, word)](#promisifiedbuswritewordaddr-cmd-word)
   - [promisifiedBus.writeQuick(addr, bit)](#promisifiedbuswritequickaddr-bit)
   - [promisifiedBus.writeI2cBlock(addr, cmd, length, buffer)](#promisifiedbuswritei2cblockaddr-cmd-length-buffer)
+
+- Asynchronous callbacks and synchronous execution
+  - [promisifiedBus.bus()](#promisifiedbusbus)
 
 ### Class I2cFuncs
 
@@ -570,6 +580,9 @@ instance containing the data to write (must conatin at least length bytes)
 Synchronous I2C block write (not defined by the SMBus specification). Writes a
 block of bytes to a device, to a designated register that is specified by cmd.
 
+### bus.promisifiedBus()
+Return the PromisifiedBus instance for this Bus instance.
+
 ### promisifiedBus.close()
 
 Asynchronous close. Returns a Promise that will be resolved with no arguments
@@ -710,6 +723,9 @@ Returns a Promise that on success will be resolved with an object with a
 bytesWritten property identifying the number of bytes written, and a buffer
 property that is a reference to the passed in buffer argument. The returned
 promise will be rejected if an error occurs.
+
+### promisifiedBus.bus()
+Return the Bus instance for this PromisifiedBus instance.
 
 ### funcs.i2c - boolean
 Specifies whether or not the adapter handles plain I2C-level commands (Pure
