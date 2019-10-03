@@ -410,12 +410,14 @@ integer in the range 0 to 255.
 - cb - completion callback
 
 Asynchronous SMBus read word. The callback gets two arguments (err, word).
+word is an unsigned integer in the range 0 to 65535.
 
 ### bus.readWordSync(addr, cmd)
 - addr - I2C device address
 - cmd - command code
 
-Synchronous SMBus read word. Returns the word read.
+Synchronous SMBus read word. Returns the word read. word is an unsigned
+integer in the range 0 to 65535.
 
 ### bus.readI2cBlock(addr, cmd, length, buffer, cb)
 - addr - I2C device address
@@ -483,7 +485,7 @@ Synchronous SMBus write byte.
 ### bus.writeWord(addr, cmd, word, cb)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 - cb - completion callback
 
 Asynchronous SMBus write word. The callback gets one argument (err).
@@ -491,7 +493,7 @@ Asynchronous SMBus write word. The callback gets one argument (err).
 ### bus.writeWordSync(addr, cmd, word)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 
 Synchronous SMBus write word.
 
@@ -601,7 +603,7 @@ occurs. byte is an unsigned integer in the range 0 to 255.
 
 Asynchronous SMBus read word. Returns a Promise that will be resolved with a
 number representing the word read on success, or will be rejected if an error
-occurs.
+occurs. word is an unsigned integer in the range 0 to 65535.
 
 ### promisifiedBus.readI2cBlock(addr, cmd, length, buffer)
 - addr - I2C device address
@@ -641,7 +643,7 @@ arguments on success, or will be rejected if an error occurs.
 ### promisifiedBus.writeWord(addr, cmd, word)
 - addr - I2C device address
 - cmd - command code
-- word - data word
+- word - data word. word is an unsigned integer in the range 0 to 65535.
 
 Asynchronous SMBus write word. Returns a Promise that will be resolved with no
 arguments on success, or will be rejected if an error occurs.
