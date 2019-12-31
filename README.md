@@ -330,11 +330,12 @@ forceAccess are true and false. Optional, the default value is false.
 ### bus.close(cb)
 - cb - completion callback
 
-Asynchronous close. The callback gets one argument (err).
+Asynchronous close. Frees system resources used by this instance. The callback
+gets one argument (err).
 
 ### bus.closeSync()
 
-Synchronous close.
+Synchronous close. Frees system resources used by this instance.
 
 ### bus.i2cFuncs(cb)
 - cb - completion callback
