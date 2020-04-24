@@ -1,6 +1,6 @@
 {
   "name": "i2c-bus",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "I2C serial bus access with Node.js",
   "main": "i2c-bus.js",
   "scripts": {

@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.2.0 / Apr 24 2020
+===================
 
   * add unit tests for PromisifiedBus
   * update dependencies
