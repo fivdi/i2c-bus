@@ -3,6 +3,7 @@ Unpublished
 
   * add unit tests for PromisifiedBus
   * update dependencies
+  * drop support for node.js 6, add support for node.js 14
 
 5.1.0 / Oct 03 2019
 ===================
