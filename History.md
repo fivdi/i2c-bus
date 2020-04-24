@@ -1,8 +1,8 @@
 Unpublished
 ===========
 
-  * update dependencies (mocha v6.2.1, sinon v7.5.0)
   * add unit tests for PromisifiedBus
+  * update dependencies
 
 5.1.0 / Oct 03 2019
 ===================
