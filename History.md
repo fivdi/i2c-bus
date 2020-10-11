@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.2.1 / Oct 11 2020
+===================
 
   * add directories section to package.json
 
