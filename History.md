@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * add directories section to package.json
+
 5.2.0 / Apr 24 2020
 ===================
 
