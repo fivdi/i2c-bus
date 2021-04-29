@@ -1,6 +1,7 @@
 Unpublished
 ===========
 
+  * remove news and updates section of readme
   * drop support for node.js 8 and 13, add support for node.js 15 & 16
   * update dependencies
 
