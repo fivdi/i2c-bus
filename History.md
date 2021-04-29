@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.2.2 / Apr 29 2021
+===================
 
   * remove news and updates section of readme
   * drop support for node.js 8 and 13, add support for node.js 15 & 16
