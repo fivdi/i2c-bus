@@ -17,6 +17,8 @@ i2c-bus supports Node.js versions 10, 12, 14, 15 and 16.
  * [Installation](#installation)
  * [Usage](#usage)
  * [API](#api)
+ * [TypeScript Type Definitions](#typescript-type-definitions)
+
 
 ## Installation
 
@@ -785,4 +787,10 @@ Specifies whether or not the adapter handles the SMBus read I2C block command
 ### funcs.smbusWriteI2cBlock - boolean
 Specifies whether or not the adapter handles the SMBus write i2c block command
 (I2C_FUNC_SMBUS_WRITE_I2C_BLOCK).
+
+## TypeScript Type Definitions
+
+TypeScript type definitions for i2c-bus can be found in the Definitely Typed
+repository at
+https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/i2c-bus.
 
