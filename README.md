@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fivdi/i2c-bus.svg?branch=master)](https://travis-ci.org/fivdi/i2c-bus)
+[![Build Status](https://app.travis-ci.com/fivdi/i2c-bus.svg?branch=master)](https://app.travis-ci.com/github/fivdi/i2c-bus)
 [![Coverage Status](https://coveralls.io/repos/github/fivdi/i2c-bus/badge.svg)](https://coveralls.io/github/fivdi/i2c-bus)
 [![npm Version](http://img.shields.io/npm/v/i2c-bus.svg)](https://www.npmjs.com/package/i2c-bus)
 [![Downloads Per Month](http://img.shields.io/npm/dm/i2c-bus.svg)](https://www.npmjs.com/package/i2c-bus)
