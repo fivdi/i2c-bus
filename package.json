@@ -24,19 +24,19 @@
   },
   "dependencies": {
     "bindings": "^1.5.0",
-    "nan": "^2.14.2"
+    "nan": "^2.15.0"
   },
   "devDependencies": {
-    "async": "^3.2.0",
-    "coveralls": "^3.1.0",
+    "async": "^3.2.1",
+    "coveralls": "^3.1.1",
     "glob": "^7.2.0",
-    "jshint": "^2.12.0",
+    "jshint": "^2.13.1",
     "lodash": "^4.17.21",
-    "mocha": "^8.3.2",
-    "mock-fs": "^4.14.0",
+    "mocha": "^9.1.2",
+    "mock-fs": "^5.1.1",
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
-    "sinon": "^10.0.0"
+    "sinon": "^11.1.2"
   },
   "keywords": [
     "i2c",
