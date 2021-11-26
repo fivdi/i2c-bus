@@ -22,7 +22,9 @@ i2c-bus supports Node.js versions 10, 12, 14, 15 and 16.
 
 ## Installation
 
+WARNING: you must execute `npm i i2c-bus` from within the Node-red directory!
 ```
+cd .node-red
 npm install i2c-bus
 ```
 
