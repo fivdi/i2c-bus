@@ -89,7 +89,11 @@ NAN_MODULE_INIT(InitAll) {
   ExportInt(target, "I2C_FUNC_SMBUS_WRITE_I2C_BLOCK", I2C_FUNC_SMBUS_WRITE_I2C_BLOCK);
 }
 
+#if NODE_MAJOR_VERSION >= 10
+NODE_MODULE_CONTEXT_AWARE(i2c, InitAll)
+#else
 NODE_MODULE(i2c, InitAll)
+#endif
 
 // Hack to speed up compilation.
 // Originally all the cc files included below were listed in the sources
