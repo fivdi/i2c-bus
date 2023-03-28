@@ -23,7 +23,16 @@
 #ifndef _LINUX_I2C_DEV_H
 #define _LINUX_I2C_DEV_H
 
+#ifdef __linux__
 #include <linux/types.h>
+#else
+# include <stdint.h>
+typedef int32_t __s32;
+typedef uint8_t __u8;
+typedef uint16_t __u16;
+typedef uint32_t __u32;
+#endif
+
 #include <sys/ioctl.h>
 #include <stddef.h>
 

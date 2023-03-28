@@ -5,7 +5,7 @@
       "<!(node -e \"require('nan')\")"
     ],
     "conditions": [[
-      'OS == "linux"', {
+      'OS == "linux" or OS == "mac"', {
         "sources": [
          "./src/i2c.cc"
         ],
@@ -21,4 +21,3 @@
     ]
   }]
 }
-
