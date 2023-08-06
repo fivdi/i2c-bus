@@ -1,3 +1,8 @@
+Unpublished
+===========
+
+  * update dependencies
+
 5.2.2 / Apr 29 2021
 ===================
 
