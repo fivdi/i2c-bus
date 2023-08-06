@@ -1,5 +1,5 @@
-Unpublished
-===========
+5.2.3 / Aug 06 2023
+===================
 
   * update dependencies
   * update information related to supported versions
