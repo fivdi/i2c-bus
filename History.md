@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * update dependencies
+  * update information related to supported versions
 
 5.2.2 / Apr 29 2021
 ===================

@@ -5,8 +5,9 @@ arch:
   - s390x
 language: node_js
 node_js:
+  - "20"
+  - "18"
   - "16"
-  - "15"
   - "14"
   - "12"
 env:
