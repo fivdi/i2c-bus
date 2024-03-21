@@ -1,3 +1,9 @@
+5.2.3 / Aug 06 2023
+===================
+
+  * update dependencies
+  * update information related to supported versions
+
 5.2.2 / Apr 29 2021
 ===================
 
